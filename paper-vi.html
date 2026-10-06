@@ -1,0 +1,1962 @@
+<!doctype html><html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vẽ tranh bằng phương trình — white paper</title><meta name="description" content="Equation Painting: images defined by mathematical formulas, found with a code-executing AI. Bilingual white paper (Vietnamese / English)."><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false,strict:false});"></script>
+<style>
+:root { --fg:#111; --bg:#fff; --rule:#000; --muted:#555; }
+* { box-sizing: border-box; }
+html { font-size: 17px; }
+body { margin:0; background:var(--bg); color:var(--fg); font-family: "Times New Roman", Times, Georgia, serif; line-height:1.45; }
+a { color:var(--fg); text-decoration: underline; text-underline-offset: 2px; }
+nav.top { border-bottom: 1px solid var(--rule); padding: 10px 16px; display:flex; gap:18px; align-items:baseline; flex-wrap:wrap; font-size:0.95rem; }
+nav.top .brand { font-weight:bold; letter-spacing: 0.02em; }
+nav.top .spacer { flex:1; }
+main { max-width: 820px; margin: 0 auto; padding: 24px 16px 64px 16px; }
+h1.title { text-align:center; font-size:1.7rem; margin: 18px 0 6px; }
+p.subtitle { text-align:center; font-style: italic; margin:0 0 8px; }
+p.authors { text-align:center; margin:0; } p.authors-meta { text-align:center; color:var(--muted); margin:0 0 18px; font-size:0.9rem; }
+p.abs { margin: 0 24px 8px; text-align: justify; } p.kw { margin: 0 24px 14px; font-size:0.9rem; }
+h2 { font-size:1.2rem; margin: 30px 0 8px; border-top: 1px solid var(--rule); padding-top: 12px; }
+h3 { font-size:1.05rem; font-style: italic; margin: 20px 0 6px; }
+p { text-align: justify; margin: 0 0 10px; }
+table { border-collapse: collapse; margin: 10px auto 16px; font-size: 0.86rem; width:100%; display:block; overflow-x:auto; }
+th, td { border: 1px solid var(--rule); padding: 4px 7px; vertical-align: top; text-align:left; }
+figure { margin: 14px 0 18px; text-align:center; } figure img { max-width:100%; height:auto; border:1px solid #ccc; }
+figcaption { font-size: 0.86rem; text-align: justify; margin: 6px 8px 0; color: var(--muted); }
+pre { white-space: pre-wrap; border: 1px solid #000; padding: 10px; font-size: 0.82rem; font-family: "Courier New", monospace; }
+code { font-family: "Courier New", monospace; font-size: 0.9em; }
+ol.refs { list-style:none; counter-reset: ref; padding-left: 2.4em; } ol.refs li { counter-increment: ref; position: relative; margin-bottom:4px; }
+ol.refs li::before { content: "[" counter(ref) "]"; position:absolute; left:-2.4em; }
+blockquote { margin: 8px 24px; }
+.katex-display { overflow-x:auto; overflow-y:hidden; padding: 2px 0; }
+.landing h1 { text-align:center; font-size:1.8rem; margin: 30px 0 4px; } .landing .sub { text-align:center; font-style:italic; margin:0 0 6px; }
+.landing .meta { text-align:center; color:var(--muted); margin: 0 0 28px; }
+.cols { display:grid; grid-template-columns: 1fr 1fr; gap: 28px; } @media (max-width: 760px) { .cols { grid-template-columns: 1fr; } }
+.col { border: 1px solid var(--rule); padding: 16px 18px; }
+.col h2 { border:0; margin:0 0 6px; padding:0; font-size:1.15rem; }
+.actions { display:flex; gap: 10px; flex-wrap: wrap; margin: 12px 0 14px; }
+.btn { border: 1px solid var(--rule); padding: 8px 14px; text-decoration:none; font-size:0.95rem; background:#fff; display:inline-block; }
+.btn.primary { background:#000; color:#fff; }
+.hero { display:grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 0 0 24px; } @media (max-width:760px) { .hero { grid-template-columns: 1fr; } }
+.hero img { width:100%; height:auto; border:1px solid #000; filter: grayscale(100%); transition: filter .3s; } .hero img:hover { filter:none; }
+.hero figcaption { font-size:0.85rem; color: var(--muted); text-align:center; margin-top:4px; }
+footer { border-top: 1px solid var(--rule); margin-top: 40px; padding: 14px 16px; font-size: 0.85rem; color: var(--muted); text-align:center; }
+details.toc { border:1px solid #000; padding: 8px 14px; margin: 0 0 18px; font-size:0.92rem; } details.toc summary { cursor:pointer; font-weight:bold; }
+details.toc ol { margin: 8px 0 4px; padding-left: 1.4em; } details.toc li { margin: 2px 0; }
+.box { border:1px solid var(--rule); padding: 16px 18px; margin: 26px 0; }
+.box h2 { border:0; margin:0 0 8px; padding:0; font-size:1.15rem; }
+.simple { font-size: 1.15rem; line-height: 1.6; } .simple h1 { text-align:center; font-size:1.9rem; margin: 20px 0 6px; }
+.simple h2 { border:0; padding:0; margin: 22px 0 6px; font-size: 1.3rem; } .simple p { text-align:left; }
+.simple .big { font-size: 1.35rem; text-align:center; border:1px solid #000; padding: 12px; margin: 16px 0; }
+.simple ul { padding-left: 1.3em; } .simple li { margin: 4px 0; }
+</style></head><body><nav class="top"><a class="brand" href="index.html">Equation Painting</a><a href="paper-vi.html">Đọc bản tiếng Việt</a><a href="paper-en.html">Read in English</a><a href="simple-vi.html">Giải thích đơn giản</a><a href="index.html#try">Tự thử</a><span class="spacer"></span><a href="pdf/equation_painting_paper_v1_0.pdf">PDF (VI)</a><a href="pdf/equation_painting_paper_v1_0_en.pdf">PDF (EN)</a></nav><main><h1 class="title">Vẽ tranh bằng phương trình: hai bài toán, hai cách tìm công thức</h1>
+<p class="subtitle">Equation Painting: two problems, two ways of finding the formula</p><p class="authors">Henry · Claude Code</p><p class="authors-meta">06/10/2026 · phiên bản 1.1</p>
+<p class="abs"><b>Tóm tắt.</b> Chúng tôi trình bày Equation Painting, một cách định nghĩa ảnh bằng hàm số: màu của mỗi pixel là giá trị của một hàm tại toạ độ pixel đó, nên một bức tranh là một biểu thức toán học có thể tính lại và kiểm tra bằng hash. Bài viết đặt hai bài toán trên cùng một ảnh chụp đống dâu tây 554 × 554. Bài toán 1 vẽ lại ảnh bằng cách chia ảnh thành ba lớp với 24 quả và 4 831 lần vẽ hình cơ bản, mỗi hình một công thức có tham số đo từ ảnh; kết quả đạt MAE 14,55/255 và PSNR 20,99 dB so với nguồn, và tái lập từng pixel so với đặc tả. Bài toán 2 vẽ một bức tranh mới theo ảnh tham chiếu, không chép lại, với toàn bộ bức tranh 1108 × 1108 là một hàm duy nhất dài 11 489 ký tự và 663 hằng số theo cách đếm đã công bố, gồm 27 hàm phụ và 91 lớp. Chúng tôi giải thích nền tảng theo mười bậc, từ pixel tới một hàm cho cả bức, rồi kể hai trường hợp từng bước tới công thức. Công việc do một AI chạy được code (Claude Code) thực hiện theo một bộ quy tắc; con người đặt bài toán, đặt ràng buộc và chọn bức cuối. Khác với ảnh do mô hình sinh ảnh tạo ra, một ảnh có công thức được tính lại đúng từng pixel bởi bất kỳ ai, bao nhiêu lần cũng vậy, và kiểm bằng một con số; bài kèm một hướng dẫn để người đọc dựng lại hệ thống này với một AI chạy được code. Trong bài toán 2, AI đã render 60 bản thử qua bảy vòng chấm trong hai lô và một vòng đánh bóng; con người dừng để quyết định ở năm điểm. Hai case cho thấy đổi "khớp từng pixel" lấy "một định nghĩa gọn" làm công thức ngắn đi hơn bốn mươi lần theo byte nhưng không còn khớp nguồn, và cho thấy việc tái lập đúng từng pixel không phụ thuộc vào việc ảnh có giống nguồn hay không.</p>
+<p class="kw"><strong>Từ khoá:</strong> ảnh là hàm số, trường khoảng cách có dấu, chồng lớp, hash pixel, tái lập, AI chạy code, Yeganeh.</p>
+<p class="abs"><b>Abstract.</b> We present Equation Painting, a way of defining an image by a function: the colour of each pixel is the value of a function at that pixel's coordinates, so a picture is a mathematical expression that can be recomputed and checked with a hash. The paper poses two problems on the same 554 × 554 photograph of a pile of strawberries. Problem 1 repaints the photograph by splitting it into three layers with 24 berries and 4,831 primitive draws, each primitive a formula whose parameters are measured from the image; the result reaches MAE 14.55/255 and PSNR 20.99 dB against the source and is reproduced pixel for pixel from its specification. Problem 2 paints a new 1108 × 1108 picture after the reference, without copying it, where the whole picture is one function of 11,489 characters and 663 constants under a published counting rule, with 27 helper functions and 91 layers. We explain the foundations in ten steps, from a pixel to one function for the whole picture, then narrate both cases step by step to their formulas. The work was carried out by a code-executing AI (Claude Code) under a written rule set; a human posed the problems, set the constraints and chose the final picture. Unlike an image produced by a generative model, an image with a formula is recomputed pixel for pixel by anyone, any number of times, and checked with a single number; the paper includes a guide for readers to rebuild this system with a code-executing AI. In Problem 2 the AI rendered 60 trial images over seven judging rounds in two batches plus one polishing round; the human stopped to decide at five points. The two cases show that trading "match every pixel" for "one compact definition" shortens the formula by more than forty times in bytes but gives up matching the source, and that pixel-exact reproduction does not depend on whether the image resembles the source.</p>
+<p class="kw"><strong>Keywords:</strong> image as function, signed distance field, compositing, pixel hash, reproducibility, code-executing AI, Yeganeh.</p>
+<details class="toc"><summary>Mục lục</summary><ol><li><a href="#1-m-u">1. Mở đầu</a></li><li><a href="#2-hai-bi-ton-bng-li">2. Hai bài toán, bằng lời</a></li><li><a href="#3-nn-tng-mi-bc-thang">3. Nền tảng: mười bậc thang</a></li><li><a href="#4-nguyn-l">4. Nguyên lý</a></li><li><a href="#5-phng-php-ai-tm-cng-thc-nh-th-no">5. Phương pháp: AI tìm công thức như thế nào</a></li><li><a href="#6-case-study-1-v-li-nh-du-ty-bng-nhiu-cng-thc">6. Case study 1: vẽ lại ảnh dâu tây bằng nhiều công thức</a></li><li><a href="#7-case-study-2-v-theo-tham-chiu-bng-mt-cng-thc">7. Case study 2: vẽ theo tham chiếu bằng một công thức</a></li><li><a href="#8-tho-lun">8. Thảo luận</a></li><li><a href="#9-hng-dn-dng-h-thng-i-nh-thnh-cng-thc-bng-ai">9. Hướng dẫn: dựng hệ thống đổi ảnh thành công thức bằng AI</a></li><li><a href="#10-p-dng-gn-v-xa-trong-thi-i-ai">10. Áp dụng gần và xa trong thời đại AI</a></li><li><a href="#11-kt-lun">11. Kết luận</a></li><li><a href="#ti-liu-tham-kho">Tài liệu tham khảo</a></li><li><a href="#ph-lc-a-k-hiu-v-quy-c">Phụ lục A — Ký hiệu và quy ước</a></li><li><a href="#ph-lc-b-cng-thc-y">Phụ lục B — Công thức đầy đủ</a></li><li><a href="#ph-lc-c-ti-lp">Phụ lục C — Tái lập</a></li><li><a href="#ph-lc-d-bng-thut-ng">Phụ lục D — Bảng thuật ngữ</a></li></ol></details><hr />
+<h2 id="1-m-u">1. Mở đầu</h2>
+<h3>1.1 Hai cách làm ra một tấm ảnh bằng máy</h3>
+<p>Một tấm ảnh 554 × 554 là 306 916 ô màu. Cách thường gặp để tạo một tấm ảnh là tô từng ô: bằng máy ảnh, bằng cọ, hay bằng một mô hình sinh ảnh. Có một cách khác: viết một hàm số nhận toạ độ của ô và trả về màu của ô. Khi đó tấm ảnh không còn là ba trăm nghìn con số mà là một đoạn toán học, và mọi người có cùng đoạn toán học đó tính ra cùng ba trăm nghìn con số. Bài viết này trình bày cách tìm những hàm như vậy cho hai bài toán, cho thấy một AI chạy được code tham gia vào việc tìm chúng ra sao, và nói rõ việc gì vẫn do con người quyết định.</p>
+<p>Hai cách tạo ảnh bằng máy đang được dùng rộng rãi hôm nay và cách của bài này khác nhau ở gốc.</p>
+<p><strong>AI sinh ảnh hiện nay.</strong> Các hệ thống phổ biến (mô hình khuếch tán và họ hàng của chúng) học từ hàng trăm triệu đến hàng tỷ ảnh có chú thích. Khi nhận một câu mô tả, chúng bắt đầu từ một mảng nhiễu ngẫu nhiên và khử nhiễu qua vài chục bước, mỗi bước là một lần chạy mạng nơ-ron hàng tỷ tham số. Ảnh ra là kết quả của ba thứ: câu mô tả, hạt giống ngẫu nhiên (seed), và toàn bộ trạng thái của hệ thống lúc chạy, gồm phiên bản mô hình, thư viện, phần cứng và cách phần cứng làm tròn phép nhân ma trận. Tài liệu của một thư viện khuếch tán được dùng rộng rãi ghi rõ: cùng seed trên cùng phần cứng và cùng phiên bản thư viện thì lặp lại được; đổi GPU hay đổi phiên bản thì không nên trông đợi kết quả giống nhau, chỉ có thể trông đợi gần giống trong một dung sai [10]. Nói cách khác, với AI sinh ảnh, "ảnh" là một sự kiện: nó xảy ra một lần trong một điều kiện, và điều kiện đó không viết ra được thành vài trang để người khác tạo lại đúng từng byte. Mô hình cũng không cho biết vì sao một pixel có màu như vậy; muốn sửa một chi tiết, ta mô tả lại và sinh lại, rồi chọn.</p>
+<p><strong>Ảnh bằng công thức.</strong> Ở cách của bài này, ảnh là giá trị của một hàm xác định tại các toạ độ pixel. Hàm được viết ra đầy đủ: toạ độ, các hình cơ bản, màu, cách chồng lớp, cách làm tròn. Không có nhiễu ngẫu nhiên; "ngẫu nhiên" nếu cần được thay bằng hàm hash số nguyên, cho cùng giá trị trên mọi máy. Hệ quả quan trọng nhất: <strong>có công thức thì mọi lần tính đều ra đúng tấm ảnh đó, không sai một pixel, dù ai tính, tính bằng ngôn ngữ nào, tính bao nhiêu lần.</strong> Bài này không chỉ nói điều đó về nguyên lý mà kiểm nó: mỗi bức tranh kèm một con số tóm tắt toàn ảnh (hash), và một tiến trình độc lập, trong thư mục trống không có ảnh gốc, tính lại từ văn bản và ra đúng con số đó. Trong hai case của bài, điều này đã kiểm trên một máy cho hai bức tranh, và cho hai cảnh mẫu của bộ quy tắc trên hai môi trường khác phiên bản Python và numpy. Giới hạn còn lại được nói ở Phụ lục C: hàm siêu việt như sin, exp có thể lệch một đơn vị ở bit cuối giữa các nền tảng, nên bài không viết "mọi máy đều giống tuyệt đối" cho tới khi đã đo.</p>
+<p>Bảng dưới đặt hai cách cạnh nhau. Bảng không xếp hạng; mỗi cách làm tốt một việc khác.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>AI sinh ảnh (khuếch tán)</th>
+<th>Ảnh bằng công thức (bài này)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Đầu vào</td>
+<td>câu mô tả, seed, có thể thêm ảnh gợi ý</td>
+<td>công thức: toạ độ, hình, màu, lớp, tham số</td>
+</tr>
+<tr>
+<td>Cơ chế</td>
+<td>mạng nơ-ron học từ dữ liệu, khử nhiễu từng bước</td>
+<td>tính giá trị hàm tại từng pixel</td>
+</tr>
+<tr>
+<td>Lặp lại</td>
+<td>cùng seed, cùng phần cứng, cùng phiên bản: lặp được; khác đi thì chỉ gần giống [10]</td>
+<td>cùng công thức: cùng byte; kiểm bằng hash; đã kiểm trên một máy, cảnh mẫu trên hai môi trường</td>
+</tr>
+<tr>
+<td>Lý do của từng pixel</td>
+<td>không đọc được</td>
+<td>đọc được: mỗi pixel truy ngược tới hình, màu, lớp và tham số</td>
+</tr>
+<tr>
+<td>Sửa một chi tiết</td>
+<td>mô tả lại, sinh lại, chọn</td>
+<td>đổi một tham số có tên; ảnh đổi đúng chỗ đó (phép thử nhiễu loạn, mục 6.6, 7.8)</td>
+</tr>
+<tr>
+<td>Dung lượng mang theo</td>
+<td>mô hình hàng gigabyte; ảnh ra là bitmap</td>
+<td>văn bản vài KB tới vài trăm KB; không cần mô hình</td>
+</tr>
+<tr>
+<td>Chi phí tính</td>
+<td>giây tới phút trên GPU</td>
+<td>giây tới phút trên CPU, chỉ cần numpy</td>
+</tr>
+<tr>
+<td>Làm tốt</td>
+<td>ảnh tự nhiên, phong phú, từ mô tả ngắn</td>
+<td>ảnh có cấu trúc, cần tất định, cần kiểm, cần sửa theo vật thể</td>
+</tr>
+<tr>
+<td>Giới hạn thấy trong bài</td>
+<td>không có mặt trong hai case</td>
+<td>ảnh chụp thật chỉ khớp ở PSNR ≈ 21 dB (case 1); bức mới vẫn đọc ra là dựng (case 2)</td>
+</tr>
+</tbody>
+</table>
+<p>Hai cách không loại trừ nhau. AI sinh ảnh có thể tạo ý tưởng và tham chiếu; công thức chốt một bản chính thức có thể kiểm và chuyển giao. Mục 10 bàn tiếp.</p>
+<h3>1.2 Ảnh có công thức so với file ảnh hiện nay</h3>
+<p>Để thấy rõ cách của bài này đứng ở đâu, cần nhìn lại một file ảnh thường làm gì. Một file JPEG, PNG hay WebP là một chuỗi bit. Máy tính không "nhìn" bức ảnh; nó đọc phần đầu file để biết định dạng và kích thước, giải mã phần còn lại theo quy tắc của chuẩn, dựng lại một bảng số màu, gửi bảng đó cho bộ xử lý đồ hoạ, và màn hình phát sáng từng điểm theo bảng. File ảnh vì thế không phải bức ảnh ta nhìn thấy; nó là một cách mã hoá đủ để máy dựng lại bảng pixel.</p>
+<p>Hai họ định dạng đang dùng rộng rãi làm việc đó theo hai cách. <strong>Định dạng raster</strong> lưu kết quả, tức màu của từng pixel, rồi nén. Lưu thô một ảnh 554 × 554 với ba byte mỗi pixel tốn 920 748 byte; một ảnh 1200 × 1200 tốn 4,32 MB. PNG nén không mất: dự đoán mỗi pixel từ các pixel lân cận, lưu phần dư, rồi nén phần dư bằng DEFLATE; giải nén cho lại đúng từng byte màu [13]. JPEG nén có mất: đổi không gian màu, chia ảnh thành khối 8 × 8, biến đổi mỗi khối thành 64 hệ số của các hàm cosin (DCT), làm tròn mạnh các hệ số tần số cao mà mắt ít nhạy, rồi mã hoá entropy [12]. Theo nghĩa hẹp, một file JPEG đã là "ảnh bằng công thức": mỗi khối là tổng của 64 hàm cosin với 64 hệ số. Nhưng công thức ấy không có nghĩa về nội dung, không có quả dâu hay đài lá nào trong đó, chỉ có khối và tần số; và chuẩn JPEG quy định dung sai cho phép biến đổi ngược chứ không đòi mọi bộ giải mã cho cùng byte, nên hai bộ giải mã hợp chuẩn có thể lệch nhau một mức ở vài pixel [12]. <strong>Định dạng vector</strong> như SVG lưu lệnh vẽ thay cho pixel: "một hình tròn tâm (500, 500), bán kính 200, tô đỏ" [14]. Phóng to bao nhiêu cũng không vỡ, vì renderer vẽ lại từ lệnh; nhưng ngữ pháp của SVG là hình phẳng và gradient, không có cách tự nhiên để viết khối, ánh sáng hay texture của một quả dâu.</p>
+<p>Có thể xếp ba tầng biểu diễn của một bức ảnh: tầng file (chuỗi bit), tầng pixel ($I(x, y) = (R, G, B)$), và tầng mô hình sinh ($I(x, y) = F(x, y; \theta)$ với $\theta$ là tham số). Raster sống ở tầng file và tầng pixel; vector và công thức của bài này sống ở tầng mô hình sinh. Chuỗi hiển thị của một file ảnh là: file → bộ giải mã → pixel → bộ xử lý đồ hoạ → màn hình. Chuỗi của bài này dài hơn một bước ở đầu: văn bản công thức → tính $F(x, y)$ tại từng pixel → pixel → (một file PNG để lưu và xem nhanh) → màn hình. Công thức là tầng đứng trước file; file PNG kèm theo chỉ là sản phẩm phụ để xem mà không cần tính lại.</p>
+<p>Bảng dưới đặt bốn cách cạnh nhau. Một điều cần nói thẳng: cả bốn đều cần một chương trình để ra pixel. JPEG cần bộ giải mã theo chuẩn, SVG cần renderer, công thức cần một máy làm được số học (ở đây là Python với numpy). Khác biệt không nằm ở "có cần chương trình hay không" mà ở đơn vị thông tin được lưu, ở việc giải mã có tất định hay không, và ở việc người đọc có hiểu được nội dung của file hay không.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>JPEG</th>
+<th>PNG</th>
+<th>SVG</th>
+<th>Công thức (bài này)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Đơn vị lưu</td>
+<td>hệ số cosin của khối 8 × 8</td>
+<td>pixel đã dự đoán và nén</td>
+<td>lệnh vẽ hình phẳng</td>
+<td>vật thể có tên, tham số có cơ sở, lớp có thứ tự</td>
+</tr>
+<tr>
+<td>Mất mát</td>
+<td>có, cố ý</td>
+<td>không</td>
+<td>không (hình); rasterize theo renderer</td>
+<td>không; pixel là giá trị hàm</td>
+</tr>
+<tr>
+<td>Giải mã tất định</td>
+<td>trong dung sai của chuẩn [12]</td>
+<td>đúng từng byte [13]</td>
+<td>tuỳ renderer (khử răng cưa, phông)</td>
+<td>cùng byte theo hash; kiểm bằng clean-room (Phụ lục C)</td>
+</tr>
+<tr>
+<td>Đổi kích thước</td>
+<td>nội suy, mờ</td>
+<td>nội suy, mờ</td>
+<td>vẽ lại, sắc nét</td>
+<td>tính lại, sắc nét; toạ độ chuẩn hoá</td>
+</tr>
+<tr>
+<td>Nội dung đọc được</td>
+<td>không</td>
+<td>không</td>
+<td>có, cho hình phẳng</td>
+<td>có, kể cả khối, ánh sáng, texture</td>
+</tr>
+<tr>
+<td>Sửa một chi tiết</td>
+<td>tô lại vùng pixel</td>
+<td>tô lại vùng pixel</td>
+<td>sửa một hình</td>
+<td>đổi một tham số có tên; phép thử nhiễu loạn kiểm hậu quả</td>
+</tr>
+<tr>
+<td>Dung lượng ở case 1</td>
+<td>91 064 B (ảnh nguồn)</td>
+<td>549 KB (render)</td>
+<td>—</td>
+<td>460 692 B code, 95,5 % là bảng đo; nén zlib 115 771 B</td>
+</tr>
+</tbody>
+</table>
+<p>Dòng cuối của bảng là lời nhắc rằng cách này không phải một cách nén tốt hơn: ở case 1, đặc tả còn lớn hơn JPEG gốc, vì phải mang theo 36 450 số đo để khớp một ảnh chụp. Giá trị của nó nằm ở ba cột trước: giải mã tất định, nội dung đọc được, và sửa theo vật thể. Câu hỏi trung tâm vì thế không phải "ảnh có biểu diễn được bằng toán không", vì mọi file ảnh đều đã là một biểu diễn toán, mà là: biểu diễn nào đủ ngắn, đủ có cấu trúc, đủ dễ tính, và vẫn dựng lại được bức tranh ở chất lượng mong muốn. Hai case của bài là hai câu trả lời đo được cho câu hỏi đó trên một ảnh.</p>
+<h3>1.3 Vì sao bây giờ</h3>
+<p>Ý tưởng "ảnh là hàm" không mới. Hamid Naderi Yeganeh đã dựng nhiều bức tranh mà màu của pixel $(m, n)$ là $\big(F(H_0(x, y)), F(H_1(x, y)), F(H_2(x, y))\big)$, với $H_v$ là một mạng các hàm xây từ một ý tưởng nhiều bước; ông mô tả cách mình ghép các hàm của từng bước lại và chạy chương trình nhiều lần để thử [1]. Karl Sims, năm 1991, đã cho máy biến đổi biểu thức toán học thành ảnh và để con người chọn bức đẹp qua nhiều thế hệ [2]. Đồ hoạ thủ tục và trường khoảng cách có dấu (signed distance field, SDF) là công cụ quen của người viết shader [7, 8]. Điều mới ở thời điểm này là một AI có thể đọc ảnh bằng code, viết công thức, render, so sánh và sửa trong một vòng lặp mà con người quan sát và kiểm tra được. Việc tìm công thức, trước đây là việc tay của một số ít người thạo toán và lập trình, nay có thể giao cho AI theo một bộ quy tắc viết sẵn, và người đặt bài chỉ cần biết mình muốn gì.</p>
+<h3>1.4 Đóng góp</h3>
+<p>Bài viết đóng góp bốn điều, ở mức "quy trình kiểm tra được cộng các quan sát". Thứ nhất, một quy trình: đo ảnh bằng code, phân rã, viết công thức, render, kiểm bằng hash và sửa; mỗi bước để lại artifact. Thứ hai, một cách tách hai mục tiêu thường bị trộn: bám nguồn từng pixel (bài toán 1) và một định nghĩa gọn, đủ tương đồng và đẹp (bài toán 2). Thứ ba, số liệu từ hai trường hợp đã làm trên cùng một ảnh: số lớp, số hằng số, độ dài, sai số, hash, số vòng sửa, số bản thử, kèm các phương án đã thử mà không được chọn. Thứ tư, một hướng dẫn ngắn (mục 9) để bất kỳ ai có một AI chạy được code dựng lại hệ thống này cho ảnh của mình.</p>
+<h3>1.5 Bài viết không phải là gì</h3>
+<p>Bài viết không nói AI "hiểu cái đẹp". Không nói công thức "nén" ảnh tốt hơn JPEG; ở bài toán 1, đặc tả nén còn lớn hơn file JPEG gốc. Không nói đây là sinh ảnh bằng mô hình khuếch tán; renderer chỉ tính hàm. Không nói AI nhanh hơn người bao nhiêu lần, vì chưa có thí nghiệm đối chứng (mục 8.1).</p>
+<p>Hình 1 đặt bức tranh của bài toán 2 cạnh công thức gốc của nó. Mục 2 phát biểu hai bài toán bằng lời. Mục 3 dạy mười bậc thang toán cần để đọc hai case. Mục 4 và 5 nêu nguyên lý và phương pháp tìm. Mục 6 và 7 là hai case, kể cả các phương án không được chọn. Mục 8 thảo luận. Mục 9 hướng dẫn dựng hệ thống. Mục 10 bàn về ứng dụng gần và xa. Mục 11 kết luận.</p>
+<figure><img src="figures/fig01_p2_vs_ref.jpg" alt="Hình 1. Trái: bức &quot;Đống dâu — Macro tiêu điểm&quot; v1.1, 1108 × 1108, rend" loading="lazy"><figcaption>Hình 1. Trái: bức &quot;Đống dâu — Macro tiêu điểm&quot; v1.1, 1108 × 1108, render từ đặc tả, hash pixel 3710e8ec…. Phải: ảnh tham chiếu 554 × 554 mà bức tranh phỏng tác theo bậc 2 (lấy bố cục, màu, hướng sáng; không lấy đường viền, texture). Công thức gốc của bức trái: $(R, G, B)(m, n) = F\big(\tfrac14 \sum_{\mu_1, \mu_2} H(x, y)\big)$ với bốn mẫu mỗi pixel; toàn bộ hàm phụ ở Phụ lục B.</figcaption></figure>
+<h2 id="2-hai-bi-ton-bng-li">2. Hai bài toán, bằng lời</h2>
+<p>Luận điểm của mục này: hai bài toán dùng cùng một công cụ toán nhưng khác mục tiêu, nên khác tiêu chí thành công.</p>
+<p>Gọi $W$ và $H$ là chiều rộng và chiều cao ảnh tính bằng pixel. Gọi $I$ là ảnh cho trước và $\hat I$ là ảnh tính từ một đặc tả toán học (spec).</p>
+<blockquote>
+<p><strong>Bài toán 1.</strong> Cho một ảnh $I$ kích thước $W \times H$. Tìm một đặc tả toán học tự đủ, gồm các thành phần hình, màu và quan hệ được định nghĩa rõ, sao cho ảnh tính ra $\hat I$ gần $I$ theo các tiêu chí đã chọn, và $\hat I$ tính lại được từng pixel từ đặc tả trên mọi máy. Khi muốn giảm sai lệch, cần thêm hay đổi công thức nào, với chi phí độ dài bao nhiêu?</p>
+<p><strong>Bài toán 2.</strong> Cho một ảnh tham chiếu $I_r$ và những đặc điểm muốn giữ. Tìm một hàm ảnh hoàn chỉnh, định nghĩa gọn, tham số sinh theo quy luật, tạo một bức tranh mới đủ tương đồng và có chất lượng thị giác, không lưu lại từng chi tiết của $I_r$; trong các phương án đã thử, một người chọn bức cuối.</p>
+</blockquote>
+<p>Tiêu chí thành công khác nhau. Bài toán 1 đo sai số so với ảnh gốc bằng bốn con số quen trong xử lý ảnh (MAE, PSNR, SSIM, $\Delta E_{2000}$, định nghĩa ở mục 4.4) và đo tái lập từng pixel so với đặc tả bằng hash. Bài toán 2 không đo sai số pixel so với tham chiếu, vì chép pixel là điều bị cấm; nó đo tương đồng ở ba lớp (ngữ nghĩa, cấu trúc, bề mặt), đo độ dài công thức, và để con người chọn trong các phương án đã khảo sát. Một chi tiết khác nguồn là sai lệch cần xem xét ở bài toán 1, nhưng có thể là lựa chọn sáng tác hợp lệ ở bài toán 2, trừ khi chạm vào đặc điểm đã khoá.</p>
+<p>Cụm "một công thức" trong bài toán 2 có ba nghĩa, và paper dùng cả ba ở đúng chỗ.</p>
+<table>
+<thead>
+<tr>
+<th>Nghĩa</th>
+<th>Nội dung</th>
+<th>Vai trò</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Một hàm đầu ra</td>
+<td>toàn bộ màu do một hàm có gốc duy nhất xác định; mọi hàm phụ định nghĩa đầy đủ</td>
+<td>điều kiện hình thức của bài toán 2</td>
+</tr>
+<tr>
+<td>Một biểu thức khai triển</td>
+<td>thế mọi hàm phụ vào gốc thành một biểu thức; có thể dài hàng chục nghìn ký tự</td>
+<td>chưa xuất trong case 2; chỉ nhắc ở Phụ lục B</td>
+</tr>
+<tr>
+<td>Một định nghĩa gọn có quy luật</td>
+<td>hàm đầu ra với mạng hàm phụ nhỏ, nhiều thành phần sinh từ chỉ số thay vì bảng số riêng</td>
+<td>điều kiện bổ sung của bài toán 2, đo và báo riêng</td>
+</tr>
+</tbody>
+</table>
+<p>Một điều cần nói ngay để tránh hiểu lầm: cách phân rã của bài toán 1 cũng viết được thành một hàm duy nhất (mục 3, bậc 10). Khác biệt giữa hai bài toán không nằm ở số dấu bằng mà ở mục tiêu bám nguồn, cách tổ chức tham số và mức dùng quy luật chung. Một bảng hàng chục nghìn tham số bọc trong $F$ vẫn là "một hàm", nhưng không phải "một định nghĩa gọn".</p>
+<p>Hai case trong bài này dùng cùng một ảnh. Chúng minh hoạ hai nhiệm vụ khác nhau trên một dữ liệu; chúng không phải thí nghiệm đối chứng của hai thuật toán. Mục 3 dạy công cụ chung trước khi vào từng case.</p>
+<h2 id="3-nn-tng-mi-bc-thang">3. Nền tảng: mười bậc thang</h2>
+<p>Luận điểm của mục này: từ một ô pixel tới cả bức tranh là một hàm chỉ cần mười bước, mỗi bước một công thức. Cả mười bậc dùng một cảnh dẫn: "Hoàng hôn trên biển", một cảnh 800 × 500 gồm 9 lớp trong Phụ lục A của bộ quy tắc vận hành (tập I), chúng tôi đã chạy lại từ chính code của nó và pixel trùng hash <code>8c0cd218…</code> (Phụ lục C). Cảnh dẫn là ví dụ minh hoạ; nó không phải dữ liệu của hai case.</p>
+<h3>3.1 Bậc 1 — Ảnh là bảng số</h3>
+<p>Phóng to một góc ảnh, ta thấy các ô vuông. Mỗi ô có ba số từ 0 đến 255 cho ba kênh đỏ, lục, lam. Ảnh $W \times H$ là bảng $W \cdot H$ ô, mỗi ô ba số:</p>
+<p>$$(m, n) \mapsto (R, G, B), \qquad m = 0 \ldots W - 1,\quad n = 0 \ldots H - 1.$$</p>
+<p>Đọc: $m$ là số thứ tự cột, đếm từ trái; $n$ là số thứ tự hàng, đếm từ trên. Thử một giá trị: ô góc trên trái là $(0, 0)$; ô góc dưới phải của ảnh 554 × 554 là $(553, 553)$. Đổi $W$ hay $H$, bảng đổi kích thước nhưng quy tắc đánh số không đổi. Hình 2 phóng to một ô pixel của cảnh dẫn với ba số của nó.</p>
+<figure><img src="figures/H2_pixel-zoom.png" alt="Hình 2. Sáu × sáu pixel cắt từ render cảnh dẫn quanh cột 397–402, hàng 242–247, " loading="lazy"><figcaption>Hình 2. Sáu × sáu pixel cắt từ render cảnh dẫn quanh cột 397–402, hàng 242–247, phóng 96 lần; mỗi ô ghi ba số R, G, B của nó. Ô tâm là một probe của cảnh dẫn: (255, 236, 144). Minh hoạ.</figcaption></figure>
+<h3>3.2 Bậc 2 — Đưa bảng số lên mặt phẳng toán</h3>
+<p>Để viết hàm số, ta cần toạ độ thật thay cho số thứ tự. Đặt tâm ảnh ở gốc, trục $y$ hướng lên như trong sách toán, và cho hai trục cùng tỷ lệ để hình tròn trong công thức là hình tròn trên ảnh:</p>
+<p>$$x = \left(\frac{m + \tfrac12}{W}\cdot 2 - 1\right) A, \qquad y = 1 - \frac{n + \tfrac12}{H}\cdot 2, \qquad A = \frac{W}{H}.$$</p>
+<p>Đọc: $(x, y)$ là toạ độ của tâm ô $(m, n)$; cộng $\tfrac12$ vì tâm ô nằm giữa hai mép; $A$ là tỷ lệ khung, nên $x$ chạy trong $[-A, A]$ và $y$ trong $[-1, 1]$. Thử một giá trị: với $W = H = 554$, ô $(0, 0)$ có $x = (0{,}5/554)\cdot 2 - 1 \approx -0{,}998$ và $y \approx 0{,}998$, tức góc trên trái. Ô $(277, 277)$ có $x = y \approx 0{,}0018$, sát tâm. Đổi $H$, khoảng cách giữa hai tâm ô kề nhau $2/H$ đổi theo; đây là đơn vị "một pixel" trong mọi công thức sau. Hình 3 vẽ lưới pixel và trục toạ độ.</p>
+<figure><img src="figures/H3_luoi-toa-do.png" alt="Hình 3. Lưới 8 × 5 pixel với hệ trục $(x, y)$: chấm đỏ là tâm ô, nơi lấy mẫu; ba" loading="lazy"><figcaption>Hình 3. Lưới 8 × 5 pixel với hệ trục $(x, y)$: chấm đỏ là tâm ô, nơi lấy mẫu; ba ô ghi cả chỉ số $(m, n)$ và toạ độ $(x, y)$ theo công thức bậc 2 với $A = 1{,}6$. Minh hoạ.</figcaption></figure>
+<h3>3.3 Bậc 3 — Một hàm là một ảnh</h3>
+<p>Lấy một hàm bất kỳ của $(x, y)$ có giá trị trong $[0, 1]$, gán cho cả ba kênh, ta có một ảnh xám. Ví dụ sọc:</p>
+<p>$$H(x, y) = \tfrac12 + \tfrac12 \sin(10x).$$</p>
+<p>Để thành số 8-bit ta cần một hàm xuất màu:</p>
+<p>$$(R, G, B)(m, n) = \big(F(H_0(x, y)),\; F(H_1(x, y)),\; F(H_2(x, y))\big), \qquad F(t) = \left\lfloor 255\,\mathrm{clamp}(t, 0, 1) + \tfrac12 \right\rfloor.$$</p>
+<p>Đọc: $H_0, H_1, H_2$ là ba hàm cho ba kênh; $\mathrm{clamp}(t, 0, 1)$ kẹp $t$ về đoạn $[0, 1]$; $\lfloor \cdot \rfloor$ lấy phần nguyên; cộng $\tfrac12$ để làm tròn nửa lên. Thử một giá trị: tại $x = 0$, $H = \tfrac12$, $F(\tfrac12) = \lfloor 127{,}5 + 0{,}5 \rfloor = 128$. Tại $x = \pi/20$, $\sin(10x) = 1$, $H = 1$, $F = 255$. Đổi 10 thành 20, sọc dày gấp đôi. Hình 4 render hai hàm: sọc sin và một gradient theo $y$ với ba hàm khác nhau cho ba kênh, chính là cách nền trời được tô ở bậc 6. Chúng tôi tính $H_v$ trong không gian số sRGB; phép trộn số không mặc nhiên là phép tính ánh sáng vật lý, và paper ghi đúng lựa chọn của từng renderer.</p>
+<figure><img src="figures/H4_strip.jpg" alt="Hình 4. Hai hàm, hai ảnh, 400 × 400. (a) sọc $\tfrac12 + \tfrac12\sin(10x)$ gán " loading="lazy"><figcaption>Hình 4. Hai hàm, hai ảnh, 400 × 400. (a) sọc $\tfrac12 + \tfrac12\sin(10x)$ gán cho cả ba kênh; (b) ba hàm bậc nhất từng đoạn của $y$ cho ba kênh. Hash pixel 478ad1fe…, 79fda2d0…. Minh hoạ.</figcaption></figure>
+<h3>3.4 Bậc 4 — Hình từ khoảng cách</h3>
+<p>Muốn vẽ một đường tròn, hãy tính khoảng cách từ mỗi điểm tới đường tròn đó. Với tâm $(c_x, c_y)$ và bán kính $r$:</p>
+<p>$$d(x, y) = \sqrt{(x - c_x)^2 + (y - c_y)^2} - r, \qquad d_{\text{vòng}} = |d| - \tfrac{w}{2}.$$</p>
+<p>Đọc: $d$ âm bên trong, bằng 0 trên đường tròn, dương bên ngoài; đây là trường khoảng cách có dấu (signed distance field, SDF). $d_{\text{vòng}}$ âm trong một dải rộng $w$ quanh đường tròn, tức một cái vòng. Thử một giá trị: tâm gốc, $r = \tfrac12$; tại $(0, 0)$, $d = -\tfrac12$; tại $(1, 0)$, $d = \tfrac12$; tại $(\tfrac12, 0)$, $d = 0$. Đổi $r$ thành $\tfrac34$, mọi giá trị $d$ giảm $\tfrac14$, đường tròn to ra. Hình 5 vẽ $d$ dạng xám, dấu của $d$, và vòng với $w = 0{,}1$. Mọi hình phức tạp hơn trong hai case đều bắt đầu bằng một hàm khoảng cách như thế: ellipse, đa giác, hay "hình sao" có bán kính thay đổi theo góc.</p>
+<figure><img src="figures/H5_strip.jpg" alt="Hình 5. Khoảng cách tới đường tròn $r = \tfrac12$: (a) $d$ hiển thị dạng xám $\t" loading="lazy"><figcaption>Hình 5. Khoảng cách tới đường tròn $r = \tfrac12$: (a) $d$ hiển thị dạng xám $\tfrac12 + d$; (b) dấu của $d$: trong trắng, ngoài đen; (c) vòng $|d| - 0{,}05$ với biên mềm. Hash 99bc72ba…, 284778bb…, 96e261ec…. Minh hoạ.</figcaption></figure>
+<h3>3.5 Bậc 5 — Biên cứng rồi biên mềm</h3>
+<p>Nếu đổi khoảng cách $d$ thành màu bằng quy tắc "âm thì tô, dương thì không", mép hình có răng cưa vì mỗi pixel chỉ được chọn một trong hai:</p>
+<p>$$M_{\text{cứng}} = \begin{cases} 1, &amp; d \le 0 \\ 0, &amp; d &gt; 0. \end{cases}$$</p>
+<p>Thay vào đó ta cho pixel ở sát biên nhận một phần màu:</p>
+<p>$$\sigma = \mathrm{clamp}\!\left(\frac{d + \varepsilon}{2\varepsilon}, 0, 1\right), \qquad M = 1 - \sigma^2(3 - 2\sigma), \qquad \varepsilon = 0{,}75 \cdot \frac{2}{H}.$$</p>
+<p>Công thức này tính độ phủ của vật tại mỗi pixel: 1 khi pixel nằm sâu bên trong ($d \le -\varepsilon$), 0 khi nằm hẳn bên ngoài ($d \ge \varepsilon$), trượt mượt giữa hai mức trong dải rộng $2\varepsilon$, tức 1,5 pixel. Thử tại biên, $d = 0$: $\sigma = \tfrac12$, $M = 1 - \tfrac14 \cdot 2 = \tfrac12$; pixel ngay trên biên nhận đúng một nửa màu. Tăng $\varepsilon$ gấp đôi, biên mờ gấp đôi; đặt $\varepsilon = 0$, răng cưa quay lại. Hình 6 phóng to 8 lần mép đĩa ở hai cách: cứng và mềm. Giá trị $M$ giữa 0 và 1 là độ phủ ở biên hoặc độ trong suốt do đặc tả quy định; không gán nghĩa vật lý cho nó nếu đặc tả không nói. Ta gọi $M$ là mask (mặt nạ).</p>
+<p>Hàm $M$ còn được viết bằng một hàm có tên, bước mềm $S$:</p>
+<p>$$S(e_0, e_1, t) = \sigma^2(3 - 2\sigma), \quad \sigma = \mathrm{clamp}\!\left(\frac{t - e_0}{e_1 - e_0}, 0, 1\right), \qquad M = 1 - S(-\varepsilon, \varepsilon, d).$$</p>
+<p>Hai cách viết cho cùng số. Case 2 dùng dạng thứ ba, $S(\delta)$ với $\delta = d/\varepsilon$; Phụ lục A chứng minh ba dạng trùng nhau.</p>
+<figure><img src="figures/H6_strip.jpg" alt="Hình 6. Mép đĩa tại điểm biên $(\tfrac12, 0)$, ô 50 × 50 pixel phóng 8 lần: (a) " loading="lazy"><figcaption>Hình 6. Mép đĩa tại điểm biên $(\tfrac12, 0)$, ô 50 × 50 pixel phóng 8 lần: (a) biên cứng, mỗi pixel chỉ nhận một trong hai màu; (b) biên mềm với $\varepsilon = 0{,}75$ pixel, pixel sát biên nhận một phần màu. Hash 0f872112…, 5b8a307d…. Minh hoạ.</figcaption></figure>
+<h3>3.6 Bậc 6 — Màu là ba hàm</h3>
+<p>Một màu là ba số, nên một vùng màu là ba hàm. Nền trời của cảnh dẫn là ba hàm bậc nhất từng đoạn của $y$: trên đỉnh ($y = 1$) là xanh thẫm, giữa là hồng, sát chân trời ($y = 0$) là cam. Viết chung: cho các mốc $(t_k, K_k)$, màu tại $t$ là nội suy tuyến tính giữa hai mốc kề. Đọc: $K_k$ là bộ ba số của màu thứ $k$; $t$ ở đây là $y$. Thử một giá trị: tại $y = 0{,}5$, nằm giữa mốc hồng ($y = 0{,}35$) và mốc xanh ($y = 1$), màu là hỗn hợp hai mốc với tỷ lệ $(0{,}5 - 0{,}35)/(1 - 0{,}35) \approx 0{,}23$ nghiêng về hồng. Đổi mốc hồng xuống $y = 0{,}2$, dải hồng hẹp lại. Hình 7 là lớp L01 của cảnh dẫn render riêng.</p>
+<p>Trong hai case, màu không chỉ phụ thuộc $y$. Ở case 1, màu thân mỗi quả là tổ hợp bảy hàm của vị trí trong quả (mục 6.4). Ở case 2, màu là hàm của pháp tuyến mặt quả và hướng sáng (mục 7.5).</p>
+<figure><img src="figures/H7_L01-troi.jpg" alt="Hình 7. Lớp L01 của cảnh dẫn: nền trời từ ba hàm bậc nhất từng đoạn của $y$ với " loading="lazy"><figcaption>Hình 7. Lớp L01 của cảnh dẫn: nền trời từ ba hàm bậc nhất từng đoạn của $y$ với ba mốc màu ở $y = 0$, $0{,}35$, $1$. 800 × 500, hash ec024a7a…. Minh hoạ, cảnh dẫn.</figcaption></figure>
+<h3>3.7 Bậc 7 — Chồng lớp</h3>
+<p>Một bức tranh có nhiều vật; vật trước che vật sau. Gọi $C$ là ảnh đang dựng, $K$ là màu của lớp mới, $M$ là mask của nó. Ba phép chồng lớp thường dùng:</p>
+<p>$$\text{over: } C \leftarrow C\,(1 - M) + K M, \qquad \text{add: } C \leftarrow C + K M, \qquad \text{multiply: } C \leftarrow C\,\big(1 - M(1 - K)\big).$$</p>
+<p>Đọc: over thay màu cũ bằng màu mới theo tỷ lệ $M$ (vật đục che); add cộng thêm (ánh sáng, quầng); multiply làm tối (bóng, tối góc). Thử một giá trị: $C = 0{,}2$, $K = 0{,}8$, $M = \tfrac12$: over cho $0{,}5$; add cho $0{,}6$; multiply cho $0{,}2 \cdot (1 - 0{,}5 \cdot 0{,}2) = 0{,}18$. Đổi thứ tự hai lớp over, kết quả đổi: lớp vẽ sau nằm trên. Thứ tự lớp vì thế là dữ liệu của bức tranh, không phải chi tiết cài đặt. Phép over thuộc đại số compositing của Porter và Duff [4]; chúng tôi dùng quy ước màu chưa nhân alpha và chỉ kẹp giá trị về $[0, 1]$ một lần ở cuối. Hình 8 render cảnh dẫn với ba phép trên cùng một lớp mặt trời để thấy khác biệt.</p>
+<figure><img src="figures/H8_strip.jpg" alt="Hình 8. Cùng mask đĩa mặt trời trên cùng nền trời của cảnh dẫn, ba phép chồng lớ" loading="lazy"><figcaption>Hình 8. Cùng mask đĩa mặt trời trên cùng nền trời của cảnh dẫn, ba phép chồng lớp: (a) over che nền; (b) add cộng sáng, vùng đĩa cháy về trắng; (c) multiply nhân, vùng đĩa tối đi. Hash 269fa279…, fc4d06ca…, 0d1e9943…. Minh hoạ.</figcaption></figure>
+<h3>3.8 Ví dụ nhỏ hoàn chỉnh — một đĩa trên nền (minh hoạ)</h3>
+<p>Gom bậc 2 đến 7 vào một ví dụ tính tay được. Đĩa tâm gốc toạ độ, bán kính $r = \tfrac12$, $\varepsilon = \tfrac1{20}$; nền $\Gamma = \big(\tfrac1{10}, \tfrac3{10}, \tfrac35\big)$, đĩa $K = \big(\tfrac45, \tfrac15, \tfrac15\big)$:</p>
+<p>$$d = \sqrt{x^2 + y^2} - \tfrac12, \qquad \sigma = \mathrm{clamp}\big(10\,(d + \tfrac1{20}), 0, 1\big), \qquad M = 1 - \sigma^2(3 - 2\sigma), \qquad C_v = (1 - M)\,\Gamma_v + M K_v.$$</p>
+<table>
+<thead>
+<tr>
+<th>Điểm $(x, y)$</th>
+<th>$d$</th>
+<th>$\sigma$</th>
+<th>$M$</th>
+<th>$C$ trước lượng tử</th>
+<th>$(R, G, B)$ sau $F$</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>$(0, 0)$, tâm đĩa</td>
+<td>$-\tfrac12$</td>
+<td>0</td>
+<td>1</td>
+<td>$(0{,}8;\ 0{,}2;\ 0{,}2)$</td>
+<td>$(204, 51, 51)$</td>
+</tr>
+<tr>
+<td>$(1, 0)$, ngoài đĩa</td>
+<td>$\tfrac12$</td>
+<td>1</td>
+<td>0</td>
+<td>$(0{,}1;\ 0{,}3;\ 0{,}6)$</td>
+<td>$(26, 77, 153)$</td>
+</tr>
+<tr>
+<td>$(\tfrac12, 0)$, trên biên</td>
+<td>0</td>
+<td>$\tfrac12$</td>
+<td>$\tfrac12$</td>
+<td>$(0{,}45;\ 0{,}25;\ 0{,}4)$</td>
+<td>$(115, 64, 102)$</td>
+</tr>
+<tr>
+<td>$(\tfrac{19}{40}, 0)$, trong dải biên</td>
+<td>$-\tfrac1{40}$</td>
+<td>$\tfrac14$</td>
+<td>$\tfrac{27}{32}$</td>
+<td>$(0{,}6906;\ 0{,}2156;\ 0{,}2625)$</td>
+<td>$(176, 55, 67)$</td>
+</tr>
+</tbody>
+</table>
+<p>Tính dòng biên trước mặt người đọc: $\sigma = \tfrac12$ nên $M = 1 - \tfrac14(3 - 1) = \tfrac12$; kênh đỏ $(0{,}1 + 0{,}8)/2 = 0{,}45$; $F(0{,}45) = \lfloor 114{,}75 + 0{,}5 \rfloor = 115$. Dòng cuối: $d = -\tfrac1{40}$, $\sigma = 10 \cdot \tfrac1{40} = \tfrac14$, $M = 1 - \tfrac1{16} \cdot \tfrac52 = \tfrac{27}{32}$; kênh đỏ $\tfrac{5}{32} \cdot 0{,}1 + \tfrac{27}{32} \cdot 0{,}8 = 0{,}690625$; $F = \lfloor 176{,}11 + 0{,}5 \rfloor = 176$. Bốn điểm trên là điểm đánh giá của trường liên tục; khi dựng Hình 9 ở 400 × 400, bốn điểm rơi vào các pixel $(200, 200)$, $(399, 200)$, $(300, 200)$ và $(295, 200)$, và giá trị pixel tại đó lấy mẫu ở tâm pixel nên khác bảng vài mức ở hai điểm gần biên. Đổi tâm sang $(0{,}3, 0)$, cả bốn giá trị $d$ đổi và đĩa dời sang phải; đổi $r$ thành $0{,}3$, đĩa nhỏ lại mà biên vẫn mềm đúng 1,5 pixel. Ví dụ này dạy cách đọc công thức; nó không nói gì về khả năng của AI.</p>
+<figure><img src="figures/H9_dia-tren-nen.jpg" alt="Hình 9. Đĩa trên nền của ví dụ 3.8, 400 × 400, hash a233d374…. Bốn điểm của bảng" loading="lazy"><figcaption>Hình 9. Đĩa trên nền của ví dụ 3.8, 400 × 400, hash a233d374…. Bốn điểm của bảng rơi vào các pixel $(200, 200)$, $(399, 200)$, $(300, 200)$, $(295, 200)$ tính từ trái và từ trên. Minh hoạ.</figcaption></figure>
+<h3>3.9 Bậc 8 — Vật thể từ nhiều phần, di chuyển bằng toạ độ cục bộ</h3>
+<p>Một vật thể thật gồm nhiều phần. Con thuyền trong cảnh dẫn là ba hình: thân là hộp bo góc, buồm là tam giác, cột là một đoạn thẳng có bề dày; mỗi hình một hàm khoảng cách, mỗi hàm một mask, ba mask chồng over lên nhau. Để dời hay quay cả thuyền mà không sửa từng phần, ta đặt mọi phần trong toạ độ cục bộ $(u, v)$ của vật:</p>
+<p>$$\begin{pmatrix} u \\ v \end{pmatrix} = \begin{pmatrix} \cos\beta &amp; \sin\beta \\ -\sin\beta &amp; \cos\beta \end{pmatrix} \begin{pmatrix} x - c_x \\ y - c_y \end{pmatrix}.$$</p>
+<p>Đọc: $(c_x, c_y)$ là vị trí đặt vật, $\beta$ là góc quay; $(u, v)$ là "toạ độ nhìn từ vật". Thử một giá trị: $\beta = 0$, $(u, v) = (x - c_x, y - c_y)$, tức chỉ dời. Với $\beta = \pi/2$, điểm bên phải vật ($u &gt; 0$) ứng với điểm phía trên trên ảnh. Đổi $c_x$, cả thuyền dời theo; đổi $\beta$, cả thuyền nghiêng. Từ bậc này paper dùng số phức: $z = x + iy$, $c = c_x + i c_y$, và</p>
+<p>$$w = (z - c)\,e^{-i\beta}$$</p>
+<p>là cùng phép dời và quay viết trong một dòng, với $e^{-i\beta}$ nghĩa là "quay một góc $-\beta$". Phụ lục A đặt dạng hai toạ độ thực tương đương. Trong case 1, hạt và vệt bóng của mỗi quả ghi toạ độ tương đối với tâm quả cha, nên dời quả thì chi tiết đi theo; case 1 đã mắc lỗi này một lần và sửa (mục 6.6). Hình 10 dựng thuyền của cảnh dẫn từng phần.</p>
+<p>Một mẹo nữa của bậc 8: bán kính thay đổi theo góc. Với toạ độ cực quanh tâm vật, $\rho = |w|$ và $\varphi = \operatorname{atan2}(\Im w, \Re w)$, đường viền hữu cơ viết bằng chuỗi Fourier:</p>
+<p>$$r(\varphi) = R\Big(1 + \sum_{k=1}^{K} a_k \cos k\varphi + b_k \sin k\varphi\Big),$$</p>
+<p>và hàm khoảng cách xấp xỉ là $\rho - r(\varphi)$. Đọc: $R$ là bán kính trung bình; $a_k, b_k$ là độ méo ở tần số góc $k$; $K$ là số hài. Thử: $a_2 = 0{,}1$, các hệ số khác bằng 0, thì $r(0) = 1{,}1R$ và $r(\pi/2) = 0{,}9R$, một hình trứng dài theo trục ngang. Đổi $a_3$, hình thành ba múi. Case 1 dùng $K = 6$ cho 24 quả; case 2 dùng ba số hạng bậc thấp để mỗi quả có dáng riêng.</p>
+<figure><img src="figures/H10_strip.jpg" alt="Hình 10. Thuyền của cảnh dẫn dựng từng phần trên nền trời và biển đơn giản, cắt " loading="lazy"><figcaption>Hình 10. Thuyền của cảnh dẫn dựng từng phần trên nền trời và biển đơn giản, cắt quanh thuyền và phóng 2 lần: (a) thân là hộp bo góc; (b) thêm buồm là tam giác; (c) thêm cột là đoạn thẳng có bề dày. Ba mask chồng over theo thứ tự đó. Hash f84f9163…, 73c3dcfc…, 4aeb2ca4…. Minh hoạ.</figcaption></figure>
+<h3>3.10 Bậc 9 — Texture và "ngẫu nhiên" không ngẫu nhiên</h3>
+<p>Bề mặt thật không phẳng: sóng biển, hạt phim, vỏ quả gồ. Hai cách tạo texture bằng hàm. Cách một, cộng vài sóng sin ở vài tần số:</p>
+<p>$$T(x, y) = \tfrac12 + \sum_{k} a_k \sin\!\big(p_k x + q_k y + \varphi_k\big).$$</p>
+<p>Đọc: mỗi số hạng là một sóng với hướng $(p_k, q_k)$, biên độ $a_k$, pha $\varphi_k$; nếu $\sum_k |a_k| \le \tfrac12$ thì $T \in [0, 1]$. Mặt biển của cảnh dẫn là một sóng sin có pha bị uốn bởi một sóng sin khác.</p>
+<p>Cách hai, "ngẫu nhiên" bằng hash số nguyên. Hàm hash nhận hai số nguyên $(i, j)$ và trả về một số trong $[0, 1)$ trông như ngẫu nhiên nhưng hoàn toàn xác định, nên mọi máy tính ra cùng số. Mọi phép tính theo modulo $2^{32}$, $\oplus$ là XOR, $\gg$ là dịch phải:</p>
+<p>$$n_0 = 374761393\,i + 668265263\,j + 2654435769,\quad n_1 = (n_0 \oplus (n_0 \gg 16)) \cdot 2146121005,$$
+$$n_2 = (n_1 \oplus (n_1 \gg 15)) \cdot 2221713035,\quad h(i, j) = \frac{n_2 \oplus (n_2 \gg 16)}{2^{32}}.$$</p>
+<p>Đọc: ba lần "trộn bit" bằng nhân và XOR; kết quả chia cho $2^{32}$ để về $[0, 1)$. Thử một giá trị: $h(0, 0) = 0{,}007765133399516344$, đúng giá trị kiểm tra ghi trong bộ quy tắc và trong code của cả hai case. Đổi $i$ thêm 1, kết quả đổi hẳn; đó là điều ta muốn ở một hàm hash. Từ $h$ ta dựng value noise $\nu_f$ bằng nội suy song tuyến tính của $h$ tại bốn góc ô lưới chứa $(fx, fy)$, và fBm bằng tổng vài tầng $\nu$ ở tần số tăng dần:</p>
+<p>$$\mathrm{fBm}(x, y) = \frac{\sum_{o=0}^{O-1} g^{o}\, \nu_{f\lambda^{o}}(x, y)}{\sum_{o=0}^{O-1} g^{o}}.$$</p>
+<p>Đọc: $O$ tầng, mỗi tầng tần số nhân $\lambda$ và biên độ nhân $g$. Hạt phim trong case 2 là một value noise tần số 520; khe tối giữa các quả dùng một biến thể gọi là Worley F1, tức khoảng cách tới "hạt" gần nhất đặt bằng $h$ [7]. Hình 10b render ba texture: sin đa tỷ lệ, hash noise, fBm. Texture không tự làm ảnh đẹp; cả hai case đều cho thấy "cái không đều phải vừa phải" (mục 7.9).</p>
+<figure><img src="figures/H10b_strip.jpg" alt="Hình 10b. Ba texture, 400 × 400: (a) tổng ba sóng sin ở ba tần số và hướng; (b) " loading="lazy"><figcaption>Hình 10b. Ba texture, 400 × 400: (a) tổng ba sóng sin ở ba tần số và hướng; (b) value noise tần số 8, seed 7; (c) fBm bốn tầng từ cùng hàm hash. Hash 23983c64…, 293fe930…, f298f5a8…. Minh hoạ.</figcaption></figure>
+<h3>3.11 Bậc 10 — Toàn cảnh là một hàm, và hàm đó kiểm tra được</h3>
+<p>Giờ gộp mọi lớp thành một công thức. Trước hết hai lớp, bằng tay. Nền $\Gamma$, lớp 1 ở sau, lớp 2 ở trước:</p>
+<p>$$C_1 = (1 - M_1)\,\Gamma + M_1 K_1, \qquad C_2 = (1 - M_2)\,C_1 + M_2 K_2,$$
+$$C_2 = (1 - M_2)(1 - M_1)\,\Gamma + (1 - M_2)\,M_1 K_1 + M_2 K_2.$$</p>
+<p>Đọc: nền chỉ còn thấy qua phần cả hai lớp chưa che; lớp 1 chỉ còn thấy qua phần lớp 2 chưa che; lớp 2 gần người xem nhất. Thử một giá trị: $M_1 = M_2 = \tfrac12$, $\Gamma = 0$, $K_1 = K_2 = 1$: $C_2 = 0 + \tfrac14 + \tfrac12 = \tfrac34$. Tổng quát cho $N$ lớp, với ký hiệu $\sum$ (tổng) và $\prod$ (tích) xuất hiện lần đầu ở đây:</p>
+<p>$$H_v = \Gamma_v \prod_{k=1}^{N} (1 - M_k) + \sum_{k=1}^{N} M_k\, K_{k,v} \prod_{j=k+1}^{N} (1 - M_j).$$</p>
+<p>Đọc: $v$ là kênh màu; số hạng thứ $k$ là màu lớp $k$ nhân với phần nó phủ và phần mọi lớp trên nó chưa che; tích không có thừa số bằng 1. Công thức này áp dụng cho chuỗi over trong cùng không gian màu, không lượng tử hoá giữa chừng; nếu đặc tả còn add, multiply hay kẹp giữa bước, chúng phải xuất hiện đúng chỗ. Tương đương đại số trên số thực không bảo đảm cùng byte trong dấu phẩy động; đổi cách tính thì phải chạy lại và so hash. Case 2 dùng đúng công thức này cho 91 lớp; case 1 thực hiện chuỗi over tuần tự, tương đương về đại số.</p>
+<p>Bậc 10 cũng là nơi thay bảng số bằng quy luật. Thay vì ghi vị trí của từng vật trong một bảng, ta cho vật thứ $s$ có vị trí là một hàm của $s$. Ví dụ xoắn ốc góc vàng [6] và bán kính theo chỉ số:</p>
+<p>$$c_s = \rho\sqrt{s - \tfrac12}\; e^{i\gamma s}, \qquad \gamma = \pi(3 - \sqrt5), \qquad R_s = R_0\Big(1 + \frac{\cos 7s}{4}\Big).$$</p>
+<p>Đọc: $c_s$ là tâm phức của vật $s$, xa dần gốc và quay một góc vàng mỗi bước; $R_s$ dao động quanh $R_0$. Thử: $s = 1$ cho $|c_1| = \rho/\sqrt2$; $s = 2$ cho $|c_2| = \rho\sqrt{1{,}5}$. Case 2 không dùng xoắn ốc vì bố cục lấy từ ảnh thật (mục 7.3), nhưng dùng cùng ý "tham số là hàm của chỉ số" cho dáng riêng, pha lưới hạt và cánh đài lá. Yeganeh dùng cách này cho vị trí vật thể trong các bức của ông [1]; cổng của ông,</p>
+<p>$$\mathcal{G}(u) = e^{-e^{u}}, \qquad \mathcal{G}(u) \approx 1 \text{ khi } u \ll 0,\quad \mathcal{G}(u) \approx 0 \text{ khi } u \gg 0,$$</p>
+<p>là một hàm bước mềm khác, xuất hiện trong một ứng viên của case 2.</p>
+<p>Hình 11 vẽ cây công thức: $F(H_v)$ ở gốc, dưới là phép gộp lớp, dưới nữa là từng lớp, rồi từng hình cơ bản, rồi toạ độ. Khi cả bức tranh là một hàm, ta kiểm tra nó như kiểm tra một phép tính: tính lại tại vài điểm (probe), tính lại toàn ảnh và so một con số tóm tắt (hash). Có công thức thì tính ảnh là bài toán xuôi. Chỉ có ảnh hay ý tưởng thì tìm cấu trúc và tham số là bài toán ngược; đó là chỗ AI tham gia, và là nội dung của mục 4 và 5.</p>
+<figure><img src="figures/H11_cay-cong-thuc.png" alt="Hình 11. Cây công thức: hàm xuất màu ở gốc; dưới là phép gộp lớp; mỗi lớp là một" loading="lazy"><figcaption>Hình 11. Cây công thức: hàm xuất màu ở gốc; dưới là phép gộp lớp; mỗi lớp là một cặp mask và màu; mask từ hàm khoảng cách của hình, màu từ gradient, ánh sáng hay texture; mọi thứ tính từ toạ độ $(x, y)$ và tham số. Sơ đồ.</figcaption></figure>
+<h2 id="4-nguyn-l">4. Nguyên lý</h2>
+<p>Luận điểm của mục này: bảy nguyên lý làm cho một bức tranh bằng công thức kiểm tra được, và chúng được áp dụng trong cả hai case theo hai bộ quy tắc vận hành của dự án (tập I cho tái tạo, tập II cho sáng tác và phỏng tác) [11].</p>
+<p><strong>Công thức trước.</strong> Mọi pixel là giá trị của một hàm. Cấm nhúng ảnh dưới tên toán: không mã base64, không mảng RGB, không lưới sai số phủ ảnh. Cấm dùng mô hình sinh ảnh làm renderer. Code của đặc tả chỉ dùng numpy và thư viện chuẩn, không đọc file ngoài, không hàm ngẫu nhiên của thư viện.</p>
+<p><strong>Tham số có nhân quả.</strong> Mỗi tham số có tên, có mã, có cơ sở (đo, quan sát, ước lượng, hay chọn), và đổi nó thì ảnh đổi đúng như dự đoán. Cả hai case kiểm điều này bằng phép thử nhiễu loạn (perturbation): ghi kỳ vọng trước, đổi một tham số, render, so với kỳ vọng, hoàn tác. Kỳ vọng sai được giữ nguyên trong hồ sơ (mục 6.6, 7.8).</p>
+<p><strong>Tất định và kiểm chứng được.</strong> Cùng đặc tả, cùng byte. Ba công cụ: probe (vài pixel có giá trị kỳ vọng, dung sai ±2 mỗi kênh), hash pixel (một con số tóm tắt toàn ảnh), và clean-room (trích code từ file đặc tả, chạy trong thư mục rỗng bằng tiến trình mới, không có ảnh nguồn). Hash pixel EP-PIX v1:</p>
+<p>$$\mathrm{hash} = \mathrm{SHA\text{-}256}\big(\text{"EP-PIX v1 } W\ H\text{ RGB\textbackslash n"} \,\|\, \text{bytes } RGB \text{ theo hàng từ trên xuống}\big).$$</p>
+<p>Đọc: SHA-256 là hàm băm chuẩn; đầu vào là một dòng tiêu đề nối với toàn bộ byte màu. Hai ảnh khác nhau một pixel cho hai hash khác hẳn. Thử: case 1 đổi một tham số độ mềm biên hạt, 83 237 pixel đổi, 16/16 probe vẫn đạt nhưng hash khác; probe kiểm vài điểm, hash kiểm toàn ảnh, hai thứ bổ sung nhau.</p>
+<p><strong>Đo, không đoán.</strong> Màu, vị trí, kích thước lấy từ ảnh bằng code; mắt chỉ dùng cho quyết định ngữ nghĩa (vật này là gì, vật nào ở trước). Case 1 có một tham số đặt bằng trực giác; khi đo thì giá trị tốt nhất của nó bằng 0 và nó bị bỏ (mục 6.6).</p>
+<p><strong>Đẹp và giống là hai trục.</strong> Bài toán 1 tối ưu giống; bài toán 2 giữ giống ở một mức ràng buộc và để con người chọn đẹp. Không cộng hai thứ thành một điểm.</p>
+<p><strong>Hai thời kỳ của một tác phẩm.</strong> Thời kỳ tìm công thức có lựa chọn không tất định, đổi đề bài, nhiều phương án và phản hồi của người. Thời kỳ tái lập chỉ chạy một đặc tả đã chốt. Tái lập được đầu ra không có nghĩa lặp lại được quá trình khám phá.</p>
+<p><strong>Vai của con người.</strong> Đặt bài toán, đặt ràng buộc, duyệt kế hoạch ở các điểm dừng, chọn bức cuối. Trong case 2 có thêm một việc: duyệt thay đổi thước đo khi thước của bộ quy tắc không hợp với ảnh.</p>
+<p>Hình 12 vẽ vòng lặp đo → phân rã → viết → render → kiểm → sửa với cột "ai làm" cho từng bước. Mục 5 nói rõ hơn về vòng lặp đó.</p>
+<figure><img src="figures/H12_vong-lap.png" alt="Hình 12. Vòng lặp đo → phân rã → viết → render → kiểm → sửa, với việc của script" loading="lazy"><figcaption>Hình 12. Vòng lặp đo → phân rã → viết → render → kiểm → sửa, với việc của script, AI và người ở từng bước. Sơ đồ.</figcaption></figure>
+<h2 id="5-phng-php-ai-tm-cng-thc-nh-th-no">5. Phương pháp: AI tìm công thức như thế nào</h2>
+<p>Luận điểm của mục này: việc tìm công thức là một tìm kiếm hữu hạn, có năm thao tác, chạy trong một vòng lặp mà mỗi vòng để lại bằng chứng.</p>
+<h3>5.1 Phát biểu hình thức (mô hình diễn giải)</h3>
+<p>Gọi $\mathcal{R}$ là renderer với hợp đồng tính toán đã công bố (toạ độ, lấy mẫu, không gian màu, lượng tử hoá), và $\hat I = \mathcal{R}(\text{spec}, \theta)$ với $\theta$ là tập tham số. Gọi $D$ là sai lệch so với nguồn và $\ell$ là độ dài mô tả theo cách đếm đã công bố.</p>
+<p>Bài toán 1 có thể mô tả như tìm</p>
+<p>$$\min_{(\text{spec},\, \theta) \in \mathcal{S}_1} \Big[ D\big(\mathcal{R}(\text{spec}, \theta),\, I\big) + \lambda\, \ell(\text{spec}, \theta) \Big], \qquad \lambda \ge 0,$$</p>
+<p>với $\mathcal{S}_1$ là các đặc tả thoả ràng buộc cứng. Case 1 không tối ưu độ dài bằng số; nó dùng một ngân sách riêng (đặc tả dưới 500 KB), nên số hạng $\lambda\ell$ bỏ đi.</p>
+<p>Bài toán 2 là một tập lời giải và một phép chọn:</p>
+<p>$$\mathcal{S}_2 = \Big\{ (\text{spec}, \theta) : \text{spec là một hàm ảnh khép kín};\ \ell(\text{spec}, \theta) \le B;\ \mathcal{R}(\text{spec}, \theta) \text{ giữ các đặc điểm trong } \mathcal{A} \Big\},$$</p>
+<p>tập đã khảo sát $\mathcal{T} \subseteq \mathcal{S}_2$, bộ đưa người chọn $\mathcal{P} \subseteq \mathcal{T}$, và bức cuối do con người chọn trong $\mathcal{P}$. Ở case 2, $B$ là hạng LAI (≤ 12 000 ký tự, ≤ 1 500 hằng số, một bảng neo ≤ 48 dòng), $\mathcal{A}$ là sáu ràng buộc cứng và dải tương đồng, $|\mathcal{T}| = 60$ bản render và $|\mathcal{P}| = 9$ bức chung kết qua hai lô.</p>
+<p>Hai phát biểu này là mô hình diễn giải. Quy trình thật là đo, lựa chọn có chuyên môn và tìm kiếm hữu hạn cho một lời giải đạt yêu cầu, không phải tối ưu toàn cục. "Bộ chung kết" nghĩa là những phương án tốt, đủ khác nhau, trong tập đã khảo sát theo tiêu chí đã công bố.</p>
+<h3>5.2 Năm thao tác tìm kiếm</h3>
+<table>
+<thead>
+<tr>
+<th>Thao tác</th>
+<th>Nghĩa</th>
+<th>Ví dụ trong hai case</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Chọn biểu diễn</td>
+<td>đổi dạng mô hình</td>
+<td>case 1: đường viền quả bằng Fourier thay vì ellipse; case 2: dáng quả bằng phép nắn đĩa đơn vị</td>
+</tr>
+<tr>
+<td>Tìm tham số</td>
+<td>giữ dạng, đổi số: đo, khớp hay chọn</td>
+<td>case 1: 12 hệ số Fourier và 21 hệ số màu mỗi quả khớp bằng bình phương tối thiểu; case 2: 105 số đo trong bảng neo</td>
+</tr>
+<tr>
+<td>Chọn cấu trúc</td>
+<td>thêm bớt phần, đổi che khuất, đổi quy tắc lặp</td>
+<td>case 1: thêm 1 418 hõm tối; case 2: thêm bóng tiếp xúc, đổi đài lá từ sao thành cánh hình mác</td>
+</tr>
+<tr>
+<td>Sửa từ phản hồi</td>
+<td>đọc sai lệch bằng mắt hay phép đo → nêu vấn đề → đổi → giữ hay hoàn tác</td>
+<td>case 1: 12 vòng D1–D12; case 2: ba vòng lô 1, hai vòng lô 2, hai bước đánh bóng</td>
+</tr>
+<tr>
+<td>Rút gọn</td>
+<td>chia sẻ hàm phụ, thay dữ liệu riêng bằng quy luật, bớt số hạng</td>
+<td>case 2: dáng riêng từng quả từ hash của mã vật thể thay vì bảng hệ số; rút gọn phải kiểm lại vì có thể đổi ảnh</td>
+</tr>
+</tbody>
+</table>
+<p>Đổi seed không phải thao tác tìm kiếm.</p>
+<h3>5.3 Vòng lặp và bằng chứng mỗi vòng</h3>
+<p>Một vòng gồm: đo (script tính palette, phân vùng, đường viền, tần số), phân rã (AI đề xuất lớp và vật thể), viết (AI viết công thức và code), render (renderer tính ảnh), kiểm (script tính sai số, probe, hash; AI đọc kết quả và xem ảnh), sửa (AI đổi một thứ, ghi một dòng nhật ký). Mỗi dòng nhật ký có dạng: quan sát → nguyên nhân dự kiến → đổi → đo → giữ hay hoàn tác. Dừng khi vài vòng liên tiếp không cải thiện (case 1 dừng sau D9) hoặc khi con người chọn (case 2).</p>
+<h3>5.4 Công cụ đo</h3>
+<p>Ở case 1: k-means trong không gian Lab để lấy palette; watershed từ marker để tách từng quả; bình phương tối thiểu có ràng buộc để khớp đường viền và trường màu; ngưỡng màu và hình học để tìm hạt, vệt bóng, đài lá; so sánh ảnh render với nguồn để tìm phần còn thiếu. Ở case 2: k-means Lab cho sáu màu; watershed trên khe tối cho 21 quả; thành phần liên thông cho 14 đài lá; lệch highlight so với tâm quả cho hướng sáng; và hai thước tương đồng (tương quan bản đồ biên, tương quan bản đồ sáng tối) được kiểm trên chính ảnh tham chiếu trước khi dùng. Các phép đo do script và thư viện thực hiện (scikit-image, OpenCV, numpy); AI ra lệnh và đọc kết quả.</p>
+<h3>5.5 Hai bộ quy tắc</h3>
+<p>Cả hai case chạy theo hai tài liệu nội bộ của dự án, gọi là tập I và tập II [11]. Tập I quy định toạ độ, lấy mẫu, màu, chồng lớp, mask, noise, hash, cấu trúc đặc tả, và sáu phase cho bài toán tái tạo. Tập II thêm chuẩn "Một Công Thức" (một hàm đầu ra, ba mức biểu diễn, ba hạng độ dài, bảy tiêu chí kiểm), bộ công cụ hàm phụ, và quy trình tuyển chọn với thẻ ý tưởng, chấm mù theo cặp, năm vai trong bộ chung kết. Report của hai case ghi lại những chỗ bộ quy tắc không hợp với ảnh và đã được điều chỉnh có duyệt (mục 7.3, 8.2).</p>
+<h3>5.6 Vì sao vòng lặp này nhanh ở mức cơ chế, và cái gì thuộc về người</h3>
+<p>Ở mức cơ chế: render một ảnh 554 × 554 của case 1 mất khoảng 1,5 đến 2 giây; render một ảnh 1108 × 1108 với bốn mẫu mỗi pixel của case 2 mất khoảng 42 giây; tính sai số, probe và hash mất vài giây. Vì vậy quy trình giao cho AI việc đo, đề xuất và triển khai các bản thử, render và kiểm trong mỗi vòng, để con người tập trung vào tiêu chí và lựa chọn. Thời gian render không nói gì về thời gian tìm công thức; hai thứ được báo tách ở mục 6.7 và 7.10.</p>
+<p>Thuộc về người: đặt bài toán và ảnh; đặt ràng buộc cứng; duyệt kế hoạch (case 2 có một điểm dừng trước khi vẽ); phản hồi về hướng (case 2: "giống ảnh chụp"); chọn bức cuối; duyệt bản đánh bóng. Thuộc về script và thư viện: mọi con số đo và mọi giá trị pixel. Thuộc về AI: đọc ảnh và kết quả đo, quyết định có những vật thể nào và vật nào ở trước, viết công thức, chọn giả thuyết sửa, chấm mù các bản thử trong case 2 với giới hạn rằng người chấm cũng là người viết (mục 7.6).</p>
+<p>Hai case cho thấy AI tham gia vào việc xây và kiểm tra công thức như thế nào và với khối lượng bao nhiêu; chúng chưa đủ để ước lượng mức rút ngắn thời gian so với một người có công cụ tính toán làm cùng việc. Mục 5.7 nói về hai sản phẩm văn bản của mỗi bài; mục 6 bắt đầu bằng case có ít điểm dừng nhất.</p>
+<h3>5.7 Hai sản phẩm của một bài: công thức cho người đọc và đặc tả cho AI khác</h3>
+<p>Mỗi bức tranh trong bài có hai dạng văn bản. Dạng thứ nhất là công thức toán cho người đọc, như mục 3, 6, 7 và Phụ lục B. Dạng thứ hai là một file đặc tả <code>.md</code> tự chứa, do AI viết ra ở cuối mỗi bài, dành cho một AI khác đọc và dựng lại đúng bức tranh. File này có mười một mục cố định: metadata (kích thước, số mẫu mỗi pixel, không gian màu, môi trường render, hash); bốn lời dẫn bằng tiếng Anh cho bốn loại AI nhận file; quy ước tính toán viết lại đầy đủ để không cần tài liệu nào khác; palette; định nghĩa toán học với mã cho từng công thức, vật thể, lớp và tham số; đúng một khối code Python chỉ cần numpy; bảng pixel kiểm (probe) và hash; một mô tả có cấu trúc bằng lời cho mô hình sinh ảnh; báo cáo; các nút điều chỉnh; nhật ký phiên bản.</p>
+<p>Bốn lời dẫn chia theo năng lực của AI nhận file. AI chạy được Python nhận lệnh: chép nguyên khối code, chạy, không sửa gì, báo kết quả probe và hash; hash khớp nghĩa là đã tái lập đúng đặc tả, không phải giống ảnh gốc. AI chỉ đọc được toán nhận lệnh: cài lại các mục quy ước và định nghĩa bằng ngôn ngữ của mình, với các điểm dễ sai được nêu tên (thứ tự đối số của atan2, floor về âm vô cùng, kẹp một lần ở cuối, làm tròn nửa lên). Mô hình sinh ảnh nhận một mô tả có cấu trúc và một dòng cảnh báo rằng kết quả chỉ là xấp xỉ, không được dùng để cập nhật probe hay hash. AI được yêu cầu sửa ảnh nhận lệnh: chỉ đổi đúng vật thể và tham số liên quan, render lại, sinh lại probe và hash, tăng số phiên bản.</p>
+<p>Trong hai case, lời dẫn thứ nhất đã được kiểm theo cách khắt khe nhất có thể trong một máy: trích khối code từ chính file <code>.md</code>, chạy bằng một tiến trình Python mới trong thư mục tạm không có ảnh gốc, và pixel trùng hash. Hai lời dẫn tiếp theo được thiết kế cho cùng mục đích nhưng chưa có AI khác thử trong hai case này (Phụ lục C). Điểm đáng nói cho người đọc không chuyên: file đặc tả là cách để hai AI nói chuyện với nhau về một bức tranh mà không gửi bitmap và không mất thông tin. Bên gửi gửi văn bản; bên nhận tính ra ảnh; cả hai so một con số. Đó là khác biệt với câu mô tả gửi cho AI sinh ảnh, nơi bên nhận chỉ có thể tạo ra một thứ gần giống.</p>
+<h2 id="6-case-study-1-v-li-nh-du-ty-bng-nhiu-cng-thc">6. Case study 1: vẽ lại ảnh dâu tây bằng nhiều công thức</h2>
+<p>Luận điểm của mục này: một ảnh chụp thật được viết lại thành một chương trình tất định gồm ba lớp và 4 831 lần vẽ hình cơ bản; chương trình đó tái lập đúng từng pixel so với đặc tả, và giống nguồn ở mức "nhận ra ngay" theo bốn thước đo. Mọi sự kiện và số liệu lấy từ report của phiên ngày 05/10/2026 [11].</p>
+<h3>6.1 Đề bài Henry đặt</h3>
+<p>Henry viết một câu: "Đọc file "equation_painting_bible" sau đó tạo file md để vẽ lại bức ảnh đính kèm." Ảnh đính kèm là JPEG 554 × 554, 91 064 byte, chụp cận cảnh từ trên xuống một đống dâu tây chín phủ kín khung; xuất xứ chưa rõ. Claude Code (model Claude Opus 5.5) tự quyết bốn điều và nêu khi bàn giao: mục tiêu tái tạo; chế độ H (lai giữa ngữ nghĩa và số, mục tiêu PSNR 20–28 dB theo bộ quy tắc); làm thẳng một mạch không dừng hỏi; giữ đúng kích thước nguồn, một mẫu mỗi pixel. Ràng buộc cứng: khung 1:1; số quả, vị trí, cỡ, đường bao và thứ tự che khuất của từng quả; vị trí các đài lá; không có chữ. Mục tiêu mềm: texture hạt và hõm, vệt bóng, sắc độ đỏ từng quả, chi tiết lá đài.</p>
+<p>Hình 15 đặt ảnh nguồn (trái) cạnh ảnh tính từ công thức (giữa) và bản đồ sai số (phải). Ảnh giữa không chứa một pixel nào của ảnh trái; nó được tính từ 494 KB văn bản.</p>
+<figure><img src="figures/p1_compare_v1.jpg" alt="Hình 15. Case 1. Trái: ảnh nguồn 554 × 554. Giữa: ảnh tính từ đặc tả, hash 24fbf" loading="lazy"><figcaption>Hình 15. Case 1. Trái: ảnh nguồn 554 × 554. Giữa: ảnh tính từ đặc tả, hash 24fbfe2b…. Phải: bản đồ sai số theo pixel (sáng là sai nhiều). MAE 14,55/255, PSNR 20,99 dB, SSIM 0,602. Nguồn: out/dau-tay_compare_v1.png của dự án.</figcaption></figure>
+<h3>6.2 Đo</h3>
+<p>Script đo, Claude Code đọc kết quả. Palette: k-means trong không gian Lab với 12 cụm cho sáu sắc đỏ chiếm ≈ 75 % diện tích (từ #220A07 khe tối 7,3 % tới #EA2312 đỏ sáng 17,0 %), hai sắc xanh của đài lá, một cam của hạt, hai sắc hồng và trắng của vệt bóng. Palette này chỉ để định hướng; màu trong đặc tả là màu riêng của từng hình, đo tại chỗ.</p>
+<p>Phân vùng từng quả là chỗ "nhìn" quyết định và "đo" thực hiện. Claude Code xem ảnh phóng hai lần có lưới 25 pixel và đặt một điểm đánh dấu cho mỗi quả, đặt tên B01 đến B24; thuật toán watershed lan từ các điểm đó trên một bản đồ "độ cao" dựng từ gradient độ sáng và vùng tối, để khe tối thành sống núi. Lượt một sai ba chỗ (B07 bị nuốt vào B08, B01 gộp với B02, dải trên cùng gộp); sau khi xem hai vùng cắt, Claude Code thêm đánh dấu và lượt hai ra 24 vùng. Số vật thể và danh tính của chúng do thị giác quyết định; thuật toán chỉ đo ranh giới. Hình 13 là ảnh nguồn phủ ranh giới 24 vùng.</p>
+<p>Các phép đo khác, nói ở mục 6.4: đường viền mỗi quả, trường màu thân, hạt, vệt bóng, đài lá, hõm tối.</p>
+<figure><img src="figures/p1_seg_overlay.jpg" alt="Hình 13. Case 1: ảnh nguồn phủ ranh giới 24 vùng watershed và nhãn B01–B24 (ảnh " loading="lazy"><figcaption>Hình 13. Case 1: ảnh nguồn phủ ranh giới 24 vùng watershed và nhãn B01–B24 (ảnh làm việc của phiên, phóng 2 lần). Số vật thể và tên do Claude Code đặt bằng thị giác; ranh giới do thuật toán đo.</figcaption></figure>
+<h3>6.3 Phân rã</h3>
+<p>Ba lớp: L01 nền là một hằng số màu; L02 là 24 quả theo thứ tự che khuất, mỗi quả gồm thân rồi mọi chi tiết của nó; L03 là đài lá trên cùng. Năm loại vật thể: thân quả (24), hõm tối (1 418), hạt với viền hõm (740, mỗi hạt hai lần vẽ), vệt bóng (1 772: 1 210 ellipse và 562 đa giác có lỗ), đa giác đài lá (137 trong 18 khối, ba tầng sáng). Tổng 4 831 lần vẽ hình cơ bản.</p>
+<p>Phân rã này hợp với ảnh vì ba lý do report nêu. Mảng sáng tối mềm của thân quả cần một trường màu, không phải màu phẳng. Biên quả và đài lá rõ nên cần hàm hình có bán kính theo góc hoặc đa giác. Chi tiết lặp (hạt, hõm, vệt bóng) dùng chung một mẫu ellipse với bảng tham số. Thứ bị lược: lông tơ và gân lá đài (thay bằng ba tầng sáng), texture vi mô của thân giữa các hạt, phần quả bị che (nội suy). Số lần vẽ cao hơn mức điển hình 100–1 000 của chế độ H; report ghi rõ đặc tả gần ranh giới chế độ N hơn mô tả của bộ quy tắc, nhưng mỗi hình vẫn là một vật thể có nghĩa, không có lưới phủ ảnh.</p>
+<h3>6.4 Một thành phần giải thích trọn vẹn: một quả dâu</h3>
+<p>Lấy một quả $b$ với tâm $c = (c_x, c_y)$ đo từ trọng tâm vùng watershed. Bốn bước từ hình thô tới texture; mỗi bước là một công thức trong đặc tả.</p>
+<p><strong>Bước một, hình thô.</strong> Quả gần tam giác bo tròn hơn ellipse, nên đường viền viết bằng chuỗi Fourier theo góc cực $\varphi$ quanh tâm, với $K = 6$ hài (một lựa chọn):</p>
+<p>$$r(\varphi) = r_0\Big(1 + \sum_{k=1}^{6} a_k \cos k\varphi + b_k \sin k\varphi\Big), \qquad d_b(x, y) = \rho - r(\varphi),$$</p>
+<p>với $\rho = \sqrt{(x - c_x)^2 + (y - c_y)^2}$ và $\varphi = \operatorname{atan2}(y - c_y, x - c_x)$. Đọc: $r_0$ là bán kính trung bình; 12 hệ số $a_k, b_k$ là độ méo ở từng tần số góc; $d_b$ âm trong quả. Thử: quả B22 có $r_0 = 0{,}1374$, $a_1 = 0{,}0413$, $b_1 = 0{,}3028$, $a_2 = 0{,}0997$ (trích bảng P-08 của đặc tả). Riêng số hạng $b_1 \sin\varphi$ kéo dài bán kính thêm $0{,}30 r_0$ ở hướng $\varphi = \pi/2$; số hạng $a_2 \cos 2\varphi$ trừ đi $0{,}10 r_0$ ở cùng hướng; các hài còn lại cộng trừ thêm. Quả vươn lên trên. Đổi $a_3$, quả thành ba múi.</p>
+<p>Cách lấy 12 hệ số, theo report: bình phương tối thiểu có ràng buộc trên các pixel biên của vùng watershed. Mỗi pixel biên được phân loại bằng lân cận 5 × 5. Pixel giáp nền hoặc giáp quả nằm sau là biên thật, cho ràng buộc bằng $r(\varphi_i) \approx r_i + 0{,}5$ px. Pixel giáp quả nằm trước hoặc giáp đài lá là biên bị che, chỉ cho cận dưới $r(\varphi_i) \ge r_i + 2$ px, xử lý kiểu hinge: lặp bốn lần, chỉ giữ ràng buộc ở điểm đang vi phạm, trọng số 0,3. Hài bậc cao bị phạt bằng ridge $\lambda_k = 0{,}006\,k^2$ để phần bị che được nội suy trơn. Kết quả: mọi quả có $\min_\varphi r(\varphi)/r_0 = 0{,}40 &gt; 0$, nên hình luôn hợp lệ. Phần bị che là nội suy và không kiểm được trên nguồn: quả B21 ở dải trên cùng có $a_2 = 0{,}65$, một hình méo, nhưng phần nhìn thấy khớp (IoU 0,779).</p>
+<p><strong>Bước hai, biên mềm.</strong> Mask thân quả theo bậc 5, với độ mềm riêng của loại vật thể:</p>
+<p>$$M_b = 1 - S\big(-\varepsilon_b, \varepsilon_b, d_b\big), \qquad \varepsilon_b = 3{,}0 \cdot \tfrac{2}{554}.$$</p>
+<p>Đọc: dải chuyển rộng 6 pixel, mềm hơn mức khử răng cưa 1,5 pixel, vì mép quả thật trong ảnh chụp không sắc. Giá trị 3,0 được tìm bằng quét theo sai số MAE, không đặt tay. Đổi 3,0 thành 0,75, quả có mép kiểu đồ hoạ vector.</p>
+<p><strong>Bước ba, màu và bóng.</strong> Thân quả như một mái vòm. Đặt $t = \rho / r(\varphi)$ (0 ở tâm, 1 ở biên), $p = t\cos\varphi$, $q = t\sin\varphi$, $n_z = \sqrt{\max(1 - t^2, 0)}$. Màu thân là tổ hợp bảy hàm cơ sở:</p>
+<p>$$K_b(x, y) = \sum_{i=0}^{6} \phi_i\, C_i, \qquad (\phi_0, \ldots, \phi_6) = \big(1,\ n_z,\ p,\ q,\ t^2,\ p^2 - q^2,\ 2pq\big).$$</p>
+<p>Đọc: $C_i$ là bộ ba RGB, 21 số mỗi quả, khớp bằng bình phương tối thiểu trên pixel thân (bỏ pixel hạt, vệt bóng, đài lá). $C_0$ là màu nền của quả; $C_1$ nhân với $n_z$ cho tâm sáng và mép tối, tức độ nổi khối; $C_2$ và $C_3$ cho hướng sáng; ba hệ số bậc hai bắt độ lệch. Thử: tại tâm, $t = 0$, $n_z = 1$, $K_b = C_0 + C_1$; tại biên, $t = 1$, $n_z = 0$. Report thử làm giàu cơ sở lên 10, 14, 18 hàm: sai số thân giảm từ 11,66 xuống 10,04 trên thang 255, tức 14 % khi tăng 2,5 lần số hàm; kết luận của report là sai số còn lại là texture vi mô, không phải mảng sáng tối, và giữ 7 hàm cho dễ đọc.</p>
+<p><strong>Bước bốn, texture.</strong> Ba loại chi tiết, cùng một mẫu: ellipse đặt tương đối với tâm quả, nhân với mask của chính quả cha để không tràn ra khe. Với ellipse bán trục $a, b$, góc $\beta$, tâm $c + (\delta_x, \delta_y)$:</p>
+<p>$$M = \Big(1 - S(-e, e, d_{\text{ellipse}})\Big) \cdot M_b, \qquad C \leftarrow C\,(1 - M) + K M,$$</p>
+<p>với $d_{\text{ellipse}} = \big(\sqrt{(u/a)^2 + (v/b)^2} - 1\big)\min(a, b)$ trong toạ độ quay $(u, v)$ của bậc 8. Hõm tối: 1 418 ellipse màu đỏ sẫm, tìm bằng cách render cảnh chưa có hõm rồi lấy những đốm mà nguồn tối hơn render ít nhất 0,05 độ sáng (phân tích-bằng-tổng-hợp). Hạt: 740 ellipse, mỗi hạt vẽ hai lần, viền hõm với bán trục nhân 2,5 và màu đo trên vành khuyên quanh hạt, rồi lõi hạt. Vệt bóng: ellipse cho thành phần nhỏ, đa giác có lỗ cho thành phần lớn. Đổi hệ số 2,5 của viền xuống 1,6, sai số tăng từ 14,63 lên 14,79: report đã quét ba giá trị và giữ 2,5.</p>
+<p>Hình 14 render quả B08 qua bốn bước trên, tái dựng từ đặc tả v1.0 để trình bày. Report không có bốn bản render trung gian của riêng một quả; các vòng D1–D12 của lịch sử áp lên toàn cảnh.</p>
+<figure><img src="figures/H14_strip_B08.jpg" alt="Hình 14. Quả B08 của case 1 qua bốn bước, tái dựng từ đặc tả v1.0 trên nền khe t" loading="lazy"><figcaption>Hình 14. Quả B08 của case 1 qua bốn bước, tái dựng từ đặc tả v1.0 trên nền khe tối, cắt quanh quả và phóng 2 lần: (a) hình thô: mask khử răng cưa 0,75 pixel với màu phẳng $C_0$; (b) biên mềm 3 pixel và trường màu bảy hàm; (c) thêm các hõm tối thuộc quả này; (d) thêm hạt với viền, vệt bóng và đài lá của quả này. Hash toàn ảnh của bốn bản: 93c2b44d…, 264e8985…, f0b1d2b3…, 01c54322….</figcaption></figure>
+<h3>6.5 Ghép toàn cảnh</h3>
+<p>Chỉ dùng một phép chồng lớp, over. Thứ tự thực thi: nền $K_{\text{GAP}} = $ #270305 (trung vị màu vùng không thuộc quả nào) trên toàn ảnh; rồi 24 quả từ sau ra trước theo thứ tự quan sát (B21, B22, B02, …, B11, B08), mỗi quả vẽ thân, rồi mọi hõm của nó, rồi mọi hạt, rồi mọi vệt bóng; rồi 137 đa giác đài lá theo tầng. Kẹp giá trị về $[0, 1]$ một lần ở cuối và lượng tử hoá bằng $F$. Viết gọn:</p>
+<p>$$\hat I = F\Big(\mathrm{clamp}\big(L_{03}(L_{02}(L_{01}))\big)\Big).$$</p>
+<p>Theo bậc 10, chuỗi over này bằng công thức một hàm $H_v$ với $N = 4\,831 + 1$ mask; case 1 không viết dạng đó ra, và tương đương đại số không bảo đảm cùng byte nếu đổi cách tính. Renderer không đọc ảnh nguồn khi render: đã kiểm bằng clean-room (mục 6.7). Một tối ưu tốc độ, chỉ tính mỗi hình trong một hộp bao, được chứng minh tương đương bằng cách render lại toàn ảnh không hộp: 0 pixel khác, 623 giây so với 1,5 giây.</p>
+<h3>6.6 Những lần sửa quyết định</h3>
+<p>Report ghi 12 vòng D1–D12, mỗi vòng một thay đổi, bốn số đo sau mỗi vòng, một quyết định. Bố cục đúng ngay từ D1 (MAE 17,00); mọi vòng sau giảm MAE xuống 14,55, tức 14 %. Năm mốc đáng kể:</p>
+<table>
+<thead>
+<tr>
+<th>Mốc</th>
+<th>Thấy gì</th>
+<th>Giả thuyết được ghi</th>
+<th>Đổi gì, ai làm</th>
+<th>Đo được</th>
+<th>Quyết định</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>D2</td>
+<td>đài lá ô-liu phẳng</td>
+<td>gradient tuyến tính trộn cả viền đỏ</td>
+<td>ba tầng sáng bằng k-means Lab; Claude Code</td>
+<td>MAE 17,00 → 16,17; SSIM 0,555 → 0,573</td>
+<td>giữ</td>
+</tr>
+<tr>
+<td>D3</td>
+<td>thiếu hạt cam nhạt trên bốn quả</td>
+<td>ngưỡng chỉ bắt hạt vàng rõ</td>
+<td>thêm bộ dò theo kênh lục nổi cục bộ, 381 → 741 hạt; Claude Code, script</td>
+<td>MAE 16,17 → 16,55 (xấu đi); SSIM 0,573 → 0,578</td>
+<td>giữ, với lý do report ghi: "MAE xấu đi, SSIM tốt hơn, nhìn đúng hơn"</td>
+</tr>
+<tr>
+<td>D4</td>
+<td>quầng tối quanh hạt dùng giá trị đoán 0,35</td>
+<td>không ghi</td>
+<td>quét biên độ 0 / 0,1 / 0,2 / 0,35 / 0,5 → MAE 15,53 / 15,70 / 15,99 / 16,55 / 17,20; bỏ hẳn quầng; Claude Code, script</td>
+<td>MAE 15,36</td>
+<td>giữ</td>
+</tr>
+<tr>
+<td>D5</td>
+<td>thân trơn, thiếu hõm đỏ sẫm</td>
+<td>mô hình thân chỉ có tần số thấp</td>
+<td>hõm tối bằng phân tích-bằng-tổng-hợp, ngưỡng 0,05 (thử 0,05 / 0,07 / 0,10); Claude Code, renderer, script</td>
+<td>MAE 14,95; SSIM 0,604</td>
+<td>giữ</td>
+</tr>
+<tr>
+<td>D11</td>
+<td>dời một quả thì hạt, hõm, vệt bóng, đài lá đứng yên; lộ khi chuẩn bị phép thử nhiễu loạn</td>
+<td>chi tiết ghi toạ độ tuyệt đối</td>
+<td>toạ độ chi tiết chuyển sang tương đối với tâm quả cha; Claude Code</td>
+<td>MAE 14,55, gần không đổi</td>
+<td>giữ, đóng băng</td>
+</tr>
+</tbody>
+</table>
+<p>Có thể hiểu tác dụng của D3 như sau (giải thích hồi cứu): MAE phạt từng pixel lệch, nên thêm nhiều hạt nhỏ đặt lệch vài pixel làm MAE tăng dù cấu trúc đúng hơn; SSIM nhạy với cấu trúc cục bộ nên tăng. D11 không làm ảnh giống hơn mà sửa một lỗi thiết kế chỉ phép thử nhân quả mới lộ ra.</p>
+<p>Hai thất bại có trong nguồn. Thử một của việc dò hõm, lấy "ảnh trừ trung vị 9 × 9", cho 3 911 thành phần mà khi xem overlay thì phần lớn là viền tối cạnh vệt bóng, không phải hõm; bị bỏ. D6, làm giàu cơ sở màu, bị hoàn tác dù giảm sai số, vì lợi ích nhỏ so với mất tính đọc được.</p>
+<p>Phép thử nhiễu loạn, kỳ vọng ghi trước khi chạy: bỏ quả B08 thì chỉ probe trên B08 sai, pixel (281, 247) đổi từ (200, 6, 18) thành (39, 3, 5), lộ nền. Dời B12 sang phải 0,10 (27,7 pixel) thì trọng tâm mask dời đúng 27,70 pixel và đài lá của nó đi theo; nhưng kỳ vọng "probe đài lá B12 sai" không đúng, vì điểm dò rơi lại vào cùng một đa giác màu phẳng; report giữ nguyên kỳ vọng sai trong đặc tả. Đổi màu nền thành đen thì đúng bốn probe trên nền sai. Đổi độ mềm biên hạt từ 1,5 xuống 0,5 thì 83 237 pixel đổi, 16/16 probe vẫn đạt, hash không khớp.</p>
+<h3>6.7 Kết quả</h3>
+<p>Bảng dưới tách bốn trục. Hai hàng đầu đo so với nguồn (Fidelity A); các hàng kiểm chứng đo so với đặc tả (Fidelity B).</p>
+<table>
+<thead>
+<tr>
+<th>Hạng mục</th>
+<th>Giá trị</th>
+<th>Điều kiện</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Kích thước</td>
+<td>554 × 554, A = 1, một mẫu mỗi pixel</td>
+<td>đúng kích thước nguồn</td>
+</tr>
+<tr>
+<td>Lớp, vật thể, lần vẽ</td>
+<td>3 lớp; 24 quả; 4 831 lần vẽ hình cơ bản</td>
+<td></td>
+</tr>
+<tr>
+<td>Công thức, tham số có tên</td>
+<td>7 công thức F-00…F-06; 5 mẫu vật thể; 12 nhóm tham số</td>
+<td></td>
+</tr>
+<tr>
+<td>Độ dài mô tả</td>
+<td>code 460 692 byte, 4 599 dòng: kernel dùng chung 9 814 B (2,1 %), bảng dữ liệu 439 962 B (95,5 %), hàm cảnh 6 639 B (1,4 %); bảng chứa 36 450 số thực và 4 807 mã màu</td>
+<td>đếm byte của code block; không phải độ phức tạp Kolmogorov</td>
+</tr>
+<tr>
+<td>Dung lượng so sánh</td>
+<td>JPEG gốc 91 064 B; code nén zlib 115 771 B; file đặc tả 494 KB; PNG render 549 KB</td>
+<td>đặc tả không phải là nén</td>
+</tr>
+<tr>
+<td>Sai số so với nguồn</td>
+<td>MAE 14,55/255; max 246/255; PSNR 20,99 dB; SSIM 0,602; $\Delta E_{2000}$ trung bình 6,03</td>
+<td>554 × 554, scikit-image 0.26.0</td>
+</tr>
+<tr>
+<td>Khớp vùng</td>
+<td>IoU vùng nhìn thấy trung bình theo diện tích 0,893; thấp nhất B20 0,113; IoU mask đài lá 0,990</td>
+<td>so với vùng watershed của nguồn</td>
+</tr>
+<tr>
+<td>Hash pixel</td>
+<td><code>24fbfe2b4a63127b6d0e96ad2c8c8dc5eb3f0ea649bb4c7a75990461b9776f3a</code></td>
+<td>EP-PIX v1</td>
+</tr>
+<tr>
+<td>Probe</td>
+<td>16/16 PASS, dung sai ±2</td>
+<td></td>
+</tr>
+<tr>
+<td>Clean-room</td>
+<td>PASS: code trích từ file <code>.md</code>, chạy bằng tiến trình mới trong thư mục tạm rỗng không có ảnh nguồn; pixel trùng hash; CODE_SHA256 <code>027139ea…3f46</code></td>
+<td>một máy: Windows 11, Python 3.14.3, numpy 2.4.6</td>
+</tr>
+<tr>
+<td>Khớp toán–code</td>
+<td>27/27 mã; năm công thức cài lại độc lập bằng Python thuần, sai khác lớn nhất $1{,}1 \cdot 10^{-16}$</td>
+<td></td>
+</tr>
+<tr>
+<td>Môi trường thứ hai</td>
+<td>NOT_RUN</td>
+<td></td>
+</tr>
+<tr>
+<td>Thời gian render</td>
+<td>≈ 1,5–2 s</td>
+<td></td>
+</tr>
+<tr>
+<td>Thời gian lịch của phiên</td>
+<td>≈ 48 phút (21:22 → 22:10 theo dấu thời gian file), gồm đọc bộ quy tắc, cài công cụ, 12 vòng, đóng gói, kiểm; cộng một phép thử 623 s</td>
+<td>không phải thời gian "tìm công thức" thuần; không có đối chứng</td>
+</tr>
+</tbody>
+</table>
+<p>Phân rã sai số ở vòng D7: thân quả chiếm 46 % sai số (58,5 % diện tích, MAE 11,4); hạt và vệt bóng 28 %; đài lá 16 %; biên quả 10 %. Kênh lục ở đài lá lệch +10,4: render kém xanh hơn nguồn. Hình 15 (phải) là bản đồ sai số; ba ô sai nhiều nhất là mép trên phía trên B05 và đáy dưới B16, nơi đường viền quả phía sau khớp hụt nên lộ khe tối, và vùng dưới-trái B11, nơi trường màu bảy hàm quá mượt.</p>
+<h3>6.8 Việc của người, việc của máy, việc của script</h3>
+<table>
+<thead>
+<tr>
+<th>Việc</th>
+<th>Henry</th>
+<th>Claude Code</th>
+<th>Script / thư viện / renderer</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Đặt bài toán, chọn ảnh</td>
+<td>✔ (một lệnh)</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Chọn mục tiêu, chế độ, độ phân giải, làm thẳng</td>
+<td></td>
+<td>✔ (tự quyết, nêu khi bàn giao)</td>
+<td></td>
+</tr>
+<tr>
+<td>Đo ảnh (palette, phân vùng, đường viền, trường màu, hạt, vệt bóng, đài lá, hõm)</td>
+<td></td>
+<td>ra lệnh, đọc kết quả, đặt điểm đánh dấu quả, chọn ngưỡng dò bằng cách xem overlay</td>
+<td>✔ tính (k-means, watershed, bình phương tối thiểu, ngưỡng)</td>
+</tr>
+<tr>
+<td>Phân rã và kế hoạch</td>
+<td></td>
+<td>✔ đề xuất và thực hiện</td>
+<td></td>
+</tr>
+<tr>
+<td>Viết công thức và code sinh đặc tả</td>
+<td></td>
+<td>✔</td>
+<td></td>
+</tr>
+<tr>
+<td>Render, probe, hash, clean-room</td>
+<td></td>
+<td>ra lệnh, đọc kết quả</td>
+<td>✔ tính</td>
+</tr>
+<tr>
+<td>Đọc sai lệch, nêu giả thuyết, sửa (12 vòng)</td>
+<td></td>
+<td>✔</td>
+<td>metric do script</td>
+</tr>
+<tr>
+<td>Chọn bức cuối</td>
+<td>(trạng thái duyệt PENDING)</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Số lần Henry dừng để quyết định: 0. Số vòng sửa: 12. Số phép thử nhiễu loạn: 4.</p>
+<h3>6.9 Giới hạn của case này</h3>
+<p>Một ảnh, một loại cảnh (vật lặp lại trên nền tối). Texture vi mô của thân quả và gân lá đài không bắt được; làm giàu mô hình mượt chỉ giảm 14 % sai số thân. Quả phía sau là nội suy không kiểm được; B20 chỉ còn 174 pixel trong render so với 937 trong nguồn. Số quả và thứ tự che khuất do Claude Code xác định bằng thị giác; người khác có thể đếm khác ở các quả rìa. Chưa có AI nào khác thử tái lập từ đặc tả (Tier 2, 3), chưa chạy trên máy thứ hai, chưa có đánh giá cảm nhận của người xem. Một case thành công không chứng minh phương pháp hợp với mọi ảnh. Bài học chuyển sang case 2: khi mục tiêu không còn là khớp từng pixel, bảng 440 KB kia còn cần không?</p>
+<h2 id="7-case-study-2-v-theo-tham-chiu-bng-mt-cng-thc">7. Case study 2: vẽ theo tham chiếu bằng một công thức</h2>
+<p>Luận điểm của mục này: từ cùng ảnh dâu tây, một bức tranh mới 1108 × 1108 được định nghĩa bằng một hàm với 27 hàm phụ và 91 lớp; văn bản toán của hàm đó là định nghĩa đúng từng bit của ảnh; con người chọn bức này trong 9 bức chung kết của 60 bản thử. Mọi sự kiện lấy từ report của phiên ngày 06/10/2026 [11].</p>
+<h3>7.1 Tham chiếu và hợp đồng tương đồng</h3>
+<p>Henry viết: "Đọc file CLAUDE sau đó, sử dụng ảnh đính kèm làm reference để thực hiện thao tác tạo ảnh theo EP-II TASK, PHỎNG TÁC." Ảnh đính kèm là cùng file JPEG của case 1. Theo mặc định của bộ quy tắc (tập II), phỏng tác bậc 2: lấy palette, bố cục, chủ thể, số lượng, hướng sáng; không lấy đường viền từng quả, không lấy texture. Hợp đồng viết trong brief gồm sáu ràng buộc cứng: dâu chín đỏ nhận ra ở thumbnail 240 px; đống quả đầy khung, không nền hay vật khác; ít nhất 15 quả nhìn thấy; ít nhất 6 cụm đài lá; khung 1:1; không chữ, không người. Năm thứ phải giữ để còn nhận ra nguồn: chủ thể; quả lớn nhất ở giữa hơi lệch trên; đỏ son với điểm xanh đài lá và lấp lánh kem; sáng mềm từ trên-trái với khe tối; cảm giác tươi, mọng. Ưu tiên mềm (tươi, mọng, bão hoà cao) là lựa chọn của Claude Code vì Henry không nói. Hình 1 đặt ảnh tham chiếu cạnh bức cuối.</p>
+<h3>7.2 Ba lớp tương đồng</h3>
+<p>Lớp ngữ nghĩa là ràng buộc cứng: sai thì loại. Lớp cấu trúc phải nằm trong dải của bậc 2: vị trí và cỡ các mảng lớn, hướng sáng, palette. Lớp bề mặt tự do: texture hạt, độ bóng, dáng chi tiết, mức cách điệu. Bức cuối giữ 21 quả và 14 đài lá ở đúng vị trí và cỡ đo được, giữ sáu màu đo, giữ hướng sáng; nó vẽ lại hoàn toàn bề mặt bằng mô hình chiếu sáng, nên nhận ra ảnh tham chiếu mà không nhầm là bản sao.</p>
+<h3>7.3 Từ đặc điểm thành quy luật</h3>
+<p><strong>Đo những gì bậc 2 cho phép.</strong> Palette k-means Lab sáu màu: #DF2212 27,7 %, #AF221B 22,5 %, #6E1013 21,9 %, #2F0E09 12,6 % (khe), #EBB49F 7,7 % (lấp lánh), #898F3E 7,5 % (đài lá và hạt). Phân vị độ sáng p5/p50/p95 là 0,061/0,246/0,744; khe tối 15,47 % khung. Hướng sáng: lệch highlight so với tâm quả cho 131,8°, gradient khuếch tán cho 119,8°; kết luận: nguồn sáng mềm, rộng, lệch trên-trái. Watershed trên khe tối tách 21 quả với bán kính tương đương 0,10–0,337 (chiều cao khung bằng 2), 14 cụm đài lá; không có gradient phối cảnh. Bảng neo: 21 dòng $(X_p, Y_p, r_p)$ và 14 dòng $(X'_k, Y'_k, s_k)$, tổng 105 số đo. Hình 16 phủ các số đo lên ảnh.</p>
+<figure><img src="figures/p2_overlay_layout.jpg" alt="Hình 16. Case 2: ảnh tham chiếu phủ các số đo được phép ở bậc 2: ranh watershed " loading="lazy"><figcaption>Hình 16. Case 2: ảnh tham chiếu phủ các số đo được phép ở bậc 2: ranh watershed (vàng), vòng bán kính tương đương của 21 quả (trắng), hướng highlight (xanh lá), tâm 14 đài lá (ô xanh dương), mặt nạ đài lá (xanh ngọc). Ảnh làm việc của phiên.</figcaption></figure>
+<p><strong>Đo chính thước đo.</strong> Bộ quy tắc đo tương đồng bố cục bằng tương quan bản đồ biên 48 × 36 với dải 0,25–0,60. Trước khi có ứng viên nào, Claude Code chạy thước này trên chính ảnh tham chiếu đã biến đổi và trên cảnh thô gồm đĩa đỏ:</p>
+<table>
+<thead>
+<tr>
+<th>Ảnh thử</th>
+<th>tương quan biên</th>
+<th>tương quan sáng tối 12 × 12 (<code>lum12</code>)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ảnh nguồn làm mờ σ = 6 px</td>
+<td>0,597</td>
+<td>0,999</td>
+</tr>
+<tr>
+<td>ảnh nguồn lật gương</td>
+<td>0,109</td>
+<td>0,247</td>
+</tr>
+<tr>
+<td>đĩa đặt đúng 21 vị trí đo</td>
+<td>−0,014</td>
+<td>0,505</td>
+</tr>
+<tr>
+<td>đĩa lật gương</td>
+<td>0,041</td>
+<td>0,129</td>
+</tr>
+<tr>
+<td>lưới tam giác (bố cục khác hẳn)</td>
+<td>−0,000</td>
+<td>−0,031</td>
+</tr>
+</tbody>
+</table>
+<p>Thước biên cho đĩa đặt đúng chỗ bằng với lưới công thức: nó đo texture hạt và lấp lánh, không đo bố cục. Thước sáng tối tách được bốn trường hợp. Claude Code đề xuất và Henry duyệt: dải cấu trúc dùng <code>lum12</code> trong $[0{,}30; 0{,}85]$, thước biên vẫn báo cáo nhưng không dùng để loại.</p>
+<p><strong>Quyết định về bảng số.</strong> Hạng NGẮN của bộ quy tắc (≤ 3 000 ký tự, ≤ 200 hằng số, không bảng) buộc bố cục phải là công thức của chỉ số, kiểu lưới hay xoắn ốc. Đo thử một lưới tam giác: <code>lum12</code> = −0,03, tức mất bố cục. Vì 21 quả trong ảnh đặt không theo quy luật, Claude Code đề xuất hạng LAI (≤ 12 000 ký tự, ≤ 1 500 hằng số, một bảng neo ≤ 48 dòng). Henry hỏi "Nếu bạn là tôi bạn sẽ quyết sao để cho ra ảnh đẹp nhất" và sau đề xuất trả lời "OK theo đề xuất. Cám ơn bạn." Cùng lúc Henry duyệt khung 1108 × 1108 với bốn mẫu mỗi pixel, ba vòng sửa, và thay hai thẻ ý tưởng. Đây là điểm khác căn bản với tranh của Yeganeh, nơi vị trí vật thể sinh từ chỉ số [1]: ràng buộc tương đồng với một ảnh thật buộc phải có bảng số đo, đổi lại công thức dài hơn.</p>
+<p>Vậy trong bức cuối, cái gì là bảng và cái gì là quy luật? Bảng: 35 dòng vị trí và cỡ, 6 màu, 1 hướng sáng. Quy luật: dáng từng quả, tư thế, lưới hạt, hốc, pháp tuyến, chiếu sáng, đài lá, khe. Mọi hằng số còn lại là lựa chọn.</p>
+<h3>7.4 Một quy luật giải thích từ đầu đến cuối: dáng riêng của từng quả</h3>
+<p>Yêu cầu thị giác, ghi ở vòng đánh bóng: xem ở 100 %, các quả "dập cùng một khuôn". Muốn mỗi quả một dáng mà không thêm 21 bộ hệ số vào bảng, ta cho hệ số là hàm của mã vật thể $\iota_p$ (một số nguyên cố định gắn với quả $p$, không phải vị trí dòng). Lấy năm giá trị hash $h_l = h(\iota_p + 401, l)$, $l = 0 \ldots 4$, với $h$ là hàm hash của bậc 9, rồi</p>
+<p>$$b_1 = 0{,}045\,(1{,}6h_0 - 0{,}5), \quad a_2 = 0{,}045\,(0{,}4 + 0{,}6h_1), \quad f_2 = 2\pi h_2, \quad a_3 = 0{,}045\,(0{,}15 + 0{,}35h_3), \quad f_3 = 2\pi h_4,$$
+$$\varrho(\varphi) = 1 + b_1 \sin\varphi + a_2 \cos(2\varphi + f_2) + a_3 \cos(3\varphi + f_3).$$</p>
+<p>Đọc: $\varphi$ là góc trong khung của quả, $\varphi = \pi/2$ hướng về cuống; $\varrho$ là hệ số dãn bán kính theo góc; $b_1$ làm vai phồng (dương) hay chóp phồng (âm); $a_2$ với pha $f_2$ làm quả dẹt theo một trục; $a_3$ với pha $f_3$ cho ba múi nhẹ. Hằng số 0,045 là biên độ chung (tham số SHP). Thử ba giá trị chỉ số, lấy từ bảng số của văn bản toán:</p>
+<table>
+<thead>
+<tr>
+<th>$p$</th>
+<th>$b_1$</th>
+<th>$a_2$</th>
+<th>$f_2$</th>
+<th>$a_3$</th>
+<th>$f_3$</th>
+<th>cận trên của lệch mép, $|b_1| + a_2 + a_3$</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>−0,01170</td>
+<td>0,04264</td>
+<td>5,8327</td>
+<td>0,01079</td>
+<td>2,9488</td>
+<td>6,5 % bán kính</td>
+</tr>
+<tr>
+<td>1</td>
+<td>0,02987</td>
+<td>0,01977</td>
+<td>0,5308</td>
+<td>0,01576</td>
+<td>5,9375</td>
+<td>6,5 %</td>
+</tr>
+<tr>
+<td>2</td>
+<td>0,01541</td>
+<td>0,03914</td>
+<td>3,8359</td>
+<td>0,01778</td>
+<td>6,1464</td>
+<td>7,2 %</td>
+</tr>
+</tbody>
+</table>
+<p>Quả 0 có $b_1 &lt; 0$ nên chóp hơi phồng; quả 1 có $b_1 &gt; 0$ nên vai phồng; quả 2 dẹt theo một trục lệch. Report đo độ lệch mép lớn nhất trên 21 quả: 3,9 đến 8,5 % bán kính, trung vị 5,8 %. Các quả tương tự nhau vì cùng một công thức với cùng biên độ, nhưng không lặp cứng vì năm giá trị hash khác nhau theo $\iota_p$. Đổi 0,045 thành 0,07, report ghi "vài quả có mặt phẳng như bị ép" và bản này thua trong so cặp mù; đổi về 0, mọi quả về dáng chung của bản v1.0. Hình 19 đặt v1.0 cạnh v1.1 ở ba vùng cắt 100 %: đổi đúng nhóm tham số này, mọi thứ khác giữ nguyên.</p>
+<p>Vì sao mã $\iota_p$ chứ không phải vị trí dòng? Ở lô đầu, pha lưới hạt và hướng chóp tính từ chỉ số dòng của bảng. Khi phép thử nhiễu loạn bỏ dòng 19, quả tiêu điểm ở dòng 20 cũng đổi vân, vì chỉ số của nó dịch. Lỗi có ở cả 9 bức; phép thử trước đó không bắt được vì chỉ bỏ dòng cuối. Sửa: thêm cột mã cố định vào bảng, đặt bằng chỉ số cũ nên pixel không đổi, rồi kiểm lại: bỏ dòng 19 giờ chỉ đổi đúng quả đó.</p>
+<figure><img src="figures/p2_polish_v1.0_vs_v1.1.jpg" alt="Hình 19. Đổi một nhóm tham số: v1.0 (trên, hash ed459cd6…) và v1.1 (dưới, hash 3" loading="lazy"><figcaption>Hình 19. Đổi một nhóm tham số: v1.0 (trên, hash ed459cd6…) và v1.1 (dưới, hash 3710e8ec…) chỉ khác biên độ dáng riêng (0 → 0,045) và ba tham số hạt (0 → 0,02 / 0,08 / 0,3); ba vùng cắt ở 100 % cho thấy quả giữa lệch vai và hốc hạt to nhỏ khác nhau. Tờ so của phiên.</figcaption></figure>
+<h3>7.5 Từ một hình tròn tới một hàm cho cả bức</h3>
+<p>Mỗi bước dưới là một công thức thật trong văn bản toán của bức cuối (Phụ lục B); chúng tôi đổi vài ký hiệu cho khớp bảng ký hiệu của paper (Phụ lục A). Hình 17 render bốn mốc, tái dựng từ đặc tả v1.1 ở 554 × 554 bằng cách rút ngắn danh sách lớp: một quả; hai quả; 21 quả chưa có đài lá; bức hoàn chỉnh.</p>
+<p><strong>Một quả: từ đĩa tới dáng dâu.</strong> Bắt đầu từ toạ độ cục bộ của bậc 8, chia cho bán kính $R_p = 1{,}1 r_p$ và cho hệ số dãn $\varrho$ của mục 7.4:</p>
+<p>$$\omega = u + iv = \frac{(z - c_p)\,e^{-i\alpha_p}}{R_p\,\varrho(\varphi)}.$$</p>
+<p>Đọc: $\alpha_p$ là góc tư thế của quả (chóp quay ra xa đài lá chủ); $|\omega| = 1$ trên mép quả. Đĩa đơn vị được nắn thành dáng tim–nón bằng một phép đổi toạ độ:</p>
+<p>$$\hat\omega = \frac{u}{\max(1 + 0{,}36\,e_p v,\ 0{,}3)} + i\,\frac{v + 0{,}15\,e_p\,(v^+)^2\, e^{-6u^2}}{1 + 0{,}1\,e_p}, \qquad d_p(z) = 0{,}85\,R_p\,\varrho(\varphi)\,\big(|\hat\omega| - 1\big).$$</p>
+<p>Đọc: $v^+ = \max(v, 0)$; $e_p \in [0, 1]$ là mức "có cuống" của quả; mẫu số thứ nhất thu hẹp quả về phía chóp ($v &lt; 0$) và nới về phía cuống; số hạng $0{,}15\,e_p (v^+)^2 e^{-6u^2}$ đẩy một chỗ lõm nhỏ ở vai gần cuống. Thử: tại $u = 0$, $v = -1$ (chóp), $v^+ = 0$ nên $\hat\omega = -i/(1 + 0{,}1 e_p)$, $|\hat\omega| = 1/1{,}1 &lt; 1$ khi $e_p = 1$, và $d_p &lt; 0$: điểm trên vòng tròn đơn vị ở phía chóp vẫn nằm trong quả, tức chóp dài ra khỏi đĩa. $d_p$ là hàm khoảng cách xấp xỉ, âm trong quả. Mask quả theo bậc 5: $M_p = S(d_p / \varepsilon_p)$ với $\varepsilon_p = 0{,}75/1108 + 0{,}03 D_p$, trong đó $D_p$ là mức mất nét của quả (0 ở quả tiêu điểm, tới 0,82 ở quả xa). Đổi $D_p$, mép quả mềm dần: đó là độ sâu trường ảnh làm bằng độ mềm biên, không có phép làm mờ.</p>
+<p><strong>Hai quả, rồi 91 lớp.</strong> Mỗi quả sinh ba lớp theo thứ tự: bóng đổ (mask $0{,}55\,S(d_p(z + 0{,}05\hat L)/0{,}3R_p)$, màu đen; $\hat L$ là hướng sáng trong mặt ảnh), bóng tiếp xúc (mask $0{,}7\,\langle 1 - d_p/0{,}25R_p\rangle^2$, màu đen), rồi quả (mask $M_p$, màu $K_p$). Mỗi đài lá sinh hai lớp: bóng và cánh. Tổng $21 \cdot 3 + 14 \cdot 2 = 91$ lớp, xếp theo thứ tự quả sau tới quả trước, mỗi đài lá ngay sau quả chủ của nó. Gộp bằng công thức bậc 10:</p>
+<p>$$C(z) = \Gamma(z) \prod_{j=1}^{91} \big(1 - M_j(z)\big) + \sum_{j=1}^{91} M_j(z)\, K_j(z) \prod_{l=j+1}^{91} \big(1 - M_l(z)\big).$$</p>
+<p>Với hai quả, đây đúng là $C_2$ của bậc 10 với $\Gamma$ là khe tối. Khe tối $\Gamma$ không phải màu phẳng: $\Omega = \langle 1 - \mathcal{W}(x, y; 4{,}5, 3)/0{,}8\rangle^2$ với $\mathcal{W}$ là khoảng cách Worley, rồi $\Gamma = \Gamma_0(0{,}45 + 0{,}3\Omega) + 0{,}18(\Gamma_1 - \Gamma_0)\Omega^2$: các quả phía dưới chìm trong tối.</p>
+<p><strong>Khối và ánh sáng.</strong> Pháp tuyến gốc của quả coi như bán cầu: $\nu = \hat\omega e^{i\alpha_p}$ cho hai thành phần ngang, $\nu_3 = \sqrt{(1 - |\hat\omega|^2)^+}$ cho thành phần hướng ra người xem. Màu thịt quả là màu đo $A$ nhân với ánh sáng khuếch tán "bọc" theo kênh:</p>
+<p>$$K^{t} = A\,\beta\,\Big( \big\langle \tfrac{\mathbf{n}\cdot\mathbf{L} + W}{1 + W} \big\rangle + 0{,}1\,(0{,}55 + 0{,}45\,n_3) \Big)\big(0{,}32 + 0{,}68\sqrt{\nu_3}\big)\big(1 - 0{,}5\hat P\big), \qquad W = (0{,}45;\ 0{,}12;\ 0{,}12).$$</p>
+<p>Đọc: $\langle\cdot\rangle$ kẹp về $[0, 1]$; $\mathbf{n}\cdot\mathbf{L}$ là góc giữa pháp tuyến và hướng đèn; $W$ cho kênh đỏ nhận sáng cả ở phía khuất nhiều hơn hai kênh kia, tạo cảm giác đỏ thấu qua thịt quả (tán xạ dưới bề mặt); $\beta$ là loang màu nhẹ; thừa số cuối tối đi trong hốc hạt. Phản xạ gương cộng thêm một số thực $\mathrm{Sp}$ vào cả ba kênh: Fresnel dạng Schlick $(0{,}03 + 0{,}97\,t^5)$ với $t = \langle 1 - n_3\rangle$, nhân với hai "softbox" chữ nhật trong không gian vectơ phản xạ và một môi trường sáng dần lên trên. Mô hình này tạo cảm giác khối trong giả thiết của nó; nó không khôi phục hình học ba chiều của ảnh gốc. Màu tính trong không gian tuyến tính rồi mã hoá sRGB từng mẫu trước khi lấy trung bình bốn mẫu; report ghi thứ tự này khác cấu hình tuyến tính của tập I, với lý do để phép kiểm từng điểm (Test A) vẫn chạy được.</p>
+<p><strong>Texture trên khối.</strong> Toạ độ mặt quả $\zeta' = \hat\omega(1 + 0{,}57\min(|\hat\omega|^2, 1))\,e^{i\phi_p}$ làm lưới dày lên ở mép (xấp xỉ của phép chiếu $\arcsin$ trên mặt cầu); lưới lục giác</p>
+<p>$$T(\zeta) = \tfrac13\Big[\cos(30\,\Re\zeta) + \cos(30\,\Re(\zeta E)) + \cos(30\,\Re(\zeta/E))\Big], \qquad E = e^{2\pi i/3},$$</p>
+<p>bằng 1 tại tâm mỗi hạt. Đọc: ba họ sóng cos lệch nhau 120°, tần số 30 cho khoảng 14 hạt mỗi đường kính. Hốc $P = S\big((\chi - T)/0{,}25\big)$ với ngưỡng $\chi$ quanh 0,45; pháp tuyến bị nghiêng theo độ dốc của $P$ tính bằng sai phân hữu hạn ($P$ tại $\zeta + 0{,}02$ và $\zeta + 0{,}02i$); hạt vàng là một bước mềm khác dịch về phía cuống. Bước đánh bóng thứ hai thêm hai value noise $\nu_1, \nu_2$ trên toạ độ mặt quả để từng hạt lệch 0,02 khỏi nút lưới, hốc to nhỏ khác nhau 8 % và sâu nông khác nhau 30 %; đặt ba biên độ về 0 thì ảnh trùng từng bit với bản trước đó.</p>
+<p><strong>Gộp dạng đóng.</strong> Ảnh cuối, với bốn mẫu mỗi pixel ($\mu_1, \mu_2 \in \{0, 1\}$):</p>
+<p>$$(R, G, B)(m, n) = F\Big(\tfrac14 \sum_{\mu_1}\sum_{\mu_2} H(x, y)\Big), \quad x = \frac{m + (2\mu_1 + 1)/4}{554} - 1, \quad y = 1 - \frac{n + (2\mu_2 + 1)/4}{554},$$
+$$H(x, y) = \mathrm{srgb}\Big(\mathrm{tone}\big(C(z)\,(1 - 0{,}11(x^2 + y^2))\big)\Big) + 0{,}018\,\big(\nu(x, y; 520, 99) - \tfrac12\big).$$</p>
+<p>Đọc: thừa số $1 - 0{,}11(x^2 + y^2)$ là tối góc ống kính, nhân trong không gian tuyến tính; $\mathrm{tone}$ là "vai sáng" làm mềm vùng chói trên 0,75; $\mathrm{srgb}$ là mã hoá sRGB; số hạng cuối là hạt ảnh biên độ 0,018 cộng sau khi mã hoá. Thử: pixel $(0, 0)$ có bốn mẫu tại $x \in \{-0{,}99955, -0{,}99864\}$ và $y$ đối xứng, sát góc trên trái. Toàn bộ bức tranh là biểu thức này. Hình 20 thu nhỏ công thức một trang; Phụ lục B viết đủ mọi hàm phụ.</p>
+<figure><img src="figures/H17_strip.jpg" alt="Hình 17. Từ một quả tới một hàm cho cả bức, tái dựng từ đặc tả v1.1 ở 554 × 554," loading="lazy"><figcaption>Hình 17. Từ một quả tới một hàm cho cả bức, tái dựng từ đặc tả v1.1 ở 554 × 554, một mẫu mỗi pixel: (a) chỉ quả tiêu điểm trên nền khe tối; (b) hai quả, lớp sau che lớp trước; (c) 21 quả chưa có đài lá; (d) 35 vật thể, 91 lớp. Hash: 73253bf7…, e63c13ae…, 3594edfb…, e59d4ef9… (khác hash chuẩn vì độ phân giải và số mẫu khác).</figcaption></figure>
+<figure><img src="figures/H20_poster-cong-thuc.jpg" alt="Hình 20. Phần công thức của poster &quot;Đống dâu — Macro tiêu điểm&quot; v1.1: " loading="lazy"><figcaption>Hình 20. Phần công thức của poster &quot;Đống dâu — Macro tiêu điểm&quot; v1.1: toàn bộ hàm sắp chữ dưới bức tranh theo khuôn poster của Yeganeh; danh sách số sinh thẳng từ bảng của đặc tả. Ký hiệu của poster khác ký hiệu của bài ở vài chỗ (Phụ lục A.2); Phụ lục B là bản theo ký hiệu của bài.</figcaption></figure>
+<h3>7.6 Không gian phương án và tuyển chọn</h3>
+<p>Đúng điều đã xảy ra, theo report và hồ sơ ứng viên:</p>
+<table>
+<thead>
+<tr>
+<th>Giai đoạn</th>
+<th>Nội dung</th>
+<th>Số</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Thẻ ý tưởng lô 1</td>
+<td>12 thẻ A–M, mỗi thẻ một "thesis" (một câu đặt cược kèm đánh đổi) và bảy trục; ví dụ thẻ D "Kính màu": khe tối thành đường chì, mỗi ô Voronoi mang màu công thức tại tâm ô</td>
+<td>12 thẻ, 10 ứng viên vòng 0, 8 họ công thức</td>
+</tr>
+<tr>
+<td>Vòng 0 lô 1</td>
+<td>so cặp mù 45 cặp ở ba cỡ, mỗi cặp một bên thắng và một câu lý do; xếp hạng theo số trận thắng: H 9 · D 8 · F 7 · L 6 · B 5 · A 4 · E 3 · M 2 · C 1 · J 0</td>
+<td>10 bức, 45 cặp</td>
+</tr>
+<tr>
+<td>Vòng 1–3 lô 1</td>
+<td>mỗi bức sửa một vấn đề; 4 bản sửa hoàn tác (E1 ra ngoài dải $\Delta E$ 17,8; F2 "sọc chéo như dưa hấu"; L2 mất lõi phát quang; B3 hạt tách đôi ở 1108 px); xếp hạng vòng 3: D 5 · H 4 · F 3 · B 2 · L 1 · E 0</td>
+<td>6 bức, 3 × 15 cặp</td>
+</tr>
+<tr>
+<td>Chung kết lô 1</td>
+<td>A Tối–sáng (an toàn), B Poster ba tông (cân bằng), C Kẹo thuỷ tinh (chất liệu), D Ngọc lưới vàng (ngữ pháp Yeganeh), E Kính màu (wild card); mỗi bức một vai, một dòng "chọn khi muốn…"</td>
+<td>5 đặc tả</td>
+</tr>
+<tr>
+<td>Phản hồi Henry</td>
+<td>"Giữ 5 options này, nhưng tôi muốn triển khai thêm một số options khác mà khiến ảnh ra giống ảnh chụp (và gần với reality hơn)."</td>
+<td></td>
+</tr>
+<tr>
+<td>Lô 2 "ảnh chụp"</td>
+<td>6 thẻ N–S trên một lõi chiếu sáng vật lý chung; vòng p0 15 cặp (R loại: "lưới hạt lệch quá tay trông như lỗ sâu"), p1 (sửa chung đài lá), p2 (mỗi bức một sửa); P loại</td>
+<td>6 thẻ, 4 bức chung kết F–I</td>
+</tr>
+<tr>
+<td>Tổng</td>
+<td>bản ghi ứng viên đã render, kể cả bản bị loại và hoàn tác</td>
+<td>60</td>
+</tr>
+</tbody>
+</table>
+<p>Bộ chung kết là một phổ lựa chọn, không phải năm bức điểm cao nhất; vì vậy E đứng hạng 1 ở vòng 3 mà vẫn mang vai wild card. Thay đổi cấu trúc (họ công thức khác) phân biệt với thay đổi tham số của cùng cấu trúc: report ghi rằng ba bức G, H, I của lô 2 gần như cùng một ảnh ở mức texture, và gọi chúng là biến thể của một hướng, không phải ba hướng. Hình 18 là tờ chung chín bức chung kết với số đo của từng bức.</p>
+<p>Về "mù": mã tạm sinh từ SHA-256 của tên vòng, không dùng chữ cái thẻ; chỉ số phụ trợ chỉ mở sau khi chấm. Report ghi giới hạn: Claude Code viết mọi công thức nên nhận ra phong cách; "mù" chỉ có nghĩa là không biết mã nào ứng với thẻ nào và chưa xem chỉ số hay độ dài lúc chấm. Một thước "khác nhau thật" của bộ quy tắc (hamming của dhash ≥ 12) thất bại 9/10 cặp vì mọi ứng viên chung bố cục đo; Claude Code hiệu chỉnh trên dữ liệu dự án với mốc "cùng ý tưởng" và "khác ý tưởng", bác một thước mình đã đề xuất (edge_dhash) khi nó hỏng trên bộ chung kết, và đề xuất một thước khác (LBP χ²) nhưng chưa dùng để tuyên bố đạt vì Henry chưa duyệt.</p>
+<h3>7.7 Rút gọn và đóng gói</h3>
+<p>Cách gộp định nghĩa: một lõi hình học chung cho mọi ứng viên lô 1 (bảng neo, đài lá chủ, tư thế, dáng dâu, toạ độ mặt quả, lưới lục giác, đài lá, khe, gộp lớp) và một lõi chiếu sáng chung cho lô 2; mỗi thẻ chỉ thay phần tô màu và chất liệu. Khi đóng gói, hàm không dùng bị tỉa, mã được đánh lại, và pixel ở 480 px được kiểm trùng bản đã chấm vì làm sạch không được đổi ảnh. Thay bảng bằng quy luật ở đâu: dáng riêng (mục 7.4), pha lưới hạt, hướng chóp mặc định, độ dài và độ rộng từng cánh đài lá đều là hash của mã vật thể; bỏ thông tin nào: dáng thật của từng quả trong ảnh (bậc 2 cấm lấy); ảnh đổi ra sao: quả trong tranh không trùng đường viền quả trong ảnh. Henry chấp nhận đánh đổi này khi duyệt bậc 2 và LAI.</p>
+<p>Độ dài, theo cách đếm của bộ quy tắc (phần công thức giữa hai dòng mốc, bỏ chú thích và khoảng trắng, hằng số là mọi literal số): 11 489 ký tự, 663 hằng số, 207 dòng, 27 hàm phụ riêng ngoài kernel và bộ công cụ dùng chung. Bức này đáp ứng ngân sách LAI; nó dài hơn bốn bức lô 1 (4 165–6 085 ký tự) vì mô hình chiếu sáng. Phần dùng chung (kernel và bộ công cụ) không tính vào con số này; khi nói "tự chứa", file đặc tả chứa cả hai.</p>
+<h3>7.8 Henry chọn, và vòng đánh bóng</h3>
+<p>Henry viết: "Lấy ảnh F." Không nêu lý do; hồ sơ gu chỉ ghi lời và lựa chọn. Đây là lựa chọn của tác giả, không phải đồng thuận về vẻ đẹp; xếp hạng của Claude Code là một nguồn nhận xét, không phải xác nhận độc lập.</p>
+<p>Henry hỏi "Theo bạn, nên có vòng đánh bóng ko ?", Claude Code khuyên một vòng hẹp, Henry viết "Hãy làm 1 vòng đánh bóng như bạn suggest". Hai bước, mỗi bước một mục tiêu, mỗi bước so mù ba bản ở ba cỡ: dáng riêng từng quả với biên độ 0,045 thắng biên độ 0,07 và bản gốc; hạt bớt trật tự ở mức vừa thắng mức mạnh ("hốc to nổi lên như vết bệnh") và lưới đều. Chung kết v1.0 với v1.1: v1.1 thắng ở 100 %; ở thumbnail hai bản gần trùng (dhash lệch 1 bit); 58,6 % pixel lệch quá 2 mức, 91,7 % trong đó trên quả. Henry: "Ok Duyệt." Report ghi rõ cách hiểu: câu này trả lời câu hỏi chọn v1.0 hay v1.1, nên v1.1 là bản chính.</p>
+<p>Phép thử nhiễu loạn của v1.1, kỳ vọng ghi trước: bỏ dòng 19 chỉ đổi đúng quả đó; thu bán kính dáng từ 1,1 xuống 1,0 làm tỷ lệ khe tối tăng từ 0,0989 lên 0,157, đúng hướng; đặt ba tham số hạt về 0 không chạm probe nào, bằng chứng tác động là phép kiểm trùng từng bit; đặt biên độ dáng về 0 được kỳ vọng làm khe tối tăng nhẹ vì quả nhỏ đi, nhưng quan sát giảm (0,0989 → 0,0973). Đo thêm sau khi chạy: tổng diện tích các quả giảm đúng như dự đoán (0,9803 → 0,9764) nhưng diện tích phủ hợp không đổi (0,8505 → 0,8505) vì phần mép thay đổi nằm dưới các quả khác. Kỳ vọng sai được giữ nguyên trong đặc tả kèm giải thích.</p>
+<h3>7.9 Kết quả</h3>
+<table>
+<thead>
+<tr>
+<th>Hạng mục</th>
+<th>Giá trị</th>
+<th>Điều kiện</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Kích thước</td>
+<td>1108 × 1108, A = 1, bốn mẫu mỗi pixel</td>
+<td>gấp đôi nguồn, do Henry duyệt</td>
+</tr>
+<tr>
+<td>Lớp, hàm phụ</td>
+<td>91 lớp gộp dạng đóng; 27 hàm phụ riêng; bảng neo 35 dòng (105 số đo)</td>
+<td></td>
+</tr>
+<tr>
+<td>Độ dài mô tả</td>
+<td>11 489 ký tự; 663 hằng số; 207 dòng</td>
+<td>cách đếm ở mục 7.7; không tính kernel và bộ công cụ</td>
+</tr>
+<tr>
+<td>Tương đồng cấu trúc</td>
+<td><code>lum12</code> 0,634 (dải đã duyệt 0,30–0,85); $\Delta E$ palette 7,2 (≤ 10); tương quan biên 0,175 (chỉ báo cáo)</td>
+<td>so với tham chiếu 554 × 554</td>
+</tr>
+<tr>
+<td>Ràng buộc cứng</td>
+<td>6/6 PASS: 21 quả, 14 đài lá nhìn thấy</td>
+<td></td>
+</tr>
+<tr>
+<td>Hash pixel</td>
+<td><code>3710e8ecd15e3374fd93ca4d422df7cdc2f2136791747505130b955a7486076c</code></td>
+<td>EP-PIX v1</td>
+</tr>
+<tr>
+<td>Probe</td>
+<td>14/14 PASS, dung sai ±2</td>
+<td></td>
+</tr>
+<tr>
+<td>Test A từng điểm</td>
+<td>100/100 pixel tính lại bằng thư viện vô hướng <code>math</code>/<code>cmath</code> khớp render</td>
+<td></td>
+</tr>
+<tr>
+<td>Clean-room</td>
+<td>PASS hai lần trên file cuối, tiến trình mới, thư mục rỗng; CODE_SHA256 <code>093fed4f…3540</code></td>
+<td>một máy: Windows 11, Python 3.14.3, numpy 2.4.6</td>
+</tr>
+<tr>
+<td>Khớp toán–code</td>
+<td>28/28 mã; 11 hàm cài lại bằng <code>cmath</code> từ văn bản toán, sai khác lớn nhất $1{,}1 \cdot 10^{-16}$</td>
+<td></td>
+</tr>
+<tr>
+<td>Văn bản toán</td>
+<td>cài lại độc lập từ chính văn bản, 5 000/5 000 pixel khớp render, lệch 0</td>
+<td></td>
+</tr>
+<tr>
+<td>Tính theo ô = tính toàn ảnh</td>
+<td>PASS ở 1108 px</td>
+<td>tối ưu tốc độ không đổi ảnh</td>
+</tr>
+<tr>
+<td>Môi trường thứ hai</td>
+<td>NOT_RUN cho đặc tả này</td>
+<td>hai đặc tả mẫu của bộ quy tắc đã qua hai môi trường</td>
+</tr>
+<tr>
+<td>Thời gian render</td>
+<td>42,3 s (tính theo ô); 289,9 s (toàn ảnh không chia ô)</td>
+<td></td>
+</tr>
+<tr>
+<td>Thời gian lịch</td>
+<td>một ngày, nhiều lượt trao đổi; report không ghi tổng phút máy</td>
+<td>không có đối chứng</td>
+</tr>
+</tbody>
+</table>
+<p>Đặc điểm giữ được, với bằng chứng ảnh (Hình 1): 21 quả và 14 đài lá đúng vị trí và cỡ đo; quả lớn nhất ở giữa hơi lệch trên; sáu màu đo; sáng từ trên-trái. Đặc điểm được diễn giải: dáng, hạt, độ bóng, độ sâu trường ảnh, hạt ảnh, tối góc. Đánh giá thật của chính dự án: xem ở 100 %, bức cuối vẫn đọc ra là ảnh dựng 3D chất lượng cao; ba thứ còn lộ là dáng quả quá đều, đài lá đơn giản, lưới hạt quá trật tự, và hai thứ đầu đã được đánh bóng một bước.</p>
+<h3>7.10 Đối chiếu hai case trên cùng một ảnh</h3>
+<p>Trước các con số: hai case khác độ phân giải (554² với một mẫu mỗi pixel so với 1108² với bốn mẫu) và khác cách đếm độ dài (byte của toàn bộ code block so với ký tự của phần công thức sau khi bỏ chú thích và khoảng trắng). Bảng dưới chỉ đặt cạnh nhau, không xếp hạng.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Case 1 (P1)</th>
+<th>Case 2 (P2)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Mục tiêu</td>
+<td>khớp từng pixel với nguồn</td>
+<td>tương đồng bậc 2, định nghĩa gọn, con người chọn</td>
+</tr>
+<tr>
+<td>Dữ liệu lấy từ ảnh</td>
+<td>36 450 số thực và 4 807 mã màu (vị trí, cỡ, góc, màu của 4 831 hình)</td>
+<td>105 số (35 vị trí và cỡ) + 6 màu + 1 hướng sáng</td>
+</tr>
+<tr>
+<td>Quy luật thay dữ liệu</td>
+<td>không; mỗi chi tiết một dòng</td>
+<td>dáng, hạt, đài lá, ánh sáng từ hàm của chỉ số và hash</td>
+</tr>
+<tr>
+<td>Độ dài</td>
+<td>460 692 byte code</td>
+<td>11 489 ký tự công thức (cộng kernel và bộ công cụ dùng chung)</td>
+</tr>
+<tr>
+<td>Bám nguồn</td>
+<td>MAE 14,55; PSNR 20,99 dB; SSIM 0,602</td>
+<td>không đo pixel; <code>lum12</code> 0,634, $\Delta E$ palette 7,2</td>
+</tr>
+<tr>
+<td>Tái lập</td>
+<td>hash, 16/16 probe, clean-room R1</td>
+<td>hash, 14/14 probe, clean-room R1, 100/100 từng điểm, 5 000/5 000 từ văn bản toán</td>
+</tr>
+<tr>
+<td>Render</td>
+<td>≈ 1,5–2 s</td>
+<td>42,3 s</td>
+</tr>
+<tr>
+<td>Điểm Henry dừng</td>
+<td>0</td>
+<td>5</td>
+</tr>
+<tr>
+<td>Bản thử</td>
+<td>12 vòng trên một cấu trúc</td>
+<td>60 bản render, 9 chung kết, 2 bước đánh bóng</td>
+</tr>
+</tbody>
+</table>
+<p>Kết luận có căn cứ: khi bỏ yêu cầu khớp từng pixel và chấp nhận bảng neo 35 dòng, phần mô tả riêng của cảnh ngắn đi hơn bốn mươi lần theo byte, nhưng bức tranh không còn khớp nguồn ở bất kỳ pixel nào và điều đó là chủ ý. Case 1 khớp một mẫu; case 2 khớp cách một nhóm hình được tổ chức.</p>
+<h3>7.11 Giới hạn của case này</h3>
+<p>Mới R1: hai tiến trình trên cùng một máy. Chưa phải ảnh thật, theo chính đánh giá của dự án. Chấm mù có giới hạn vì người chấm là người viết công thức, và ở vòng đánh bóng chỉ có hai đến ba bản với người chấm biết thay đổi là gì. Các ngưỡng mới (<code>lum12</code> 0,30–0,85, LBP χ² 0,01) là dữ liệu từ một dự án, chưa phải chuẩn. Bố cục lấy từ ảnh đặt không theo quy luật nên vẫn cần bảng; một bức có bố cục tự do có thể về hạng NGẮN, nhưng case này không thử. Điều học được: khớp một mẫu và khớp cách một nhóm hình được tổ chức là hai việc khác nhau, cần hai thước đo khác nhau, và chỉ việc thứ hai cho phép công thức ngắn.</p>
+<h3>7.12 Các phương án không được chọn, và công thức của chúng</h3>
+<p>Trong 60 bản render của case 2, chín bức vào chung kết và một bức được chọn. Tám bức còn lại của chung kết là những công thức hoàn chỉnh, đã qua clean-room và Test A như bức được chọn; chúng khác nhau ở ý tưởng tô màu và chất liệu trên cùng một lõi hình học. Hình 18 là tờ chung chín bức với số đo; Hình 18b là tờ chấm vòng 0 với mười ứng viên của lô 1, trong đó bốn bức bị loại sớm. Bảng dưới ghi, cho từng bức không được chọn, thesis, số đo, hash và công thức đặc trưng, tức công thức làm bức đó khác các bức khác. Ký hiệu theo Phụ lục A; $\hat\omega$ là toạ độ đã nắn trong quả, $\mathbf{n}$ là pháp tuyến, $\mathbf{L}$ hướng sáng, $\tilde{\mathbf{H}}$ vectơ nửa đường, $\Lambda$ hướng sáng chiếu lên hệ toạ độ của quả, $K_S, K_M, K_L$ ba sắc đỏ đo, $K_{HL}$ màu lấp lánh, $K_{SEED}$ màu hạt, $\mathcal{G}$ cổng Yeganeh.</p>
+<figure><img src="figures/p2_contact_sheet_all.jpg" alt="Hình 18. Chín bức chung kết của case 2, mỗi bức kèm số đo: ký tự, hằng số, thời " loading="lazy"><figcaption>Hình 18. Chín bức chung kết của case 2, mỗi bức kèm số đo: ký tự, hằng số, thời gian render, lum12, $\Delta E$ palette, hạng so cặp, tám ký tự đầu của hash. Hàng trên và giữa trái: lô 1 (A–E); giữa phải và hàng dưới: lô 2 &quot;ảnh chụp&quot; (F–I). F là bức Henry chọn.</figcaption></figure>
+<figure><img src="figures/p2_round0_labeled_sheet.jpg" alt="Hình 18b. Tờ chấm vòng 0 của lô 1 với mười ứng viên (thẻ A B C D E F H J L M, mã" loading="lazy"><figcaption>Hình 18b. Tờ chấm vòng 0 của lô 1 với mười ứng viên (thẻ A B C D E F H J L M, mã tạm mù khi chấm). Bốn bức bị loại sau vòng 0: J &quot;sọc dọc làm quả giống dưa sọc, mất nhận diện dâu&quot;; C &quot;nét cọ thành sọc vải&quot;; M &quot;vết vỏ trứng giữa mỗi quả gây rối&quot;; A trùng ý với H. Thẻ E bị loại ở vòng 3.</figcaption></figure>
+<table>
+<thead>
+<tr>
+<th>Bức</th>
+<th>Thesis (rút gọn)</th>
+<th>Ký tự / hằng số / render</th>
+<th>Hash</th>
+<th>Công thức đặc trưng</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A Tối–sáng (thẻ H)</td>
+<td>ánh sáng gắt và hẹp, phần lớn khung chìm trong đỏ thẫm; hạt chỉ hiện nơi có sáng</td>
+<td>5 612 / 350 / 18,0 s</td>
+<td><code>be3cfe20</code></td>
+<td>$d = \langle \mathbf{n}\cdot\mathbf{L} \rangle^{1{,}6}$, $\ell = 0{,}3 + 0{,}7d$; màu thân $K_b = \mathrm{ramp}(\langle 1{,}2d \rangle; K_S, K_M, K_L)$ với $\mathrm{ramp}(t; K_0, K_1, K_2) = K_0 + (K_1 - K_0)\langle 2t\rangle + (K_2 - K_1)\langle 2t - 1\rangle$; hạt $\sigma \propto \langle 2d \rangle$</td>
+</tr>
+<tr>
+<td>B Poster ba tông</td>
+<td>mảng phẳng ba tông có viền mực; hạt vàng in lệch bản</td>
+<td>4 838 / 294 / 13,1 s</td>
+<td><code>ecb0a345</code></td>
+<td>ba tông theo $s_1 = S\big((0{,}22 - \mathbf{n}\cdot\mathbf{L})/0{,}025\big)$, $s_2 = S\big((0{,}64 - \mathbf{n}\cdot\mathbf{L})/0{,}025\big)$; viền mực bằng hai lớp: mực $M = S(d/\varepsilon)$ rồi ruột $M = S\big((d + 0{,}011)/\varepsilon\big)$; bản vàng lệch: lưới $T$ tính tại $z + (0{,}009 - 0{,}006i)$</td>
+</tr>
+<tr>
+<td>C Kẹo thuỷ tinh (thẻ L)</td>
+<td>quả trong như kẹo, lõi phát sáng phía khuất, viền Fresnel</td>
+<td>5 100 / 321 / 15,6 s</td>
+<td><code>2b97e6cf</code></td>
+<td>$\mathrm{glow} = e^{-|\hat\omega + 0{,}4\Lambda|^2/0{,}55}$; $\mathrm{fr} = (1 - n_3)^3$; thân $= 0{,}7K_S + (1{,}3K_L - 0{,}42K_S)\,\mathrm{glow}$; viền $(0{,}6K_L + 0{,}4K_{HL})\cdot\langle 1{,}8\,\mathrm{fr}\rangle$</td>
+</tr>
+<tr>
+<td>D Ngọc lưới vàng (thẻ F)</td>
+<td>ngữ pháp Yeganeh: cổng, khối cầu, lưới trên mặt cầu, sao 7 cánh</td>
+<td>4 165 / 277 / 18,8 s</td>
+<td><code>dc69dad7</code></td>
+<td>$\zeta = \arcsin(\min(|\hat\omega|, 1))\,e^{i\arg\hat\omega}e^{i\phi}$; $T = \cos(12\Re\zeta)\cos(15\Im\zeta)$; hạt cườm $\mathcal{G}\big(14(0{,}8 - T)\big)$; mask quả $\mathcal{G}(2d/\varepsilon)$; đài lá là sao $k(\psi) = 0{,}3 + 0{,}7\big(1 - |\sin(7\psi/2)|\big)^{0{,}8}$</td>
+</tr>
+<tr>
+<td>E Kính màu (thẻ D, wild card)</td>
+<td>khe tối thành đường chì, mỗi quả là ô kính Voronoi mang màu tại tâm ô</td>
+<td>6 085 / 352 / 40,3 s</td>
+<td><code>d3de1929</code></td>
+<td>Voronoi $(F_1, F_2, P)$ trong hệ $\hat\omega$ với tần số 4,2; chì $= S\big((F_2 - F_1 - 0{,}085)/w\big)$; màu ô lấy pháp tuyến tại tâm ô $P$ thay vì tại pixel, ba bậc theo $\mathbf{n}\cdot\mathbf{L}$</td>
+</tr>
+<tr>
+<td>G Đọng sương (thẻ Q)</td>
+<td>như studio, thêm giọt nước khúc xạ trên vỏ</td>
+<td>10 628 / 626 / 42,6 s</td>
+<td><code>da3d528e</code></td>
+<td>giọt $k$ của quả có mã $\iota$: tâm $0{,}78\sqrt{h_1}\,e^{2\pi i h_2}$, bán kính $0{,}045 + 0{,}06h_3$ với $h_j$ là hash của $(\iota, k)$; trong giọt, $\rho = |\hat\omega - q_d|/r_d$: viền tối $1{,}12 - 0{,}62\,S\big((0{,}86 - \rho)/0{,}1\big)$, hội tụ sáng $e^{-|d + 0{,}45\Lambda|^2/0{,}12}$</td>
+</tr>
+<tr>
+<td>H Phim analog (thẻ S, wild card)</td>
+<td>ảnh phim: đèn ấm, quầng đỏ quanh chỗ sáng, đen bạc, hạt phim</td>
+<td>10 458 / 634 / 29,5 s</td>
+<td><code>c225e03f</code></td>
+<td>quầng $\mathrm{halo} = \langle 1 - (|a| - 0{,}3)^+/0{,}35\rangle^2 \langle 1 - (|b| - 0{,}2)^+/0{,}35\rangle^2 \langle(\boldsymbol\ell\cdot\mathbf{L} - 0{,}55)/0{,}3\rangle\langle(n_3 - 0{,}3)/0{,}3\rangle$, $K \leftarrow K + 0{,}5\,\mathrm{halo}\,(1;\ 0{,}3;\ 0{,}12)$; đèn ấm $(1{,}05;\ 0{,}97;\ 0{,}86)$; đen bạc $H = \mathrm{FADE} + (1 - \mathrm{FADE})\,\mathrm{srgb}(\cdot)$; hạt 0,035</td>
+</tr>
+<tr>
+<td>I Studio softbox (thẻ N)</td>
+<td>ảnh sản phẩm: mọi quả nét, phản chiếu softbox trên vỏ ướt</td>
+<td>9 625 / 585 / 28,9 s</td>
+<td><code>2859ba58</code></td>
+<td>lõi chiếu sáng của mục 7.5 không có độ sâu trường ảnh, tối góc và hạt ảnh; bóng tiếp xúc nhạt và rộng: $0{,}5\langle 1 - d/0{,}38R\rangle^2$</td>
+</tr>
+</tbody>
+</table>
+<p>Ba điều rút ra từ bảng. Thứ nhất, cùng một bố cục đo và cùng một lõi hình học có thể mang tám cách tô màu khác hẳn nhau, từ poster phẳng tới kính màu; phần "cá tính" của một bức nằm ở vài công thức màu, không ở bảng neo. Thứ hai, độ dài tăng theo mức tả thực: bốn bức lô 1 dài 4 165–6 085 ký tự, bốn bức lô 2 dài 9 625–11 489 ký tự vì mô hình chiếu sáng; đẹp theo kiểu ảnh chụp phải trả bằng công thức dài hơn gấp đôi. Thứ ba, ba bức G, H, I của lô 2 gần như cùng một ảnh ở mức texture (mục 7.6); chúng là ba cách hậu kỳ của một bức, không phải ba hướng. Tám bức này vẫn là tác phẩm hoàn chỉnh, tái lập được từ đặc tả của chúng; chúng không bị loại vì sai mà vì một người chọn bức khác.</p>
+<h2 id="8-tho-lun">8. Thảo luận</h2>
+<h3>8.1 Người và máy, ở đúng mức bằng chứng</h3>
+<p>Paper phát biểu về AI ở hai mức. Mức cơ chế: theo thiết kế của hai bộ quy tắc, và được report xác nhận đã chạy như vậy, quy trình giao cho AI việc đo, đề xuất và triển khai các bản thử, render và kiểm bằng hash trong mỗi vòng, để con người tập trung vào tiêu chí và lựa chọn. Mức quan sát trong case: ở case 1, Claude Code thực hiện đo, phân rã, viết, 12 vòng sửa, đóng gói và kiểm trong khoảng 48 phút lịch theo dấu thời gian file, không có điểm dừng của Henry; ở case 2, Claude Code render 60 bản thử, chấm 90 cặp trong lô 1 (45 + 15 + 15 + 15) và 15 cặp ở vòng đầu của lô 2 (hai vòng sau của lô 2 không ghi số cặp), đóng gói 9 đặc tả và một bản đánh bóng trong một ngày, Henry dừng để quyết định ở năm điểm có lời ghi.</p>
+<p>Thời gian phải tách. Thời gian render (1,5–2 s; 42,3 s) không phải thời gian tìm công thức. Thời gian lịch của case 1 gồm cả đọc bộ quy tắc và cài công cụ. Chi phí xây công cụ dùng lại (kernel, bộ công cụ, hai bộ quy tắc, script kiểm) nằm ngoài cả hai report. Không có số nào trong hai case cho phép tính tỷ số</p>
+<p>$$S(q) = \frac{T_{\text{người + công cụ}}(q)}{T_{\text{AI hỗ trợ}}(q)}$$</p>
+<p>vì không có một người với công cụ tính toán làm cùng việc tới cùng mức $q$. Hai case cho thấy AI tham gia vào việc xây và kiểm tra công thức như thế nào và với khối lượng bao nhiêu; chúng chưa đủ để ước lượng mức rút ngắn thời gian so với một người có công cụ tính toán làm cùng việc.</p>
+<p>Hai thời kỳ cũng cần tách. Một đặc tả tái lập được không có nghĩa một model khác, được giao lại ảnh gốc, sẽ tìm ra cùng công thức. Case 2 có 60 bản thử và năm quyết định của con người trên đường tới một bức; lặp lại đầu ra chỉ cần chạy một file.</p>
+<h3>8.2 Hai câu hỏi của Yeganeh và dữ liệu của hai case</h3>
+<p>Yeganeh hỏi: mọi bức tranh có mô tả được bằng một hàm với định nghĩa không quá dài không; có phương pháp tìm định nghĩa đơn giản nhất không [1]. Hai case không trả lời bằng lý thuyết. Chúng cho hai điểm dữ liệu trên một ảnh. Khi yêu cầu là khớp ảnh chụp từng pixel ở mức PSNR 21 dB, định nghĩa dài 460 KB và 95,5 % là bảng số đo; thêm 2,5 lần số hàm cho mảng sáng tối chỉ giảm 14 % sai số, nên phần còn lại là texture vi mô mà một mô hình đọc được không bắt kịp. Khi yêu cầu đổi thành tương đồng có kiểm soát và một định nghĩa gọn, 11 489 ký tự với một bảng 35 dòng là đủ cho một bức được con người chọn. Về câu hỏi thứ hai, quy trình của case 2 không tìm định nghĩa đơn giản nhất; nó tìm một tập định nghĩa đủ tốt, đủ khác nhau, trong một ngân sách, và đo mỗi định nghĩa bằng ký tự, hằng số, thời gian render, hash và một lựa chọn của con người. Paper không dùng so sánh bậc nhất về độ ngắn.</p>
+<h3>8.3 Giới hạn, và một hộp lập luận đếm (nâng cao, tuỳ chọn)</h3>
+<p>Giới hạn chung của hai case: một ảnh; một loại cảnh; một máy; chưa có AI khác tái lập; chưa có đánh giá cảm nhận của người xem ngoài tác giả. Giới hạn của phương pháp: tồn tại biểu diễn không có nghĩa biểu diễn tốt. Mọi ảnh hữu hạn viết được thành</p>
+<p>$$I(m, n) = \sum_{i=0}^{W-1}\sum_{j=0}^{H-1} p_{ij}\, \mathbf{1}_{\{m = i\}}\, \mathbf{1}_{\{n = j\}},$$</p>
+<p>tức vẫn lưu từng pixel dưới dạng một "công thức"; dự án loại cách này khỏi lớp lời giải mong muốn mà không phủ nhận tính hợp lệ toán học của nó. Nhiều công thức khác nhau có thể cho cùng ảnh; khớp một ảnh không có nghĩa tìm được "công thức thật".</p>
+<p>Về độ gọn, một lập luận đếm: trong bảng chữ nhị phân, số chuỗi dài không quá $L$ là $2^{L+1} - 1$, trong khi có $2^{24WH}$ ảnh RGB 8-bit kích thước $W \times H$; nếu $L &lt; 24WH$ thì không thể có mã ngắn như vậy cho mọi ảnh. Lập luận này nằm trong mô hình mã hoá đã nêu; nó không đo công thức của hai case, không nói một ảnh cụ thể không nén được, và không cấm ảnh có cấu trúc được mô tả ngắn. Đếm ký tự không phải đếm bit. Paper gọi các con số ở mục 6.7 và 7.9 là "độ dài mô tả đo được", không gọi là độ phức tạp Kolmogorov, không gọi tỷ số với kích thước PNG là "tỷ lệ nén".</p>
+<h3>8.4 Nghiên cứu liên quan và ghi công</h3>
+<p>Khuôn một hàm $(F(H_0), F(H_1), F(H_2))$ và cổng $e^{-e^{u}}$ theo Yeganeh [1]; dự án mô tả cách làm của ông đúng theo bài ông viết và không suy diễn thêm. Tìm kiếm công thức sinh ảnh và tuyển chọn bằng đánh giá thị giác của người đã có ở Sims [2]; dự án này không phải nơi ý tưởng đó xuất hiện lần đầu. Phép over và quy ước alpha theo Porter và Duff [4]. Noise thủ tục theo Perlin [7]; hàm khoảng cách đa giác theo Quilez [8]; xoắn ốc góc vàng theo Vogel [6]. SSIM theo Wang và cộng sự [3]; $\Delta E_{2000}$ theo Sharma và cộng sự [5]. Mạng toạ độ (SIREN) [9] là một cách khác biểu diễn ảnh bằng hàm, hợp lệ về toán học, nằm ngoài lớp biểu diễn minh bạch mà dự án chọn; paper không kết luận nó "không phải toán". Mức đóng góp của dự án: một quy trình có AI hỗ trợ, kiểm tra được bằng artifact; một cách phân biệt và trình bày hai mục tiêu; các quan sát từ hai case.</p>
+<h3>8.5 Sở hữu trí tuệ và tham chiếu</h3>
+<p>Ảnh dâu tây dùng cho cả hai case có xuất xứ chưa rõ. Đặc tả của case 1 tái tạo bố cục trung thành nên quyền của ảnh đi theo đặc tả. Đặc tả của case 2 không chứa pixel nào của ảnh tham chiếu và lấy từ ảnh 105 số vị trí–cỡ, 6 màu và một hướng sáng; mức tương đồng được công bố bằng số. Chuyển một ảnh thành công thức không làm biến mất vấn đề xuất xứ. Bài in ảnh gốc cạnh render để đối chiếu, với ghi chú xuất xứ chưa rõ. Ghi công Yeganeh có trong mọi đặc tả dùng khuôn một hàm; Yeganeh không liên quan và không duyệt tác phẩm này.</p>
+<h3>8.6 Việc tiếp theo</h3>
+<p>Thí nghiệm đối chứng chưa làm: một người biết toán, có máy tính và kernel sẵn, tự dựng một cảnh 5–7 lớp theo cùng brief, ghi thời gian; AI làm cùng brief; so ở cùng mức $q$. Chạy hai đặc tả trên Linux hay macOS với numpy khác phiên bản để có R2, R3. Cho hai hay ba AI khác, có và không chạy code, dùng đặc tả và ghi kết quả probe và hash (Tier 1, 2) và ảnh sinh từ mô tả (Tier 3). Lặp trên vài ảnh khác loại. Thử chế độ N trên cùng ảnh để có đường cong số hình cơ bản – PSNR – tính đọc được. Với case 2: quyết định về thước "khác nhau thật", về bậc 3 (lấy dáng thô từ ảnh), và về sửa năm bức lô 1 theo mã vật thể, chưa được quyết định; đề xuất 13 mục sửa bộ quy tắc chưa áp dụng.</p>
+<h2 id="9-hng-dn-dng-h-thng-i-nh-thnh-cng-thc-bng-ai">9. Hướng dẫn: dựng hệ thống đổi ảnh thành công thức bằng AI</h2>
+<p>Luận điểm của mục này: người đọc không cần viết code để có một hệ thống như trong bài. Cần một AI chạy được code trên máy của mình (ví dụ Claude Code hoặc công cụ tương đương, có Python và numpy), bài viết này, và một lời dẫn ngắn. Mục này viết dưới dạng nguyên tắc, không phải hướng dẫn từng phím.</p>
+<h3>9.1 Bảy nguyên tắc để nói với AI</h3>
+<ol>
+<li><strong>Tách hai mục tiêu ngay từ đầu.</strong> Nói rõ muốn vẽ lại đúng ảnh (bài toán 1) hay vẽ một bức mới theo ảnh (bài toán 2). Hai mục tiêu có hai thước đo khác nhau và không được trộn thành một điểm.</li>
+<li><strong>Cố định hợp đồng tính toán trước khi vẽ.</strong> Toạ độ tâm pixel (bậc 2), hàm xuất màu làm tròn nửa lên (bậc 3), mask mềm 1,5 pixel (bậc 5), phép over và kẹp một lần ở cuối (bậc 7), hash số nguyên thay cho mọi hàm ngẫu nhiên (bậc 9), hash pixel EP-PIX (mục 4). Mọi công thức viết trên hợp đồng đó; đổi hợp đồng là đổi phiên bản.</li>
+<li><strong>Đo, không đoán.</strong> Mọi vị trí, kích thước, màu lấy từ ảnh bằng code (k-means, watershed, bình phương tối thiểu); mắt chỉ quyết định có những vật gì và vật nào ở trước. Mỗi tham số ghi cơ sở: đo, quan sát, ước lượng hay chọn.</li>
+<li><strong>Mỗi vòng một thay đổi, một dòng nhật ký.</strong> Quan sát, giả thuyết, đổi gì, đo được gì, giữ hay hoàn tác. Dừng khi vài vòng liền không cải thiện, hoặc khi người chọn.</li>
+<li><strong>Kiểm bằng bốn công cụ, không bằng cảm giác.</strong> Probe (vài pixel kỳ vọng), hash pixel (toàn ảnh), clean-room (chạy lại từ file trong thư mục trống bằng tiến trình mới), phép thử nhiễu loạn (kỳ vọng ghi trước, đổi một tham số, so, hoàn tác). Trạng thái chỉ có PASS, FAIL, NOT_RUN, N/A.</li>
+<li><strong>Cấm bitmap trá hình.</strong> Không mã base64, không mảng pixel, không lưới sai số phủ ảnh, không mô hình sinh ảnh làm renderer, không đọc file ngoài trong code của đặc tả.</li>
+<li><strong>Người giữ ba việc.</strong> Đặt bài, đặt ràng buộc cứng, chọn bức cuối. Với bài toán 2, yêu cầu AI đưa nhiều phương án đủ khác nhau kèm thesis, chấm mù theo cặp, và dừng chờ người chọn; không để AI tự giao một bức.</li>
+</ol>
+<h3>9.2 Lời dẫn khởi động</h3>
+<p>Đưa bài viết này cho AI (file văn bản hoặc PDF) cùng ảnh của bạn, rồi gửi lời dẫn dưới đây. Lời dẫn viết bằng tiếng Việt; bản tiếng Anh ngay sau. Thay phần trong ngoặc nhọn.</p>
+<pre><code class="language-text">Đọc trọn bài &quot;Vẽ tranh bằng phương trình: hai bài toán, hai cách tìm công thức&quot;, đặc biệt
+mục 3 (mười bậc thang), mục 4 (nguyên lý), mục 5 (phương pháp), mục 9 (bảy nguyên tắc) và
+Phụ lục A, B, C. Sau đó dựng cho tôi một hệ thống đổi ảnh thành công thức theo đúng bài đó.
+
+Bước 1. Viết bộ quy tắc vận hành của hệ thống thành một file CLAUDE.md (hoặc tệp chỉ dẫn
+tương đương) gồm: hợp đồng tính toán (mục 3 bậc 2, 3, 5, 7, 9 và Phụ lục A), danh sách cấm
+(mục 9.1 điểm 6), bốn công cụ kiểm (mục 9.1 điểm 5), cấu trúc file đặc tả mười một mục
+(mục 5.7), và quy trình sáu bước đo → phân rã → viết → render → kiểm → sửa với nhật ký
+một dòng mỗi vòng (mục 5.3). Viết kernel Python chỉ dùng numpy và thư viện chuẩn cho các
+hàm của mục 3 (toạ độ, mask, over, hash, value noise, SDF cơ bản, hàm xuất màu, hash pixel).
+Chạy thử kernel trên ví dụ đĩa ở mục 3.8 và đối chiếu bốn giá trị (204, 51, 51), (26, 77, 153),
+(115, 64, 102), (176, 55, 67) trước khi làm việc khác.
+
+Bước 2. Nhận ảnh của tôi: {đường dẫn ảnh}. Mục tiêu: {vẽ lại đúng ảnh | vẽ một bức mới theo
+ảnh, giữ bố cục, màu và hướng sáng}. Ràng buộc cứng: {ví dụ: khung 1:1, số vật thể, không
+chữ}. Đo ảnh bằng code trước, báo cho tôi bảng số đo và kế hoạch phân rã, rồi dừng chờ tôi
+duyệt.
+
+Bước 3. Sau khi tôi duyệt, làm theo mục 5.3: mỗi vòng một thay đổi, một dòng nhật ký, render
+thật sau mỗi vòng. Với mục tiêu &quot;vẽ một bức mới&quot;: viết ít nhất 8 thẻ ý tưởng có thesis, dựng
+ít nhất 6 ứng viên, chấm mù theo cặp ở ba cỡ, giữ 3–5 bức chung kết đủ khác nhau, mỗi bức một
+vai, rồi dừng chờ tôi chọn. Không tự chọn thay tôi.
+
+Bước 4. Đóng gói bức cuối thành file đặc tả .md mười một mục (mục 5.7) với đúng một khối
+code, bảng probe, hash pixel, CODE_SHA256, và bốn lời dẫn cho AI khác. Chạy clean-room:
+trích khối code từ chính file .md, chạy trong thư mục tạm trống bằng tiến trình Python mới,
+in REPLAY OK và hash. Chạy phép thử nhiễu loạn với kỳ vọng ghi trước. Viết công thức toán
+cho người đọc theo mẫu Phụ lục B.
+
+Quy tắc chung: chỉ báo PASS/FAIL/NOT_RUN/N/A; không ghi &quot;giống x%&quot;; không tuyên bố đã kiểm
+khi chưa chạy; không đổi mục tiêu hay thu hẹp phạm vi mà không nói; mọi số trong báo cáo
+lấy từ lần chạy thật.
+</code></pre>
+<pre><code class="language-text">Read the paper &quot;Equation Painting: two problems, two ways of finding the formula&quot; in full,
+especially Section 3 (ten steps), Section 4 (principles), Section 5 (method), Section 9
+(seven principles) and Appendices A, B, C. Then build me an image-to-formula system that
+follows it exactly.
+
+Step 1. Write the system's operating rules as a CLAUDE.md (or equivalent instruction file):
+the computation contract (Section 3 steps 2, 3, 5, 7, 9 and Appendix A), the forbidden list
+(9.1 item 6), the four verification tools (9.1 item 5), the eleven-part specification file
+(5.7), and the six-step loop measure → decompose → write → render → verify → revise with a
+one-line log per round (5.3). Write a Python kernel using only numpy and the standard library
+for the functions of Section 3 (coordinates, mask, over, hash, value noise, basic SDFs, output
+function, pixel hash). Test the kernel on the disc example of 3.8 and match the four values
+(204, 51, 51), (26, 77, 153), (115, 64, 102), (176, 55, 67) before doing anything else.
+
+Step 2. Take my image: {path}. Goal: {repaint the image exactly | paint a new picture after
+the image, keeping layout, palette and light direction}. Hard constraints: {e.g. 1:1 frame,
+object count, no text}. Measure the image with code first, report the measurement table and
+the decomposition plan, then stop and wait for my approval.
+
+Step 3. After approval, follow 5.3: one change per round, one log line, a real render after
+each round. For &quot;paint a new picture&quot;: write at least 8 idea cards with a thesis, build at
+least 6 candidates, judge blind in pairs at three sizes, keep 3–5 finalists that differ in
+idea, each with a role, then stop and wait for my choice. Never choose for me.
+
+Step 4. Package the final picture as an eleven-part .md specification (5.7) with exactly one
+code block, a probe table, the pixel hash, CODE_SHA256 and the four prompts for other AIs.
+Run the clean-room test: extract the code block from the .md itself, run it in an empty
+temporary folder with a fresh Python process, print REPLAY OK and the hash. Run perturbation
+tests with expectations written before running. Write the human-readable mathematics in the
+format of Appendix B.
+
+General rules: report only PASS/FAIL/NOT_RUN/N/A; never write &quot;x% similar&quot;; never claim a
+test you did not run; never change the goal or narrow the scope silently; every number in
+the report comes from a real run.
+</code></pre>
+<h3>9.3 Điều nên trông đợi</h3>
+<p>Thời gian và kết quả của hai case trong bài là mốc tham khảo, không phải lời hứa. Case 1 chạy khoảng 48 phút lịch cho một ảnh 554 × 554 với một lệnh và không điểm dừng; case 2 chạy một ngày với năm điểm dừng và 60 bản render. Ảnh có vật thể rõ, lặp lại, trên nền đơn giản hợp với cách này hơn ảnh có mặt người, chữ, hay lá cây rậm. Kết quả của bài toán 1 trên ảnh chụp dừng ở mức "nhận ra ngay" (PSNR khoảng 21 dB); muốn hơn phải trả bằng rất nhiều hình cơ bản hơn và đặc tả dài hơn. Kết quả của bài toán 2 phụ thuộc vào thẻ ý tưởng và vào người chọn. Hệ thống dựng theo mục này sẽ khác hệ thống của bài ở chi tiết; điều phải giống là hợp đồng tính toán, bốn công cụ kiểm, và việc người giữ ba quyết định.</p>
+<h2 id="10-p-dng-gn-v-xa-trong-thi-i-ai">10. Áp dụng gần và xa trong thời đại AI</h2>
+<p>Luận điểm của mục này: giá trị của cách tiếp cận không nằm ở việc thay AI sinh ảnh, mà ở việc cho nội dung do máy tạo ra một dạng tồn tại có thể đọc, kiểm, sửa và chuyển giao. Mục này là nhận định của tác giả, không phải kết quả thực nghiệm.</p>
+<h3>10.1 Gần: những việc làm được ngay với hai case làm mẫu</h3>
+<p><strong>Tài sản hình ảnh tất định cho phần mềm.</strong> Biểu tượng, hoa văn, nền, hình minh hoạ kỹ thuật viết thành công thức thì không phụ thuộc độ phân giải, không cần lưu nhiều cỡ, và có thể kiểm tự động trong quy trình phát hành bằng hash. Một thay đổi màu thương hiệu là đổi một hằng số có tên.</p>
+<p><strong>Bản chính thức sau khi AI sinh ảnh gợi ý.</strong> AI sinh ảnh tạo nhanh nhiều ý tưởng; khi một ý tưởng được chọn, cách của bài biến nó thành một bức có công thức, có thể in ở mọi cỡ và tái lập về sau. Case 2 đã làm đúng việc này với một ảnh chụp làm tham chiếu; quy trình không đổi khi tham chiếu là một ảnh do AI sinh.</p>
+<p><strong>Giao tiếp giữa các AI bằng đặc tả thay cho bitmap.</strong> Một hệ thống AI gửi file đặc tả cho một hệ thống khác; bên nhận tính ảnh và so hash. Không có nén mất mát, không có "gần giống". Điều này có ích khi nhiều tác tử AI làm việc trên cùng một sản phẩm hình ảnh và cần một nguồn sự thật chung.</p>
+<p><strong>Lưu trữ ý đồ thay vì pixel.</strong> Một bức tranh 1108 × 1108 của case 2 là một file văn bản vài chục KB có thể đọc được bằng mắt. Một kho tranh như vậy có thể tìm kiếm, so sánh và sửa theo nội dung toán, điều không làm được với bitmap.</p>
+<p><strong>Dạy toán bằng hình.</strong> Mười bậc thang của mục 3 là một giáo trình ngắn: mỗi công thức có một hình, đổi tham số thì thấy ngay. Một học sinh có thể đọc đặc tả của một bức, đổi một số, và xem điều gì xảy ra.</p>
+<p><strong>Kiểm toán nội dung do AI tạo.</strong> Khi một tổ chức cần biết đúng cách một hình ảnh đã được tạo ra, đặc tả kèm hash là một bằng chứng kiểm được; bitmap kèm lời kể thì không.</p>
+<h3>10.2 Xa: khi AI làm được việc này cho mọi loại hình ảnh</h3>
+<p><strong>Một ngôn ngữ mô tả hình ảnh có thể kiểm.</strong> Hiện nay hình ảnh được trao đổi dưới dạng pixel, còn ý đồ được trao đổi bằng lời. Nếu AI đủ giỏi để viết công thức cho phần lớn hình ảnh có cấu trúc, thì công thức trở thành dạng trao đổi giữa người với máy và giữa máy với máy: ngắn hơn pixel, chính xác hơn lời. Case 1 cho thấy giới hạn hiện tại với ảnh chụp thật; case 2 cho thấy với ảnh được thiết kế thì giới hạn đó không còn.</p>
+<p><strong>Thư viện công thức như thư viện mã.</strong> Kernel, bộ công cụ và hai bộ quy tắc của dự án là phiên bản đầu của một thư viện. Khi thư viện lớn lên, mỗi bức mới dùng lại phần đã có và chỉ thêm phần riêng; độ dài phần riêng là thước đo thật của "một ý tưởng mới". Bài toán của Yeganeh về định nghĩa ngắn [1] khi đó có dữ liệu để trả lời bằng thống kê.</p>
+<p><strong>Nội dung AI có tầng tin cậy.</strong> Phần lớn nội dung do AI tạo hôm nay không tái lập được; mỗi lần sinh là một lần khác. Một tầng nội dung tất định, có hash, có artifact, có người ký duyệt, là nền để xây các việc cần trách nhiệm: xuất bản, hợp đồng, bằng chứng, giáo dục. Hình ảnh là nơi dễ bắt đầu vì phép kiểm đơn giản: tính lại và so một con số.</p>
+<p><strong>Phân vai bền giữa người và máy.</strong> Hai case cho một mẫu phân vai không phụ thuộc vào việc AI mạnh đến đâu: người đặt bài, đặt ràng buộc và chọn; máy đo, viết, render, kiểm. Khi AI mạnh hơn, phần giữa nhanh hơn và rộng hơn, nhưng ba việc của người không mất đi, vì chúng không phải việc tính toán. Bài này không dự đoán tốc độ của tiến trình đó; nó chỉ ra rằng vòng lặp đã chạy được hôm nay, trên một ảnh, với một bộ quy tắc viết sẵn, và để lại đủ bằng chứng để người khác làm lại.</p>
+<h2 id="11-kt-lun">11. Kết luận</h2>
+<p>Một bức tranh có thể được định nghĩa trọn vẹn bằng một hàm số: hai case cho hai hàm trên cùng một ảnh dâu tây, một hàm 460 KB khớp nguồn ở PSNR 20,99 dB và một hàm 11 489 ký tự giữ bố cục, màu và ánh sáng của nguồn trong một bức tranh mới; cả hai tái lập đúng từng pixel từ văn bản của chúng trên máy đã kiểm, và tám bức chung kết khác của case 2 cũng vậy. Khác với ảnh do AI sinh ảnh tạo ra, một ảnh có công thức là một đối tượng cố định: ai tính cũng ra đúng nó, và một con số đủ để kiểm. Con người đã tìm những hàm như vậy bằng tay, và Yeganeh đã mô tả cách ông xây mạng hàm rồi chạy thử nhiều lần; dự án này dùng khuôn của ông và ghi công. Một AI chạy được code đã thực hiện vòng lặp đo, viết, render, kiểm, sửa trong một quy trình để lại artifact ở mỗi bước: 12 vòng và 4 phép thử nhiễu loạn trong case 1; 60 bản thử, 9 bức chung kết, 2 bước đánh bóng và 4 phép thử trong case 2. Con người giữ ba việc trong cả hai case: đặt bài toán, đặt ràng buộc, và chọn bức đẹp. Mục 9 cho người đọc cách lặp lại điều đó với một AI và một ảnh của mình. Hai case không đo AI nhanh hơn người bao nhiêu; chúng đo AI đã làm gì, bao nhiêu, và kiểm tra được đến đâu.</p>
+<h2 id="ti-liu-tham-kho">Tài liệu tham khảo</h2>
+<ol class="refs">
+<li>Yeganeh, H. N. (2024). <em>Pictures from Networks of Mathematical Functions.</em> Math Horizons 32(1), 22–23. DOI 10.1080/10724117.2024.2368373. Bản mở: discovery.ucl.ac.uk/id/eprint/10203425.</li>
+<li>Sims, K. (1991). <em>Artificial Evolution for Computer Graphics.</em> Computer Graphics 25(4), 319–328 (SIGGRAPH 1991). DOI 10.1145/127719.122752.</li>
+<li>Wang, Z., Bovik, A. C., Sheikh, H. R., Simoncelli, E. P. (2004). <em>Image quality assessment: from error visibility to structural similarity.</em> IEEE Transactions on Image Processing 13(4), 600–612.</li>
+<li>Porter, T., Duff, T. (1984). <em>Compositing Digital Images.</em> Computer Graphics 18(3), 253–259.</li>
+<li>Sharma, G., Wu, W., Dalal, E. N. (2005). <em>The CIEDE2000 color-difference formula: implementation notes, supplementary test data, and mathematical observations.</em> Color Research &amp; Application 30(1), 21–30.</li>
+<li>Vogel, H. (1979). <em>A better way to construct the sunflower head.</em> Mathematical Biosciences 44, 179–189.</li>
+<li>Perlin, K. (1985). <em>An image synthesizer.</em> SIGGRAPH Computer Graphics 19(3), 287–296.</li>
+<li>Quilez, I. <em>2D distance functions.</em> iquilezles.org.</li>
+<li>Sitzmann, V., Martel, J. N. P., Bergman, A. W., Lindell, D. B., Wetzstein, G. (2020). <em>Implicit Neural Representations with Periodic Activation Functions.</em> arXiv:2006.09661.</li>
+<li>Hugging Face. <em>Diffusers documentation: Reproducible pipelines (Reusing seeds).</em> huggingface.co/docs/diffusers/using-diffusers/reusing_seeds (truy cập 06/10/2026). — tính lặp lại của mô hình khuếch tán phụ thuộc seed, phần cứng và phiên bản thư viện.</li>
+<li>Tài liệu kèm theo của dự án: report P1 <code>dau-tay_bao-cao-qua-trinh.md</code> (05–06/10/2026); report P2 <code>bao-cao-toan-bo_dong-dau-tay.md</code> (06/10/2026); bộ quy tắc vận hành tập I <code>equation_painting_bible.md</code> v1.1 và tập II <code>equation_painting_ii_bible.md</code> v1.1 (05–06/10/2026); đặc tả <code>dau-tay_spec_v1.0.md</code>, <code>dong-dau-tay_spec_v1.1.md</code>, văn bản toán <code>dong-dau-tay_cong-thuc_v1.1.md</code>. Xem Phụ lục C.</li>
+<li>ITU-T Recommendation T.81 | ISO/IEC 10918-1 (1992). <em>Information technology — Digital compression and coding of continuous-tone still images: Requirements and guidelines</em> (chuẩn JPEG). Phần kiểm tuân thủ ISO/IEC 10918-2 quy định độ chính xác của DCT và IDCT theo dung sai.</li>
+<li>W3C / ISO/IEC 15948:2003. <em>Portable Network Graphics (PNG) Specification (Second Edition).</em> W3C Recommendation, 10/11/2003. — nén không mất bằng lọc dự đoán và DEFLATE.</li>
+<li>W3C. <em>Scalable Vector Graphics (SVG) 1.1 (Second Edition).</em> W3C Recommendation, 16/08/2011.</li>
+</ol>
+<hr />
+<h2 id="ph-lc-a-k-hiu-v-quy-c">Phụ lục A — Ký hiệu và quy ước</h2>
+<h3>A.1 Bảng ký hiệu</h3>
+<table>
+<thead>
+<tr>
+<th>Ký hiệu</th>
+<th>Nghĩa</th>
+<th>Trong code</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>$W, H$</td>
+<td>chiều rộng, chiều cao ảnh (pixel)</td>
+<td><code>W, H</code></td>
+</tr>
+<tr>
+<td>$(m, n)$</td>
+<td>chỉ số pixel: cột từ trái $0 \ldots W-1$, hàng từ trên $0 \ldots H-1$</td>
+<td><code>m, n</code></td>
+</tr>
+<tr>
+<td>$A = W/H$</td>
+<td>tỷ lệ khung</td>
+<td><code>A</code></td>
+</tr>
+<tr>
+<td>$(x, y)$</td>
+<td>toạ độ liên tục tại tâm pixel (hoặc tâm mẫu), $x \in [-A, A]$, $y \in [-1, 1]$, $y$ hướng lên</td>
+<td><code>x, y</code></td>
+</tr>
+<tr>
+<td>$I$, $I_r$, $\hat I$</td>
+<td>ảnh nguồn; ảnh tham chiếu; ảnh tính từ đặc tả</td>
+<td><code>src</code>, <code>u8</code></td>
+</tr>
+<tr>
+<td>$\varepsilon$</td>
+<td>nửa bề rộng khử răng cưa, $\varepsilon = 0{,}75 \cdot 2/H$ (chia thêm cho số mẫu mỗi cạnh khi có nhiều mẫu)</td>
+<td><code>EDGE</code></td>
+</tr>
+<tr>
+<td>$z = x + iy$</td>
+<td>toạ độ phức</td>
+<td><code>z</code></td>
+</tr>
+<tr>
+<td>$w = (z - c)\,e^{-i\beta}$</td>
+<td>toạ độ cục bộ của vật đặt tại $c$, quay $\beta$</td>
+<td><code>w</code></td>
+</tr>
+<tr>
+<td>$d(x, y)$</td>
+<td>trường khoảng cách có dấu: âm trong, dương ngoài; xấp xỉ thì ghi rõ</td>
+<td><code>sd_*</code></td>
+</tr>
+<tr>
+<td>$M \in [0, 1]$</td>
+<td>mask: độ phủ của vật tại pixel</td>
+<td><code>mask</code></td>
+</tr>
+<tr>
+<td>$K$, $K_v$</td>
+<td>màu của một lớp, kênh $v \in \{0, 1, 2\}$</td>
+<td><code>K</code></td>
+</tr>
+<tr>
+<td>$\Gamma_v$</td>
+<td>màu nền</td>
+<td><code>bg</code></td>
+</tr>
+<tr>
+<td>$C$, $H_v$</td>
+<td>ảnh đang dựng; kênh $v$ trước lượng tử hoá</td>
+<td><code>img</code>, <code>H0, H1, H2</code></td>
+</tr>
+<tr>
+<td>$F(t)$</td>
+<td>hàm xuất màu 8-bit</td>
+<td><code>to_uint8</code></td>
+</tr>
+<tr>
+<td>$G$</td>
+<td>hàm Gaussian hai chiều</td>
+<td><code>gauss</code></td>
+</tr>
+<tr>
+<td>$S$</td>
+<td>bước mềm (smoothstep)</td>
+<td><code>smoothstep</code>, <code>sstep</code></td>
+</tr>
+<tr>
+<td>$\mathcal{G}(u) = e^{-e^{u}}$</td>
+<td>cổng Yeganeh</td>
+<td><code>gate</code></td>
+</tr>
+<tr>
+<td>$s$</td>
+<td>chỉ số vật thể trong một dãy</td>
+<td><code>s</code></td>
+</tr>
+<tr>
+<td>$\gamma = \pi(3 - \sqrt5)$</td>
+<td>góc vàng</td>
+<td>trong <code>spiral</code></td>
+</tr>
+<tr>
+<td>$h(i, j) \in [0, 1)$</td>
+<td>hash số nguyên tất định</td>
+<td><code>hash2</code></td>
+</tr>
+<tr>
+<td>$\nu$, $\mathrm{fBm}$, $\mathcal{W}$</td>
+<td>value noise, fBm, khoảng cách Worley F1</td>
+<td><code>value_noise</code>, <code>fbm</code>, <code>worley</code></td>
+</tr>
+<tr>
+<td>$\tau, \mathbf{n}, \mathbf{L}$</td>
+<td>bán kính chuẩn hoá, pháp tuyến, hướng sáng</td>
+<td><code>sphere</code></td>
+</tr>
+<tr>
+<td>$\varphi$</td>
+<td>góc cực</td>
+<td><code>th</code></td>
+</tr>
+<tr>
+<td>$\theta$</td>
+<td>tập tham số của một đặc tả</td>
+<td>—</td>
+</tr>
+<tr>
+<td>$D$, $\ell$</td>
+<td>sai lệch so với nguồn; độ dài mô tả theo cách đếm đã công bố</td>
+<td>—</td>
+</tr>
+<tr>
+<td>$\langle a \rangle$</td>
+<td>$\min(\max(a, 0), 1)$; $a^+ = \max(a, 0)$</td>
+<td><code>clip</code></td>
+</tr>
+</tbody>
+</table>
+<p>Ký hiệu riêng của case 2, khai ở đây để Phụ lục B đọc được: $p$ chỉ số quả ($0 \ldots 20$), $k$ chỉ số đài lá ($0 \ldots 13$); $\iota_p$, $\iota_k$ mã vật thể (cột <code>sid</code>); $c_p$, $r_p$ tâm và bán kính đo; $o_k$, $s_k$ tâm và cỡ đài lá đo; $R_p = 1{,}1 r_p$; $\alpha_p$ góc tư thế; $e_p$ mức có cuống; $\phi_p = 1{,}7\,\iota_p$ pha lưới hạt; $\varrho$ hệ số dãn dáng riêng; $\omega$, $\hat\omega$ toạ độ cục bộ trước và sau khi nắn; $\zeta$ toạ độ mặt quả; $T$ lưới lục giác; $P$ hốc; $\Psi$ hạt; $\mathrm{Sp}$ phản xạ gương; $D_p$, $D'_k$ mức mất nét; $\lambda_p = 1 - 0{,}85 D_p$ mức chi tiết; $\mathbf{L}$, $\hat L$ hướng sáng ba chiều và trong mặt ảnh; $U, V, U', V'$ trục hai softbox; $A$ (bộ ba) màu thịt quả, $A_h$ hạt, $G_0, G_1$ đài lá, $\Gamma_0, \Gamma_1$ khe. Vì $A$ còn là tỷ lệ khung, trong Phụ lục B màu thịt quả viết là $\mathbf{A}$ in đậm.</p>
+<h3>A.2 Phép đổi quy ước với nguồn</h3>
+<table>
+<thead>
+<tr>
+<th>Điểm trong nguồn</th>
+<th>Xử lý trong paper</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Văn bản toán của case 2 dùng $\theta$ cho góc trong khung quả, $\sigma_p$, $\tau_k$ cho mã vật thể, $\varepsilon_p$ cho mức có cuống, $q$ cho toạ độ đã nắn, $\kappa_1, \kappa_2$ cho hai nhiễu</td>
+<td>paper viết $\varphi$, $\iota_p$, $\iota_k$, $e_p$, $\hat\omega$, $\nu_1, \nu_2$; Phụ lục B giữ đúng số và cấu trúc</td>
+</tr>
+<tr>
+<td>Case 1 dùng $\theta$ cho góc cực và $(p, q)$ cho $t\cos\theta$, $t\sin\theta$</td>
+<td>paper viết $\varphi$; giữ $(p, q)$ vì chỉ xuất hiện ở mục 6.4</td>
+</tr>
+<tr>
+<td>Bước mềm của bộ công cụ: $S(\delta) = \tfrac14(1 - \hat\delta)^2(2 + \hat\delta)$, $\hat\delta = \mathrm{clamp}(\delta, -1, 1)$</td>
+<td>bằng $M = 1 - \sigma^2(3 - 2\sigma)$ với $\sigma = (\hat\delta + 1)/2$: khai triển $1 - \tfrac14(\hat\delta + 1)^2(2 - \hat\delta) = \tfrac14(1 - \hat\delta)^2(2 + \hat\delta)$; kiểm số trên 10 000 điểm, sai khác lớn nhất $2{,}2 \cdot 10^{-16}$</td>
+</tr>
+<tr>
+<td>Hai hằng số nhân của hash trong một bản thảo nội bộ ghi là 2126687533 và 2221647499</td>
+<td>code kernel của cả hai case và tập I §5.6 dùng 0x7FEB352D = 2146121005 và 0x846CA68B = 2221713035; paper dùng số của code; giá trị kiểm $h(0, 0) = 0{,}007765133399516344$</td>
+</tr>
+<tr>
+<td>Case 2 mã hoá sRGB từng mẫu rồi mới lấy trung bình bốn mẫu</td>
+<td>khác cấu hình "linear" của tập I (mã hoá sau khi trung bình); paper mô tả đúng renderer đã dùng</td>
+</tr>
+<tr>
+<td>Case 1 tính toàn bộ trong không gian số sRGB</td>
+<td>paper ghi đúng; phép trộn số không phải phép tính ánh sáng</td>
+</tr>
+<tr>
+<td>Hàm $F$ của Yeganeh $\big\lfloor 255\, e^{-e^{-1000t}}\, |t|^{\,e^{-e^{1000(t-1)}}} \big\rfloor$</td>
+<td>không dùng trong hai case; $F$ của paper làm tròn nửa lên</td>
+</tr>
+<tr>
+<td>Cấp tái lập R0–R3 của bộ quy tắc</td>
+<td>paper viết bằng lời (Phụ lục C)</td>
+</tr>
+<tr>
+<td>"Khớp từng pixel với spec"</td>
+<td>luôn nói rõ: so với nguồn (Fidelity A) hay so với render chuẩn của đặc tả (Fidelity B)</td>
+</tr>
+<tr>
+<td>Trần 3 000 ký tự / 200 hằng số (hạng NGẮN), 12 000 / 1 500 (LAI)</td>
+<td>ngân sách của dự án; case 2 dùng LAI do Henry duyệt</td>
+</tr>
+<tr>
+<td>Dạng hai toạ độ thực của $w = (z - c)e^{-i\beta}$</td>
+<td>$u = \cos\beta\,(x - c_x) + \sin\beta\,(y - c_y)$, $v = -\sin\beta\,(x - c_x) + \cos\beta\,(y - c_y)$</td>
+</tr>
+</tbody>
+</table>
+<h2 id="ph-lc-b-cng-thc-y">Phụ lục B — Công thức đầy đủ</h2>
+<h3>B.1 Bức "Đống dâu — Macro tiêu điểm" v1.1 (case 2), một hàm với mọi hàm phụ đánh số</h3>
+<p>Nguồn: văn bản toán <code>dong-dau-tay_cong-thuc_v1.1.md</code> (Level B, mọi tham số đã thế số), đã được cài lại độc lập và khớp 5 000/5 000 pixel với render chuẩn. Ký hiệu theo Phụ lục A. Các chữ $\mathbf{A}, \mathbf{A}_h, G_0, G_1, \Gamma_0, \Gamma_1, W, K, C, H$ là bộ ba kênh; phép $+, -, \cdot, /$ với số thực tính từng kênh.</p>
+<p><strong>B1. Gốc.</strong>
+$$(R, G, B)(m, n) = F\Big(\tfrac14 \sum_{\mu_1 \in \{0,1\}} \sum_{\mu_2 \in \{0,1\}} H(x, y)\Big), \quad x = \frac{m + (2\mu_1 + 1)/4}{554} - 1, \quad y = 1 - \frac{n + (2\mu_2 + 1)/4}{554}, \quad m, n = 0 \ldots 1107.$$
+$$F(t) = \lfloor 255\langle t\rangle + \tfrac12 \rfloor, \qquad H(x, y) = \mathrm{srgb}\Big(\mathrm{tone}\big(C(z)(1 - 0{,}11(x^2 + y^2))\big)\Big) + 0{,}018\big(\nu(x, y; 520, 99) - \tfrac12\big), \quad z = x + iy.$$
+$$C(z) = \Gamma(z)\prod_{j=1}^{91}(1 - M_j(z)) + \sum_{j=1}^{91} M_j(z)\,K_j(z)\prod_{l=j+1}^{91}(1 - M_l(z)).$$</p>
+<p><strong>B2. Hàm cơ bản.</strong>
+$$S(\delta) = \tfrac14(1 - \hat\delta)^2(2 + \hat\delta), \quad \hat\delta = \min(\max(\delta, -1), 1).$$
+$$h(a, b): \ n_0 = 374761393\,a + 668265263\,b + 2654435769;\ n_1 = n_0 \oplus (n_0 \gg 16);\ n_2 = 2146121005\,n_1;\ n_3 = n_2 \oplus (n_2 \gg 15);\ n_4 = 2221713035\,n_3;\ n_5 = n_4 \oplus (n_4 \gg 16);\ h = n_5/2^{32} \ (\text{mọi phép tính mod } 2^{32}).$$
+$$\nu(x, y; f, s): \ X = xf,\ Y = yf,\ a_0 = \lfloor X\rfloor + 7919 s,\ b_0 = \lfloor Y\rfloor,\ t_X = X - \lfloor X\rfloor,\ t_Y = Y - \lfloor Y\rfloor,\ u_X = t_X^2(3 - 2t_X),\ u_Y = t_Y^2(3 - 2t_Y),$$
+$$\nu = \mathrm{mix}\big(\mathrm{mix}(h(a_0, b_0), h(a_0 + 1, b_0), u_X),\ \mathrm{mix}(h(a_0, b_0 + 1), h(a_0 + 1, b_0 + 1), u_X),\ u_Y\big), \quad \mathrm{mix}(a, b, t) = a(1 - t) + bt.$$
+$$\mathcal{W}(x, y; f, s) = \min_{\delta a, \delta b \in \{-1, 0, 1\}} \sqrt{(a + h(a + 7919 s, b) - X)^2 + (b + h(b + 7919 s, a + 1) - Y)^2}, \quad X = xf,\ Y = yf,\ a = \lfloor X\rfloor + \delta a,\ b = \lfloor Y\rfloor + \delta b.$$
+$$\mathrm{lin}(c) = \begin{cases} c/12{,}92, &amp; c \le 0{,}04045 \\ ((c + 0{,}055)/1{,}055)^{2{,}4}, &amp; \text{ngược lại} \end{cases} \qquad \mathrm{srgb}(l) = \begin{cases} 12{,}92\,l^+, &amp; l^+ \le 0{,}0031308 \\ 1{,}055\,(l^+)^{1/2{,}4} - 0{,}055, &amp; \text{ngược lại} \end{cases}$$
+$$\mathrm{tone}(l) = \min(l, 0{,}75) + 0{,}25\big(1 - e^{-4(l - 0{,}75)^+}\big), \qquad \mathrm{nor}(a, b, c) = (a, b, c)/\sqrt{a^2 + b^2 + c^2 + 10^{-12}}.$$</p>
+<p><strong>B3. Hằng số đo từ ảnh tham chiếu.</strong> Quả $p = 0 \ldots 20$: $(X_p, Y_p, r_p, \iota_p)$ với $\iota_p = p$:</p>
+<table>
+<thead>
+<tr>
+<th>$p$</th>
+<th>$X_p$</th>
+<th>$Y_p$</th>
+<th>$r_p$</th>
+<th>$p$</th>
+<th>$X_p$</th>
+<th>$Y_p$</th>
+<th>$r_p$</th>
+<th>$p$</th>
+<th>$X_p$</th>
+<th>$Y_p$</th>
+<th>$r_p$</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>−0,92</td>
+<td>−0,01</td>
+<td>0,100</td>
+<td>7</td>
+<td>−0,89</td>
+<td>0,77</td>
+<td>0,183</td>
+<td>14</td>
+<td>0,77</td>
+<td>0,28</td>
+<td>0,251</td>
+</tr>
+<tr>
+<td>1</td>
+<td>−0,01</td>
+<td>−0,89</td>
+<td>0,131</td>
+<td>8</td>
+<td>0,89</td>
+<td>−0,19</td>
+<td>0,185</td>
+<td>15</td>
+<td>0,51</td>
+<td>−0,22</td>
+<td>0,259</td>
+</tr>
+<tr>
+<td>2</td>
+<td>0,92</td>
+<td>0,70</td>
+<td>0,135</td>
+<td>9</td>
+<td>−0,42</td>
+<td>0,89</td>
+<td>0,187</td>
+<td>16</td>
+<td>−0,28</td>
+<td>−0,70</td>
+<td>0,263</td>
+</tr>
+<tr>
+<td>3</td>
+<td>0,01</td>
+<td>−0,37</td>
+<td>0,144</td>
+<td>10</td>
+<td>0,54</td>
+<td>0,89</td>
+<td>0,214</td>
+<td>17</td>
+<td>−0,01</td>
+<td>0,61</td>
+<td>0,279</td>
+</tr>
+<tr>
+<td>4</td>
+<td>0,03</td>
+<td>0,92</td>
+<td>0,145</td>
+<td>11</td>
+<td>0,57</td>
+<td>0,62</td>
+<td>0,219</td>
+<td>18</td>
+<td>−0,54</td>
+<td>−0,09</td>
+<td>0,289</td>
+</tr>
+<tr>
+<td>5</td>
+<td>−0,63</td>
+<td>−0,88</td>
+<td>0,158</td>
+<td>12</td>
+<td>0,36</td>
+<td>−0,82</td>
+<td>0,227</td>
+<td>19</td>
+<td>−0,64</td>
+<td>0,47</td>
+<td>0,322</td>
+</tr>
+<tr>
+<td>6</td>
+<td>0,78</td>
+<td>−0,78</td>
+<td>0,176</td>
+<td>13</td>
+<td>−0,84</td>
+<td>−0,50</td>
+<td>0,245</td>
+<td>20</td>
+<td>−0,01</td>
+<td>0,14</td>
+<td>0,337</td>
+</tr>
+</tbody>
+</table>
+<p>Đài lá $k = 0 \ldots 13$: $(X'_k, Y'_k, s_k, \iota_k)$ với $\iota_k = k$:</p>
+<table>
+<thead>
+<tr>
+<th>$k$</th>
+<th>$X'_k$</th>
+<th>$Y'_k$</th>
+<th>$s_k$</th>
+<th>$k$</th>
+<th>$X'_k$</th>
+<th>$Y'_k$</th>
+<th>$s_k$</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>0,41</td>
+<td>−0,46</td>
+<td>0,120</td>
+<td>7</td>
+<td>−0,75</td>
+<td>0,92</td>
+<td>0,050</td>
+</tr>
+<tr>
+<td>1</td>
+<td>0,31</td>
+<td>0,62</td>
+<td>0,109</td>
+<td>8</td>
+<td>0,04</td>
+<td>−0,48</td>
+<td>0,039</td>
+</tr>
+<tr>
+<td>2</td>
+<td>−0,38</td>
+<td>−0,35</td>
+<td>0,095</td>
+<td>9</td>
+<td>0,95</td>
+<td>0,86</td>
+<td>0,034</td>
+</tr>
+<tr>
+<td>3</td>
+<td>−0,87</td>
+<td>−0,80</td>
+<td>0,075</td>
+<td>10</td>
+<td>0,10</td>
+<td>−0,98</td>
+<td>0,032</td>
+</tr>
+<tr>
+<td>4</td>
+<td>−0,93</td>
+<td>−0,12</td>
+<td>0,069</td>
+<td>11</td>
+<td>0,23</td>
+<td>0,80</td>
+<td>0,030</td>
+</tr>
+<tr>
+<td>5</td>
+<td>−0,12</td>
+<td>−0,88</td>
+<td>0,069</td>
+<td>12</td>
+<td>−0,19</td>
+<td>−0,13</td>
+<td>0,028</td>
+</tr>
+<tr>
+<td>6</td>
+<td>0,82</td>
+<td>0,60</td>
+<td>0,058</td>
+<td>13</td>
+<td>−0,27</td>
+<td>0,49</td>
+<td>0,025</td>
+</tr>
+</tbody>
+</table>
+<p>Màu (sRGB đo, đổi sang tuyến tính): $\mathbf{A} = \mathrm{lin}(0{,}875; 0{,}133; 0{,}071)/1{,}05 \cdot (1; 0{,}8; 0{,}8)$ thịt quả; $\mathbf{A}_h = \mathrm{lin}(0{,}788; 0{,}647; 0{,}325)$ hạt; $G_1 = \mathrm{lin}(0{,}612; 0{,}678; 0{,}310)$, $G_0 = \mathrm{lin}(0{,}427; 0{,}376; 0{,}149)$ đài lá sáng, tối; $\Gamma_0 = \mathrm{lin}(0{,}184; 0{,}055; 0{,}035)$ khe; $\Gamma_1 = \mathrm{lin}(0{,}431; 0{,}061; 0{,}074)$ đỏ tối. Tâm phức $c_p = X_p + iY_p$, $o_k = X'_k + iY'_k$.</p>
+<p><strong>B4. Đại lượng dẫn xuất (tính một lần).</strong>
+$$\mathbf{L} = (-0{,}5;\ 0{,}6;\ 1{,}2)/\sqrt{2{,}05}, \quad \hat L = (-0{,}5 + 0{,}6i)/\sqrt{0{,}61}, \quad U = (-L_2, L_1, 0)/\sqrt{L_1^2 + L_2^2}, \quad V = \mathbf{L} \times U,$$
+$$\mathbf{L}' = (0{,}6;\ 0{,}5;\ 0{,}62)/\|(0{,}6;\ 0{,}5;\ 0{,}62)\|, \quad U' = (-L'_2, L'_1, 0)/\sqrt{L'^2_1 + L'^2_2}, \quad V' = \mathbf{L}' \times U', \quad W = (0{,}45;\ 0{,}12;\ 0{,}12), \quad E = e^{2\pi i/3}, \quad \varepsilon_0 = 0{,}75/1108.$$
+Quả chủ của đài lá: $\eta_k = \max\{p : |o_k - c_p| &lt; r_p\}$ nếu tập khác rỗng, ngược lại $\eta_k = \arg\min_p |o_k - c_p|/r_p$. Giá trị: $\eta = (15, 17, 18, 13, 0, 16, 2, 7, 3, 2, 1, 17, 20, 17)$ cho $k = 0 \ldots 13$.
+Tư thế quả $p$, với $\mathcal{K}_p = \{k : \eta_k = p\}$: nếu $\mathcal{K}_p \ne \emptyset$, lấy $k^*$ có $|c_p - o_k|$ nhỏ nhất, $\Delta_p = c_p - o_{k^*}$, $\alpha_p = \arg\Delta_p + \pi/2$, $e_p = \langle(|\Delta_p|/r_p - 0{,}15)/0{,}5\rangle$; nếu $\mathcal{K}_p = \emptyset$, $\alpha_p = 0{,}7\cos(2{,}3\,\iota_p + 1)$, $e_p = 1$. $R_p = 1{,}1 r_p$; $\phi_p = 1{,}7\,\iota_p$. (Trong bức này $e_p = 1$ với mọi $p$.)
+Dáng riêng: $h_l = h(\iota_p + 401, l)$, $l = 0 \ldots 4$; $b_1 = 0{,}045(1{,}6h_0 - 0{,}5)$, $a_2 = 0{,}045(0{,}4 + 0{,}6h_1)$, $f_2 = 2\pi h_2$, $a_3 = 0{,}045(0{,}15 + 0{,}35h_3)$, $f_3 = 2\pi h_4$.
+Độ sâu trường ảnh: $c_F = c_{20}$; $g(c) = \big(\min((|c - c_F| - 0{,}35)^+/0{,}9, 1)\big)^{1{,}3}$; $D_p = g(c_p)(0{,}75 + 0{,}25(1 - r_p/0{,}337))$; $D'_k = g(o_k)$; $\lambda_p = 1 - 0{,}85 D_p$; $e^{\mathrm{sp}}_p = 0{,}06 + 0{,}3 D_p$.</p>
+<p><strong>B5. Quả $p$.</strong>
+Dáng: $\varphi = \arg((z - c_p)e^{-i\alpha_p})$; $\varrho = 1 + b_1\sin\varphi + a_2\cos(2\varphi + f_2) + a_3\cos(3\varphi + f_3)$; $\omega = u + iv = (z - c_p)e^{-i\alpha_p}/(R_p\varrho)$;
+$$\hat\omega = \frac{u}{\max(1 + 0{,}36 e_p v, 0{,}3)} + i\,\frac{v + 0{,}15 e_p (v^+)^2 e^{-6u^2}}{1 + 0{,}1 e_p}, \qquad d_p(z) = 0{,}85 R_p\,(|\hat\omega| - 1)\,\varrho.$$
+Pháp tuyến gốc: $\nu^{\circ} = \hat\omega e^{i\alpha_p}$, $\nu_3 = \sqrt{(1 - |\hat\omega|^2)^+}$; $q_1 = \Re\hat\omega$, $q_2 = \Im\hat\omega$.
+Mặt quả: $\zeta' = \hat\omega(1 + 0{,}57\min(|\hat\omega|^2, 1))e^{i\phi_p}$; $\zeta_0 = \zeta' + 0{,}03(\cos(11\Re\zeta' + 3\alpha_p) + i\sin(9\Im\zeta' + 2\alpha_p))$; $\nu_1 = \nu(\Re\zeta_0, \Im\zeta_0; 4{,}5, 3\iota_p + 40)$, $\nu_2 = \nu(\Re\zeta_0, \Im\zeta_0; 4{,}5, 3\iota_p + 41)$; $\zeta = \zeta_0 + 0{,}02(\cos 2\pi\nu_1 + i\sin 2\pi\nu_2)$; $\chi = 0{,}45 + 0{,}08(2\nu_1 - 1)$; $\delta = 1 + 0{,}3(2\nu_2 - 1)$.
+$$T(\zeta) = \tfrac13[\cos(30\Re\zeta) + \cos(30\Re(\zeta E)) + \cos(30\Re(\zeta/E))]; \quad P = S((\chi - T(\zeta))/0{,}25),\ P' = S((\chi - T(\zeta + 0{,}02))/0{,}25),\ P'' = S((\chi - T(\zeta + 0{,}02i))/0{,}25);$$
+$$\gamma_P = ((P' - P) + i(P'' - P))\cdot 110\,\lambda_p\,\delta\,e^{i(\alpha_p - \phi_p)}; \quad g_1 = 0{,}07\cos(6q_1 + 2q_2 + \phi_p) + 0{,}05\cos(9q_2 - 3q_1 + 2\phi_p),\ g_2 = 0{,}07\sin(5q_2 - 2{,}5q_1 + \phi_p) + 0{,}05\sin(8q_1 + 4q_2 + 3\phi_p);$$
+$$\mathbf{n} = \mathrm{nor}\big(\Re\nu^{\circ} + 0{,}02\nu_3\Re\gamma_P + g_1\nu_3,\ \Im\nu^{\circ} + 0{,}02\nu_3\Im\gamma_P + g_2\nu_3,\ \nu_3\big); \quad \hat P = P\,\delta\,\lambda_p;$$
+$$\Psi = S\Big(\big(0{,}86 + 0{,}5(\chi - 0{,}45) - T(\zeta - 0{,}025 e^{i(\phi_p - \pi/2)})\big)/0{,}06\Big)(0{,}25 + 0{,}75\lambda_p).$$
+Phản xạ gương $\mathrm{Sp}(\mathbf{n}; e)$: $\boldsymbol{\ell} = (2n_3n_1, 2n_3n_2, 2n_3^2 - 1)$; $B = S((|\boldsymbol{\ell}\cdot U| - 0{,}3)/e)\,S((|\boldsymbol{\ell}\cdot V| - 0{,}2)/e)\,\langle(\boldsymbol{\ell}\cdot\mathbf{L} - 0{,}3)/0{,}3\rangle$; $B' = S((|\boldsymbol{\ell}\cdot U'| - 0{,}25)/e)\,S((|\boldsymbol{\ell}\cdot V'| - 0{,}35)/e)\,\langle(\boldsymbol{\ell}\cdot\mathbf{L}' - 0{,}3)/0{,}3\rangle$; $\mathrm{env} = 0{,}15(0{,}25 + 0{,}75\langle 0{,}5 + 0{,}5\ell_2\rangle) + 5B'$; $t = \langle 1 - n_3\rangle$;
+$$\mathrm{Sp}(\mathbf{n}; e) = (0{,}03 + 0{,}97 t^5)(18B + \mathrm{env}).$$
+Màu: $\beta = 0{,}9 + 0{,}2(0{,}5 + 0{,}5\cos(5q_1 + 3q_2 + 1{,}3\phi_p)\cos(4q_2 - 2q_1 + \phi_p))$; $\hat s = 0{,}5 + 0{,}5\cos(7\Re\zeta + 5\Im\zeta + \iota_p)$;
+$$K^t = \mathbf{A}\,\beta\,\Big(\big\langle\tfrac{\mathbf{n}\cdot\mathbf{L} + W}{1 + W}\big\rangle + 0{,}1(0{,}55 + 0{,}45 n_3)\Big)(0{,}32 + 0{,}68\sqrt{\nu_3})(1 - 0{,}5\hat P); \quad \phi_0 = (\Re\nu^{\circ} L_1 + \Im\nu^{\circ} L_2 + \nu_3 L_3)^+;$$
+$$K^h = \big(\mathbf{A}_h(1 - 0{,}45\hat s) + 0{,}6\mathbf{A}\hat s\big)(0{,}35 + 0{,}75\phi_0)(0{,}45 + 0{,}55\nu_3); \qquad K_p(z) = K^t(1 - \Psi) + K^h\Psi + \mathrm{Sp}(\mathbf{n}; e^{\mathrm{sp}}_p).$$</p>
+<p><strong>B6. Đài lá $k$.</strong> $\rho_k = 1{,}75 s_k$; $m_k = 7 + (\iota_k \bmod 3)$; $w = (z - o_k)/\rho_k$, $r = |w|$, $\psi = \arg w$; $\tilde a = (\psi + \pi)m_k/(2\pi) + 0{,}37\iota_k$; $j = \lfloor\tilde a + \tfrac12\rfloor$; $\upsilon = \tilde a - j$; $j_m = j - m_k\lfloor j/m_k\rfloor$; $\Lambda = 0{,}75 + 0{,}4h(j_m + 31\iota_k, 5)$; $\varpi = 0{,}9 + 0{,}1h(j_m + 13\iota_k, 3)$; $\varkappa = (1 - 2|\upsilon|/\varpi)^+$; $\hat\upsilon = \upsilon/\varpi$;
+$$d_k(z) = 0{,}45\rho_k\big(r - 0{,}18 - (\Lambda - 0{,}18)\varkappa^{0{,}6}\big).$$
+Màu: $t = \langle r/\Lambda\rangle$; $\vartheta = 0{,}05 + (1 - t)^{1{,}5}$; $\hat c = w/\max(r, 10^{-9})$; $\mathbf{n} = \mathrm{nor}(\sin\vartheta\Re\hat c - 0{,}9\hat\upsilon\Im\hat c,\ \sin\vartheta\Im\hat c + 0{,}9\hat\upsilon\Re\hat c,\ \cos\vartheta)$; $\mathrm{khô} = 0{,}45 S((0{,}88 - t)/0{,}06)$; $p_e = (1 - 2|\hat\upsilon|)^+$; $\mathrm{mép} = 0{,}35 S((p_e - 0{,}22)/0{,}12)$; $\mathrm{gân} = 0{,}3 S((0{,}93 - p_e)/0{,}03) S((t - 0{,}85)/0{,}1)$;
+$$A^d = \big[(G_0 + (G_1 - G_0)(0{,}3 + 0{,}7t))(1 - \mathrm{gân})(1 - \mathrm{mép}) + 1{,}35 G_1\,\mathrm{mép}\big](1 - \mathrm{khô}) + 0{,}55 G_0\,\mathrm{khô};$$
+$$K' = A^d\big((\mathbf{n}\cdot\mathbf{L})^+ + 0{,}35(-\mathbf{n}\cdot\mathbf{L})^+ + 0{,}1\big)(0{,}6 + 0{,}4t) + 0{,}5\,\mathrm{Sp}(\mathbf{n}; 0{,}12);$$
+$\mathrm{cuống} = S((r - 0{,}1)/0{,}025)$; $s_l = 0{,}55 + 0{,}225\min(\max(1 + (\Re w\Re\hat L + \Im w\Im\hat L)/0{,}1, 0), 2)$;
+$$K_k(z) = K'(1 - \mathrm{cuống}) + 0{,}8 G_1(s_l + 0{,}1)\,\mathrm{cuống}.$$</p>
+<p><strong>B7. Nền.</strong> $\Omega = \langle 1 - \mathcal{W}(x, y; 4{,}5, 3)/0{,}8\rangle^2$; $\Gamma(z) = \Gamma_0(0{,}45 + 0{,}3\Omega) + 0{,}18(\Gamma_1 - \Gamma_0)\Omega^2$.</p>
+<p><strong>B8. Danh sách 91 lớp $(M_j, K_j)$.</strong> Mỗi quả $p$ sinh ba lớp theo thứ tự: (1) bóng đổ $M = 0{,}55 S(d_p(z + 0{,}05\hat L)/(0{,}3R_p))$, $K = 0$; (2) bóng tiếp xúc $M = 0{,}7\langle 1 - d_p(z)/(0{,}25R_p)\rangle^2$, $K = 0$; (3) quả $M = S(d_p(z)/(\varepsilon_0 + 0{,}03 D_p))$, $K = K_p(z)$. Mỗi đài lá $k$ sinh hai lớp: (1) bóng $M = 0{,}5 S(d_k(z + 0{,}03\hat L)/0{,}012)$, $K = 0$; (2) đài lá $M = S(d_k(z)/(\varepsilon_0 + 0{,}03 D'_k))$, $K = K_k(z)$. Thứ tự (q = quả, d = đài lá): q0, d4, q1, d10, q2, d6, d9, q3, d8, q4, q5, q6, q7, d7, q8, q9, q10, q11, q12, q13, d3, q14, q15, d0, q16, d5, q17, d1, d11, d13, q18, d2, q19, q20, d12. Tổng $21 \times 3 + 14 \times 2 = 91$.</p>
+<p>Ghi công: khuôn "một hàm cho cả bức tranh" và cổng $e^{-e^{u}}$ theo Hamid Naderi Yeganeh, <em>Pictures from Networks of Mathematical Functions</em>, Math Horizons 32(1), 2024. Công thức, bố cục và hình ảnh này là tác phẩm mới. Biểu thức khai triển (Level C) chưa xuất; report ước tính dài hàng chục nghìn ký tự.</p>
+<h3>B.2 Cấu trúc lớp và bảng tham số của case 1</h3>
+<p>Công thức (mã trong đặc tả): F-00 khung tính (tối ưu tốc độ, đã chứng minh không đổi ảnh); F-01 đường viền $r(\varphi) = r_0(1 + \sum_{k=1}^{6} a_k\cos k\varphi + b_k\sin k\varphi)$; F-02 mask thân $M_b = 1 - S(-\varepsilon_b, \varepsilon_b, \rho - r(\varphi))$; F-03 trường màu thân bảy hàm cơ sở; F-04 đốm ellipse nhân mask quả cha; F-05 đa giác có lỗ $d = \max(d_{\text{ngoài}}, -d_{\text{lỗ}_1}, \ldots)$; F-06 nền. Lớp: L01 nền, L02 24 quả (mỗi quả: thân, hõm, hạt với viền, vệt bóng), L03 đài lá. Tham số:</p>
+<table>
+<thead>
+<tr>
+<th>Mã</th>
+<th>Tên</th>
+<th>Giá trị</th>
+<th>Cơ sở</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>P-01</td>
+<td>độ mềm thân</td>
+<td>3,0 px</td>
+<td>đo (quét theo MAE)</td>
+</tr>
+<tr>
+<td>P-02</td>
+<td>độ mềm hạt</td>
+<td>1,5 px</td>
+<td>đo</td>
+</tr>
+<tr>
+<td>P-03</td>
+<td>tỷ lệ viền hõm</td>
+<td>2,5</td>
+<td>đo (thử 1,6 / 2,0 / 2,5)</td>
+</tr>
+<tr>
+<td>P-04</td>
+<td>độ mềm hõm</td>
+<td>2,0 px</td>
+<td>đo</td>
+</tr>
+<tr>
+<td>P-05</td>
+<td>độ mềm vệt bóng</td>
+<td>0,9 px</td>
+<td>đo</td>
+</tr>
+<tr>
+<td>P-06</td>
+<td>độ mềm đài lá</td>
+<td>1,8 px</td>
+<td>đo</td>
+</tr>
+<tr>
+<td>P-07</td>
+<td>số hài Fourier</td>
+<td>6</td>
+<td>chọn</td>
+</tr>
+<tr>
+<td>P-08</td>
+<td>24 quả: id, tâm, $r_0$, 12 hệ số, 7 bộ ba màu</td>
+<td>bảng</td>
+<td>đo; thứ tự: quan sát</td>
+</tr>
+<tr>
+<td>P-09</td>
+<td>1 418 hõm: $\delta_x, \delta_y, a, b, \beta$, màu</td>
+<td>bảng</td>
+<td>đo</td>
+</tr>
+<tr>
+<td>P-10</td>
+<td>740 hạt: như trên cộng màu viền</td>
+<td>bảng</td>
+<td>đo</td>
+</tr>
+<tr>
+<td>P-11</td>
+<td>1 772 vệt bóng: ellipse hoặc đa giác có lỗ</td>
+<td>bảng</td>
+<td>đo</td>
+</tr>
+<tr>
+<td>P-12</td>
+<td>137 đa giác đài lá: khối, quả cha, tầng, màu, đỉnh, lỗ</td>
+<td>bảng</td>
+<td>đo</td>
+</tr>
+<tr>
+<td>—</td>
+<td>màu khe</td>
+<td>#270305</td>
+<td>đo (trung vị)</td>
+</tr>
+</tbody>
+</table>
+<p>Bảng đầy đủ nằm trong code block của đặc tả (439 962 byte). Report ghi: nhãn "đo" nói về giá trị trong bảng; các ngưỡng dò dùng để lập bảng là lựa chọn soạn thảo, nằm trong script, không trong đặc tả.</p>
+<h2 id="ph-lc-c-ti-lp">Phụ lục C — Tái lập</h2>
+<p><strong>Case 1.</strong> Đặc tả <code>dau-tay_spec_v1.0.md</code> (494 KB) chứa đúng một code block Python chỉ cần numpy và thư viện chuẩn. Đã chạy lại trong cùng môi trường (Windows 11, Python 3.14.3, numpy 2.4.6) từ chính đặc tả, bằng tiến trình mới trong thư mục tạm không có ảnh nguồn, và pixel trùng hash <code>24fbfe2b4a63127b6d0e96ad2c8c8dc5eb3f0ea649bb4c7a75990461b9776f3a</code>; 16/16 probe trong dung sai ±2; in <code>REPLAY OK</code>; CODE_SHA256 <code>027139eaac4b941cd5904c1ef73602803d5b73c23253bd7bd14c6c1f4eec3f46</code>. Chưa chạy lại trên máy thứ hai. Thời gian render ≈ 1,5–2 s.</p>
+<p><strong>Case 2.</strong> Đặc tả <code>dong-dau-tay_spec_v1.1.md</code> với kernel và bộ công cụ chép nguyên văn. Đã chạy lại hai lần trong cùng môi trường từ chính đặc tả, thư mục tạm rỗng, pixel trùng hash <code>3710e8ecd15e3374fd93ca4d422df7cdc2f2136791747505130b955a7486076c</code>; 14/14 probe; 100/100 pixel tính lại bằng thư viện vô hướng khớp; CODE_SHA256 <code>093fed4f0aa407b54d935699a702b1fd0fe0533d344ba8f81a647d7262b13540</code>. Văn bản toán cài lại độc lập khớp 5 000/5 000 pixel. Trên Windows cần chạy với cờ <code>-X utf8</code>. Chưa chạy lại trên máy thứ hai. Thời gian render 42,3 s theo ô, 289,9 s toàn ảnh.</p>
+<p><strong>Cảnh dẫn.</strong> <code>hoang-hon-tren-bien</code> v1.1 từ tập I: chúng tôi chạy lại ngày 06/10/2026, Python 3.14.3, numpy 2.4.6; 14/14 probe; hash <code>8c0cd21841c4ff2dd58fbc54622521ceffcc1d75bf0cafa47a5f34babcdf87f0</code>; <code>REPLAY OK</code>. Report của case 2 ghi cùng kết quả trên cùng máy, so với môi trường gốc của bộ quy tắc (Python 3.12.3, numpy 2.4.4): đây là bằng chứng hai môi trường cho cảnh dẫn, không cho hai case.</p>
+<p><strong>Hình dạy và hình tái dựng.</strong> Hình 2–10b render bằng numpy theo quy ước của tập I ngày 06/10/2026, hash từng hình ghi trong chú thích và trong <code>paper/figures/teaching_figs_hashes.json</code>, <code>teaching_figs2_hashes.json</code>. Hình 14 và 17 tái dựng từ chính code của hai đặc tả, chỉ đổi danh sách vật thể hoặc lớp được vẽ; hash trong <code>stages_p1_hashes.json</code>, <code>stages_p2_hashes.json</code>. Hình 11 và 12 là sơ đồ.</p>
+<p><strong>Điều hash không chứng minh.</strong> Probe kiểm vài điểm; hash kiểm toàn ảnh. Dung sai ±2 của probe không phải bit-exact. Hash của một bản render không tự chứng minh bản đó sinh từ công thức nếu không có chuỗi kiểm artifact và chạy lại. Thư mục sạch hay cờ <code>-I</code> không chứng minh chương trình không thể đọc đường dẫn khác, chỉ chứng minh điều đã kiểm. Hàm siêu việt có thể lệch một đơn vị ở bit cuối giữa các nền tảng; hash có thể khác trên máy khác, chưa đo.</p>
+<p><strong>Nơi lấy code và dữ liệu.</strong> Hai thư mục dự án <code>Code to Pic 2/</code> và <code>One Formular to Pic/</code> với <code>work/</code>, <code>out/</code>, <code>review/</code>, <code>final/</code>; hai report; hai bộ quy tắc. Hai thư mục này được lưu kèm bài làm tài liệu đi kèm.</p>
+<h2 id="ph-lc-d-bng-thut-ng">Phụ lục D — Bảng thuật ngữ</h2>
+<table>
+<thead>
+<tr>
+<th>Việt</th>
+<th>Anh</th>
+<th>Nghĩa</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>pixel</td>
+<td>pixel</td>
+<td>một ô của ảnh, ba số</td>
+</tr>
+<tr>
+<td>trường khoảng cách có dấu</td>
+<td>signed distance field, SDF</td>
+<td>hàm cho khoảng cách tới biên hình, âm bên trong</td>
+</tr>
+<tr>
+<td>mask (mặt nạ)</td>
+<td>mask</td>
+<td>độ phủ 0–1 của một vật tại mỗi pixel</td>
+</tr>
+<tr>
+<td>bước mềm</td>
+<td>smoothstep</td>
+<td>hàm chuyển mượt từ 0 lên 1 trong một dải</td>
+</tr>
+<tr>
+<td>khử răng cưa</td>
+<td>anti-aliasing</td>
+<td>làm mép hình mượt bằng độ phủ từng phần</td>
+</tr>
+<tr>
+<td>chồng lớp</td>
+<td>compositing</td>
+<td>ghép nhiều lớp thành một ảnh; over, add, multiply</td>
+</tr>
+<tr>
+<td>gộp lớp dạng đóng</td>
+<td>closed-form layer fold</td>
+<td>công thức một dòng tương đương chuỗi over</td>
+</tr>
+<tr>
+<td>hàm xuất màu</td>
+<td>output function</td>
+<td>đổi số thực thành số 8-bit</td>
+</tr>
+<tr>
+<td>hash số nguyên</td>
+<td>integer hash</td>
+<td>hàm "giả ngẫu nhiên" tất định trên số nguyên</td>
+</tr>
+<tr>
+<td>value noise, fBm</td>
+<td>value noise, fractional Brownian motion</td>
+<td>texture từ hash, một tầng hay nhiều tầng</td>
+</tr>
+<tr>
+<td>Worley</td>
+<td>Worley / Voronoi F1</td>
+<td>khoảng cách tới hạt gần nhất</td>
+</tr>
+<tr>
+<td>hash pixel</td>
+<td>pixel hash</td>
+<td>SHA-256 của toàn bộ byte màu, kiểm tái lập</td>
+</tr>
+<tr>
+<td>probe</td>
+<td>probe</td>
+<td>pixel có giá trị kỳ vọng, dung sai ±2</td>
+</tr>
+<tr>
+<td>clean-room</td>
+<td>clean-room test</td>
+<td>chạy code trích từ đặc tả trong thư mục rỗng bằng tiến trình mới</td>
+</tr>
+<tr>
+<td>phép thử nhiễu loạn</td>
+<td>perturbation test</td>
+<td>đổi một tham số, kiểm ảnh đổi đúng kỳ vọng ghi trước</td>
+</tr>
+<tr>
+<td>Fidelity A / B</td>
+<td>fidelity A / B</td>
+<td>giống nguồn / tái lập đúng đặc tả</td>
+</tr>
+<tr>
+<td>đặc tả (spec)</td>
+<td>specification</td>
+<td>file <code>.md</code> tự chứa định nghĩa một bức tranh</td>
+</tr>
+<tr>
+<td>render</td>
+<td>render</td>
+<td>ảnh tính từ đặc tả</td>
+</tr>
+<tr>
+<td>đường viền Fourier</td>
+<td>Fourier contour</td>
+<td>bán kính theo góc dạng chuỗi Fourier</td>
+</tr>
+<tr>
+<td>watershed</td>
+<td>watershed</td>
+<td>thuật toán phân vùng ảnh từ các điểm đánh dấu</td>
+</tr>
+<tr>
+<td>k-means Lab</td>
+<td>k-means in Lab</td>
+<td>gom cụm màu trong không gian Lab</td>
+</tr>
+<tr>
+<td>phân tích-bằng-tổng-hợp</td>
+<td>analysis by synthesis</td>
+<td>so ảnh tổng hợp với ảnh thật để tìm phần thiếu</td>
+</tr>
+<tr>
+<td>bảng neo</td>
+<td>anchor table</td>
+<td>vị trí và cỡ các vật thể chính đo từ ảnh tham chiếu</td>
+</tr>
+<tr>
+<td>phỏng tác bậc 2</td>
+<td>adaptation, level 2</td>
+<td>lấy palette, bố cục, số lượng, hướng sáng; không lấy đường viền, texture</td>
+</tr>
+<tr>
+<td>hạng độ dài NGẮN / LAI / DÀI</td>
+<td>length class</td>
+<td>ngân sách ký tự, hằng số, bảng của dự án</td>
+</tr>
+<tr>
+<td>thẻ ý tưởng, thesis</td>
+<td>idea card, thesis</td>
+<td>mô tả ý đồ và đánh đổi của một ứng viên trước khi viết code</td>
+</tr>
+<tr>
+<td>so cặp mù</td>
+<td>blind pairwise judging</td>
+<td>chấm hai bức không biết mã, một bên thắng, một câu lý do</td>
+</tr>
+<tr>
+<td>MAE, PSNR, SSIM, $\Delta E_{2000}$</td>
+<td>—</td>
+<td>sai số tuyệt đối trung bình; tỷ số tín hiệu đỉnh trên nhiễu; tương đồng cấu trúc; sai khác màu cảm nhận</td>
+</tr>
+<tr>
+<td><code>lum12</code></td>
+<td>—</td>
+<td>tương quan bản đồ sáng tối 12 × 12 giữa hai ảnh</td>
+</tr>
+<tr>
+<td>độ sâu trường ảnh</td>
+<td>depth of field</td>
+<td>vùng nét và vùng mờ; ở đây làm bằng độ mềm biên và mất chi tiết, không làm mờ</td>
+</tr>
+<tr>
+<td>Fresnel (Schlick)</td>
+<td>Fresnel, Schlick</td>
+<td>phản xạ tăng khi nhìn xiên</td>
+</tr>
+<tr>
+<td>tán xạ dưới bề mặt</td>
+<td>subsurface scattering</td>
+<td>ánh sáng xuyên vào vật rồi ra ở chỗ khác; ở đây mô phỏng bằng bọc khuếch tán theo kênh</td>
+</tr>
+<tr>
+<td>softbox</td>
+<td>softbox</td>
+<td>nguồn sáng chữ nhật mềm, hiện thành vệt phản chiếu</td>
+</tr>
+<tr>
+<td>mô hình diễn giải</td>
+<td>interpretive model</td>
+<td>phát biểu hình thức để đọc, không phải thuật toán đã chạy</td>
+</tr>
+<tr>
+<td>giải thích hồi cứu</td>
+<td>retrospective explanation</td>
+<td>lý do người viết suy ra sau sự kiện, không phải lịch sử</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<p><em>Phiên bản.</em> v1.1 — 06/10/2026 — thêm mục 1.2 (ảnh có công thức so với file ảnh JPEG, PNG, SVG) và tài liệu [12]–[14]. v1.0 — 06/10/2026 — bản hoàn chỉnh: thêm mục 1.1 (hai cách tạo ảnh), 5.7 (đặc tả cho AI khác), 7.12 (các phương án không được chọn), 9 (hướng dẫn dựng hệ thống), 10 (áp dụng gần và xa), 20 hình. v0.1 — 06/10/2026 — bản nháp đầu từ hai report.</p></main><footer>Henry · Claude Code — 2026. Static site; mathematics rendered with KaTeX. Figures carry pixel hashes in their captions; specifications and reports accompany the paper.</footer></body></html>

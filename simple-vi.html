@@ -1,0 +1,81 @@
+<!doctype html><html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Giải thích đơn giản — Equation Painting</title><meta name="description" content="Equation Painting: images defined by mathematical formulas, found with a code-executing AI. Bilingual white paper (Vietnamese / English).">
+<style>
+:root { --fg:#111; --bg:#fff; --rule:#000; --muted:#555; }
+* { box-sizing: border-box; }
+html { font-size: 17px; }
+body { margin:0; background:var(--bg); color:var(--fg); font-family: "Times New Roman", Times, Georgia, serif; line-height:1.45; }
+a { color:var(--fg); text-decoration: underline; text-underline-offset: 2px; }
+nav.top { border-bottom: 1px solid var(--rule); padding: 10px 16px; display:flex; gap:18px; align-items:baseline; flex-wrap:wrap; font-size:0.95rem; }
+nav.top .brand { font-weight:bold; letter-spacing: 0.02em; }
+nav.top .spacer { flex:1; }
+main { max-width: 820px; margin: 0 auto; padding: 24px 16px 64px 16px; }
+h1.title { text-align:center; font-size:1.7rem; margin: 18px 0 6px; }
+p.subtitle { text-align:center; font-style: italic; margin:0 0 8px; }
+p.authors { text-align:center; margin:0; } p.authors-meta { text-align:center; color:var(--muted); margin:0 0 18px; font-size:0.9rem; }
+p.abs { margin: 0 24px 8px; text-align: justify; } p.kw { margin: 0 24px 14px; font-size:0.9rem; }
+h2 { font-size:1.2rem; margin: 30px 0 8px; border-top: 1px solid var(--rule); padding-top: 12px; }
+h3 { font-size:1.05rem; font-style: italic; margin: 20px 0 6px; }
+p { text-align: justify; margin: 0 0 10px; }
+table { border-collapse: collapse; margin: 10px auto 16px; font-size: 0.86rem; width:100%; display:block; overflow-x:auto; }
+th, td { border: 1px solid var(--rule); padding: 4px 7px; vertical-align: top; text-align:left; }
+figure { margin: 14px 0 18px; text-align:center; } figure img { max-width:100%; height:auto; border:1px solid #ccc; }
+figcaption { font-size: 0.86rem; text-align: justify; margin: 6px 8px 0; color: var(--muted); }
+pre { white-space: pre-wrap; border: 1px solid #000; padding: 10px; font-size: 0.82rem; font-family: "Courier New", monospace; }
+code { font-family: "Courier New", monospace; font-size: 0.9em; }
+ol.refs { list-style:none; counter-reset: ref; padding-left: 2.4em; } ol.refs li { counter-increment: ref; position: relative; margin-bottom:4px; }
+ol.refs li::before { content: "[" counter(ref) "]"; position:absolute; left:-2.4em; }
+blockquote { margin: 8px 24px; }
+.katex-display { overflow-x:auto; overflow-y:hidden; padding: 2px 0; }
+.landing h1 { text-align:center; font-size:1.8rem; margin: 30px 0 4px; } .landing .sub { text-align:center; font-style:italic; margin:0 0 6px; }
+.landing .meta { text-align:center; color:var(--muted); margin: 0 0 28px; }
+.cols { display:grid; grid-template-columns: 1fr 1fr; gap: 28px; } @media (max-width: 760px) { .cols { grid-template-columns: 1fr; } }
+.col { border: 1px solid var(--rule); padding: 16px 18px; }
+.col h2 { border:0; margin:0 0 6px; padding:0; font-size:1.15rem; }
+.actions { display:flex; gap: 10px; flex-wrap: wrap; margin: 12px 0 14px; }
+.btn { border: 1px solid var(--rule); padding: 8px 14px; text-decoration:none; font-size:0.95rem; background:#fff; display:inline-block; }
+.btn.primary { background:#000; color:#fff; }
+.hero { display:grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 0 0 24px; } @media (max-width:760px) { .hero { grid-template-columns: 1fr; } }
+.hero img { width:100%; height:auto; border:1px solid #000; filter: grayscale(100%); transition: filter .3s; } .hero img:hover { filter:none; }
+.hero figcaption { font-size:0.85rem; color: var(--muted); text-align:center; margin-top:4px; }
+footer { border-top: 1px solid var(--rule); margin-top: 40px; padding: 14px 16px; font-size: 0.85rem; color: var(--muted); text-align:center; }
+details.toc { border:1px solid #000; padding: 8px 14px; margin: 0 0 18px; font-size:0.92rem; } details.toc summary { cursor:pointer; font-weight:bold; }
+details.toc ol { margin: 8px 0 4px; padding-left: 1.4em; } details.toc li { margin: 2px 0; }
+.box { border:1px solid var(--rule); padding: 16px 18px; margin: 26px 0; }
+.box h2 { border:0; margin:0 0 8px; padding:0; font-size:1.15rem; }
+.simple { font-size: 1.15rem; line-height: 1.6; } .simple h1 { text-align:center; font-size:1.9rem; margin: 20px 0 6px; }
+.simple h2 { border:0; padding:0; margin: 22px 0 6px; font-size: 1.3rem; } .simple p { text-align:left; }
+.simple .big { font-size: 1.35rem; text-align:center; border:1px solid #000; padding: 12px; margin: 16px 0; }
+.simple ul { padding-left: 1.3em; } .simple li { margin: 4px 0; }
+</style></head><body><nav class="top"><a class="brand" href="index.html">Equation Painting</a><a href="paper-vi.html">Đọc bản tiếng Việt</a><a href="paper-en.html">Read in English</a><a href="simple-vi.html">Giải thích đơn giản</a><a href="index.html#try">Tự thử</a><span class="spacer"></span><a href="pdf/equation_painting_paper_v1_0.pdf">PDF (VI)</a><a href="pdf/equation_painting_paper_v1_0_en.pdf">PDF (EN)</a></nav><main>
+<div class="simple">
+<h1>Vẽ tranh bằng công thức toán<br><span style="font-weight:normal;font-size:1.1rem">giải thích trong một trang, cho cả bạn nhỏ học cấp 1</span></h1>
+
+<h2>1. Một bức ảnh trên máy tính là gì?</h2>
+<p>Hãy nhìn thật gần vào màn hình. Bức ảnh được ghép từ rất nhiều ô vuông bé xíu gọi là <b>pixel</b>. Mỗi ô có một màu. Một bức ảnh nhỏ của chúng tôi có hơn <b>300 000 ô</b>. Máy tính nhớ bức ảnh bằng cách nhớ màu của từng ô, giống như một bảng số khổng lồ.</p>
+
+<h2>2. Chúng tôi làm gì khác?</h2>
+<p>Thay vì nhớ 300 000 màu, chúng tôi viết <b>một công thức</b>. Công thức giống như một luật chơi: "Ô ở chỗ này thì tô màu này." Bạn chỉ cần biết ô nằm ở đâu (bao nhiêu bước sang phải, bao nhiêu bước lên trên), đưa hai con số đó vào công thức, công thức trả lời ngay: màu đỏ nhiều bao nhiêu, xanh bao nhiêu, lam bao nhiêu.</p>
+<div class="big">Vị trí của ô → công thức → màu của ô</div>
+<p>Làm vậy với tất cả các ô, ta được cả bức tranh. Bức tranh đống dâu tây trong bài này được vẽ đúng như thế: không ai tô từng ô, mọi ô đều do công thức tính ra.</p>
+
+<h2>3. Vì sao điều đó hay?</h2>
+<ul>
+<li><b>Ai tính cũng ra đúng một bức.</b> Bạn đưa công thức cho bạn của bạn, cho một cái máy khác, cho một AI khác, tính lại bao nhiêu lần cũng ra y hệt, không sai một ô. Chúng tôi kiểm bằng một "con số vân tay" của cả bức: hai bức giống nhau thì vân tay giống nhau.</li>
+<li><b>Đọc được.</b> Trong công thức có ghi: đây là quả dâu số 1, to bằng này, ở chỗ này; đây là đài lá; ánh sáng chiếu từ góc trên bên trái. Một file ảnh thường thì chỉ là một dãy số, không ai đọc nổi.</li>
+<li><b>Sửa được.</b> Muốn quả dâu to hơn, đổi một con số. Muốn đèn chiếu từ bên phải, đổi một con số khác. Bức tranh đổi đúng chỗ đó, chỗ khác giữ nguyên.</li>
+<li><b>Phóng to không vỡ.</b> Vì công thức tính được ở bất kỳ chỗ nào, in to bằng cái bàn vẫn nét.</li>
+</ul>
+
+<h2>4. Ai đã làm việc này?</h2>
+<p>Hai bên cùng làm. <b>Con người</b> (chú Henry) chọn bức ảnh, nói muốn gì, đặt ra luật, và cuối cùng chọn bức đẹp nhất. <b>AI</b> (Claude Code) đo bức ảnh bằng chương trình, viết công thức, vẽ thử, so sánh, sửa đi sửa lại, rồi kiểm tra bằng con số vân tay. AI thử 60 bức khác nhau; con người chọn 1.</p>
+
+<h2>5. Hai bài toán trong bài</h2>
+<p><b>Bài 1:</b> có một tấm ảnh chụp dâu tây, hãy viết công thức để vẽ lại cho thật giống. Kết quả: giống đến mức nhìn là nhận ra ngay, nhưng công thức dài vì phải nhớ rất nhiều số đo.</p>
+<p><b>Bài 2:</b> cũng tấm ảnh đó, nhưng chỉ lấy ý: bao nhiêu quả, nằm ở đâu, màu gì, đèn chiếu hướng nào. Rồi vẽ một bức <i>mới</i> bằng <b>một công thức ngắn hơn bốn mươi lần</b>. Bức mới không giống từng ô với ảnh chụp, và đó là chủ ý.</p>
+
+<h2>6. Bạn có thể thử</h2>
+<p>Trên trang chủ có hai file công thức. Đưa một file cho một AI biết chạy chương trình và nói: "Hãy chạy đúng file này." AI sẽ vẽ ra đúng bức tranh trong bài, không khác một ô. Đó là điều mà một bức ảnh do AI "vẽ theo lời tả" không làm được: mỗi lần tả, nó ra một bức khác.</p>
+<p style="text-align:center;margin-top:24px"><a class="btn primary" href="paper-vi.html">Đọc bài đầy đủ</a> <a class="btn" href="index.html">Về trang chủ</a></p>
+</div>
+</main><footer>Henry · Claude Code — 2026. Static site; mathematics rendered with KaTeX. Figures carry pixel hashes in their captions; specifications and reports accompany the paper.</footer></body></html>

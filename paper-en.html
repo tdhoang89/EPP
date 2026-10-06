@@ -1,0 +1,1962 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Equation Painting — white paper</title><meta name="description" content="Equation Painting: images defined by mathematical formulas, found with a code-executing AI. Bilingual white paper (Vietnamese / English)."><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false,strict:false});"></script>
+<style>
+:root { --fg:#111; --bg:#fff; --rule:#000; --muted:#555; }
+* { box-sizing: border-box; }
+html { font-size: 17px; }
+body { margin:0; background:var(--bg); color:var(--fg); font-family: "Times New Roman", Times, Georgia, serif; line-height:1.45; }
+a { color:var(--fg); text-decoration: underline; text-underline-offset: 2px; }
+nav.top { border-bottom: 1px solid var(--rule); padding: 10px 16px; display:flex; gap:18px; align-items:baseline; flex-wrap:wrap; font-size:0.95rem; }
+nav.top .brand { font-weight:bold; letter-spacing: 0.02em; }
+nav.top .spacer { flex:1; }
+main { max-width: 820px; margin: 0 auto; padding: 24px 16px 64px 16px; }
+h1.title { text-align:center; font-size:1.7rem; margin: 18px 0 6px; }
+p.subtitle { text-align:center; font-style: italic; margin:0 0 8px; }
+p.authors { text-align:center; margin:0; } p.authors-meta { text-align:center; color:var(--muted); margin:0 0 18px; font-size:0.9rem; }
+p.abs { margin: 0 24px 8px; text-align: justify; } p.kw { margin: 0 24px 14px; font-size:0.9rem; }
+h2 { font-size:1.2rem; margin: 30px 0 8px; border-top: 1px solid var(--rule); padding-top: 12px; }
+h3 { font-size:1.05rem; font-style: italic; margin: 20px 0 6px; }
+p { text-align: justify; margin: 0 0 10px; }
+table { border-collapse: collapse; margin: 10px auto 16px; font-size: 0.86rem; width:100%; display:block; overflow-x:auto; }
+th, td { border: 1px solid var(--rule); padding: 4px 7px; vertical-align: top; text-align:left; }
+figure { margin: 14px 0 18px; text-align:center; } figure img { max-width:100%; height:auto; border:1px solid #ccc; }
+figcaption { font-size: 0.86rem; text-align: justify; margin: 6px 8px 0; color: var(--muted); }
+pre { white-space: pre-wrap; border: 1px solid #000; padding: 10px; font-size: 0.82rem; font-family: "Courier New", monospace; }
+code { font-family: "Courier New", monospace; font-size: 0.9em; }
+ol.refs { list-style:none; counter-reset: ref; padding-left: 2.4em; } ol.refs li { counter-increment: ref; position: relative; margin-bottom:4px; }
+ol.refs li::before { content: "[" counter(ref) "]"; position:absolute; left:-2.4em; }
+blockquote { margin: 8px 24px; }
+.katex-display { overflow-x:auto; overflow-y:hidden; padding: 2px 0; }
+.landing h1 { text-align:center; font-size:1.8rem; margin: 30px 0 4px; } .landing .sub { text-align:center; font-style:italic; margin:0 0 6px; }
+.landing .meta { text-align:center; color:var(--muted); margin: 0 0 28px; }
+.cols { display:grid; grid-template-columns: 1fr 1fr; gap: 28px; } @media (max-width: 760px) { .cols { grid-template-columns: 1fr; } }
+.col { border: 1px solid var(--rule); padding: 16px 18px; }
+.col h2 { border:0; margin:0 0 6px; padding:0; font-size:1.15rem; }
+.actions { display:flex; gap: 10px; flex-wrap: wrap; margin: 12px 0 14px; }
+.btn { border: 1px solid var(--rule); padding: 8px 14px; text-decoration:none; font-size:0.95rem; background:#fff; display:inline-block; }
+.btn.primary { background:#000; color:#fff; }
+.hero { display:grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 0 0 24px; } @media (max-width:760px) { .hero { grid-template-columns: 1fr; } }
+.hero img { width:100%; height:auto; border:1px solid #000; filter: grayscale(100%); transition: filter .3s; } .hero img:hover { filter:none; }
+.hero figcaption { font-size:0.85rem; color: var(--muted); text-align:center; margin-top:4px; }
+footer { border-top: 1px solid var(--rule); margin-top: 40px; padding: 14px 16px; font-size: 0.85rem; color: var(--muted); text-align:center; }
+details.toc { border:1px solid #000; padding: 8px 14px; margin: 0 0 18px; font-size:0.92rem; } details.toc summary { cursor:pointer; font-weight:bold; }
+details.toc ol { margin: 8px 0 4px; padding-left: 1.4em; } details.toc li { margin: 2px 0; }
+.box { border:1px solid var(--rule); padding: 16px 18px; margin: 26px 0; }
+.box h2 { border:0; margin:0 0 8px; padding:0; font-size:1.15rem; }
+.simple { font-size: 1.15rem; line-height: 1.6; } .simple h1 { text-align:center; font-size:1.9rem; margin: 20px 0 6px; }
+.simple h2 { border:0; padding:0; margin: 22px 0 6px; font-size: 1.3rem; } .simple p { text-align:left; }
+.simple .big { font-size: 1.35rem; text-align:center; border:1px solid #000; padding: 12px; margin: 16px 0; }
+.simple ul { padding-left: 1.3em; } .simple li { margin: 4px 0; }
+</style></head><body><nav class="top"><a class="brand" href="index.html">Equation Painting</a><a href="paper-en.html">Read in English</a><a href="paper-vi.html">Đọc bản tiếng Việt</a><a href="simple-en.html">Simple explanation</a><a href="index.html#try">Try it</a><span class="spacer"></span><a href="pdf/equation_painting_paper_v1_0_en.pdf">PDF (EN)</a><a href="pdf/equation_painting_paper_v1_0.pdf">PDF (VI)</a></nav><main><h1 class="title">Equation Painting: two problems, two ways of finding the formula</h1>
+<p class="subtitle">Vẽ tranh bằng phương trình: hai bài toán, hai cách tìm công thức</p><p class="authors">Henry · Claude Code</p><p class="authors-meta">6 October 2026 · version 1.1</p>
+<p class="abs"><b>Abstract.</b> We present Equation Painting, a way of defining an image by a function: the colour of each pixel is the value of a function at that pixel's coordinates, so a picture is a mathematical expression that can be recomputed and checked with a hash. The paper poses two problems on the same 554 × 554 photograph of a pile of strawberries. Problem 1 repaints the photograph by splitting it into three layers with 24 berries and 4,831 primitive draws, each primitive a formula whose parameters are measured from the image; the result reaches MAE 14.55/255 and PSNR 20.99 dB against the source and is reproduced pixel for pixel from its specification. Problem 2 paints a new 1108 × 1108 picture after the reference, without copying it, where the whole picture is one function of 11,489 characters and 663 constants under a published counting rule, with 27 helper functions and 91 layers. We explain the foundations in ten steps, from a pixel to one function for the whole picture, then narrate both cases step by step to their formulas. The work was carried out by a code-executing AI (Claude Code) under a written rule set; a human posed the problems, set the constraints and chose the final picture. Unlike an image produced by a generative model, an image with a formula is recomputed pixel for pixel by anyone, any number of times, and checked with a single number; the paper includes a guide for readers to rebuild this system with a code-executing AI. In Problem 2 the AI rendered 60 trial images over seven judging rounds in two batches plus one polishing round; the human stopped to decide at five points. The two cases show that trading "match every pixel" for "one compact definition" shortens the formula by more than forty times in bytes but gives up matching the source, and that pixel-exact reproduction does not depend on whether the image resembles the source.</p>
+<p class="kw"><strong>Keywords:</strong> image as function, signed distance field, compositing, pixel hash, reproducibility, code-executing AI, Yeganeh.</p>
+<p class="abs"><b>Tóm tắt.</b> Chúng tôi trình bày Equation Painting, một cách định nghĩa ảnh bằng hàm số: màu của mỗi pixel là giá trị của một hàm tại toạ độ pixel đó, nên một bức tranh là một biểu thức toán học có thể tính lại và kiểm tra bằng hash. Bài viết đặt hai bài toán trên cùng một ảnh chụp đống dâu tây 554 × 554. Bài toán 1 vẽ lại ảnh bằng cách chia ảnh thành ba lớp với 24 quả và 4 831 lần vẽ hình cơ bản, mỗi hình một công thức có tham số đo từ ảnh; kết quả đạt MAE 14,55/255 và PSNR 20,99 dB so với nguồn, và tái lập từng pixel so với đặc tả. Bài toán 2 vẽ một bức tranh mới theo ảnh tham chiếu, không chép lại, với toàn bộ bức tranh 1108 × 1108 là một hàm duy nhất dài 11 489 ký tự và 663 hằng số theo cách đếm đã công bố, gồm 27 hàm phụ và 91 lớp. Chúng tôi giải thích nền tảng theo mười bậc, từ pixel tới một hàm cho cả bức, rồi kể hai trường hợp từng bước tới công thức. Công việc do một AI chạy được code (Claude Code) thực hiện theo một bộ quy tắc; con người đặt bài toán, đặt ràng buộc và chọn bức cuối. Khác với ảnh do mô hình sinh ảnh tạo ra, một ảnh có công thức được tính lại đúng từng pixel bởi bất kỳ ai, bao nhiêu lần cũng vậy, và kiểm bằng một con số; bài kèm một hướng dẫn để người đọc dựng lại hệ thống này với một AI chạy được code. Trong bài toán 2, AI đã render 60 bản thử qua bảy vòng chấm trong hai lô và một vòng đánh bóng; con người dừng để quyết định ở năm điểm. Hai case cho thấy đổi "khớp từng pixel" lấy "một định nghĩa gọn" làm công thức ngắn đi hơn bốn mươi lần theo byte nhưng không còn khớp nguồn, và cho thấy việc tái lập đúng từng pixel không phụ thuộc vào việc ảnh có giống nguồn hay không.</p>
+<p class="kw"><strong>Từ khoá:</strong> ảnh là hàm số, trường khoảng cách có dấu, chồng lớp, hash pixel, tái lập, AI chạy code, Yeganeh.</p>
+<details class="toc"><summary>Contents</summary><ol><li><a href="#1-introduction">1. Introduction</a></li><li><a href="#2-the-two-problems-in-words">2. The two problems, in words</a></li><li><a href="#3-foundations-ten-steps">3. Foundations: ten steps</a></li><li><a href="#4-principles">4. Principles</a></li><li><a href="#5-method-how-the-ai-finds-a-formula">5. Method: how the AI finds a formula</a></li><li><a href="#6-case-study-1-repainting-the-strawberry-photograph-with-many-formulas">6. Case study 1: repainting the strawberry photograph with many formulas</a></li><li><a href="#7-case-study-2-painting-after-a-reference-with-one-formula">7. Case study 2: painting after a reference with one formula</a></li><li><a href="#8-discussion">8. Discussion</a></li><li><a href="#9-guide-building-an-image-to-formula-system-with-an-ai">9. Guide: building an image-to-formula system with an AI</a></li><li><a href="#10-near-and-far-applications-in-the-age-of-ai">10. Near and far applications in the age of AI</a></li><li><a href="#11-conclusion">11. Conclusion</a></li><li><a href="#references">References</a></li><li><a href="#appendix-a-notation-and-conventions">Appendix A — Notation and conventions</a></li><li><a href="#appendix-b-full-formulas">Appendix B — Full formulas</a></li><li><a href="#appendix-c-reproduction">Appendix C — Reproduction</a></li><li><a href="#appendix-d-glossary">Appendix D — Glossary</a></li></ol></details><hr />
+<h2 id="1-introduction">1. Introduction</h2>
+<h3>1.1 Two ways a machine makes a picture</h3>
+<p>A 554 × 554 photograph is 306,916 coloured cells. The usual way to make a picture is to fill the cells one by one: with a camera, with a brush, or with an image-generating model. There is another way: write a function that takes the coordinates of a cell and returns its colour. The picture is then no longer three hundred thousand numbers but a passage of mathematics, and everyone who holds that passage computes the same three hundred thousand numbers. This paper shows how such functions were found for two problems, how a code-executing AI took part in finding them, and what remains for a human to decide.</p>
+<p>The two ways of making pictures by machine that are widely used today, and the way of this paper, differ at the root.</p>
+<p><strong>Generative image AI today.</strong> The popular systems (diffusion models and their relatives) learn from hundreds of millions to billions of captioned images. Given a description, they start from an array of random noise and denoise it over a few dozen steps, each step a pass through a neural network with billions of parameters. The output depends on three things: the description, the random seed, and the whole state of the system at run time, including the model version, the libraries, the hardware and the way that hardware rounds matrix products. The documentation of a widely used diffusion library states it plainly: the same seed on the same hardware and the same library version is reproducible; change the GPU or the version and one should not expect identical results, only similar ones within a tolerance [10]. In other words, for generative AI an "image" is an event: it happens once under one set of conditions, and those conditions cannot be written down in a few pages so that someone else recreates it byte for byte. The model also does not say why a pixel has the colour it has; to change one detail, one describes again, generates again, and picks.</p>
+<p><strong>Pictures by formula.</strong> In the way of this paper, the image is the value of a deterministic function at the pixel coordinates. The function is written out in full: coordinates, primitive shapes, colours, the way layers are stacked, the rounding rule. There is no random noise; where "randomness" is wanted it is replaced by an integer hash function that returns the same value on every machine. The most important consequence: <strong>once the formula exists, every computation yields exactly that picture, not one pixel off, whoever computes it, in whatever language, however many times.</strong> The paper does not merely state this in principle; it tests it. Each picture carries a single number summarising the whole image (a hash), and an independent process, in an empty folder with no original image, recomputes the picture from the text and arrives at that same number. In the two cases of this paper this was checked on one machine for two pictures, and for two sample scenes of the rule set on two environments with different Python and numpy versions. The remaining limit is stated in Appendix C: transcendental functions such as sine and exp may differ by one unit in the last bit across platforms, so the paper does not write "identical on every machine" until that has been measured.</p>
+<p>The table below sets the two ways side by side. It does not rank them; each does a different thing well.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Generative image AI (diffusion)</th>
+<th>Pictures by formula (this paper)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Input</td>
+<td>a description, a seed, optionally a guide image</td>
+<td>a formula: coordinates, shapes, colours, layers, parameters</td>
+</tr>
+<tr>
+<td>Mechanism</td>
+<td>a neural network trained on data, denoising step by step</td>
+<td>evaluating a function at every pixel</td>
+</tr>
+<tr>
+<td>Repeatability</td>
+<td>same seed, same hardware, same version: repeatable; otherwise only similar [10]</td>
+<td>same formula: same bytes; checked by hash; verified on one machine, sample scenes on two environments</td>
+</tr>
+<tr>
+<td>Reason for each pixel</td>
+<td>not readable</td>
+<td>readable: every pixel traces back to a shape, a colour, a layer and a parameter</td>
+</tr>
+<tr>
+<td>Changing one detail</td>
+<td>describe again, generate again, pick</td>
+<td>change one named parameter; the picture changes exactly there (perturbation tests, 6.6, 7.8)</td>
+</tr>
+<tr>
+<td>Payload</td>
+<td>a model of gigabytes; the output is a bitmap</td>
+<td>text of a few KB to a few hundred KB; no model needed</td>
+</tr>
+<tr>
+<td>Compute cost</td>
+<td>seconds to minutes on a GPU</td>
+<td>seconds to minutes on a CPU, numpy only</td>
+</tr>
+<tr>
+<td>Good at</td>
+<td>natural, rich images from a short description</td>
+<td>structured images that must be deterministic, checkable, editable by object</td>
+</tr>
+<tr>
+<td>Limit seen in this paper</td>
+<td>not present in the two cases</td>
+<td>a real photograph matches only at PSNR ≈ 21 dB (case 1); the new picture still reads as rendered (case 2)</td>
+</tr>
+</tbody>
+</table>
+<p>The two ways do not exclude each other. Generative AI can produce ideas and references; a formula fixes an official version that can be checked and handed over. Section 10 continues this.</p>
+<h3>1.2 Pictures with a formula compared with today's image files</h3>
+<p>To see where this paper's approach stands, it helps to recall what an ordinary image file does. A JPEG, PNG or WebP file is a string of bits. The computer does not "see" the picture; it reads the file header to learn the format and size, decodes the rest by the rules of the standard, rebuilds a table of colour numbers, hands that table to the graphics processor, and the screen lights each point according to the table. An image file is therefore not the picture we see; it is an encoding sufficient for the machine to rebuild the pixel table.</p>
+<p>The two families of formats in wide use do this in two ways. <strong>Raster formats</strong> store the result, the colour of every pixel, and then compress it. Storing a 554 × 554 image raw at three bytes per pixel takes 920,748 bytes; a 1200 × 1200 image takes 4.32 MB. PNG compresses losslessly: it predicts each pixel from its neighbours, stores the residual, and compresses the residuals with DEFLATE; decompression returns every colour byte exactly [13]. JPEG compresses lossily: it converts the colour space, splits the image into 8 × 8 blocks, transforms each block into 64 coefficients of cosine functions (the DCT), rounds the high-frequency coefficients coarsely where the eye is least sensitive, and entropy-codes the result [12]. In a narrow sense a JPEG file is already a "picture by formula": each block is a sum of 64 cosine functions with 64 coefficients. But that formula carries no meaning about content, no strawberry or sepal appears in it, only blocks and frequencies; and the JPEG standard specifies a tolerance for the inverse transform rather than requiring every decoder to produce the same bytes, so two compliant decoders may differ by one level at some pixels [12]. <strong>Vector formats</strong> such as SVG store drawing commands instead of pixels: "a circle centred at (500, 500), radius 200, filled red" [14]. It can be enlarged without breaking, since the renderer redraws from the commands; but SVG's grammar is flat shapes and gradients, with no natural way to write the volume, lighting or texture of a strawberry.</p>
+<p>Three levels of representation of a picture can be distinguished: the file level (a string of bits), the pixel level ($I(x, y) = (R, G, B)$), and the generative-model level ($I(x, y) = F(x, y; \theta)$ with parameters $\theta$). Raster lives at the file and pixel levels; vector graphics and this paper's formulas live at the generative-model level. The display chain of an image file is: file → decoder → pixels → graphics processor → screen. The chain of this paper is one step longer at the front: formula text → evaluate $F(x, y)$ at every pixel → pixels → (a PNG file for storage and quick viewing) → screen. The formula is the level before the file; the accompanying PNG is only a by-product for viewing without recomputation.</p>
+<p>The table below sets the four ways side by side. One thing must be said plainly: all four need a program to produce pixels. JPEG needs a standard decoder, SVG needs a renderer, a formula needs a machine that can do arithmetic (here Python with numpy). The difference lies not in "whether a program is needed" but in the unit of information stored, in whether decoding is deterministic, and in whether a reader can understand the content of the file.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>JPEG</th>
+<th>PNG</th>
+<th>SVG</th>
+<th>Formula (this paper)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Unit stored</td>
+<td>cosine coefficients of 8 × 8 blocks</td>
+<td>predicted and compressed pixels</td>
+<td>flat drawing commands</td>
+<td>named objects, parameters with a basis, ordered layers</td>
+</tr>
+<tr>
+<td>Loss</td>
+<td>yes, by design</td>
+<td>none</td>
+<td>none (shapes); rasterised by the renderer</td>
+<td>none; pixels are function values</td>
+</tr>
+<tr>
+<td>Deterministic decoding</td>
+<td>within the standard's tolerance [12]</td>
+<td>byte-exact [13]</td>
+<td>renderer-dependent (anti-aliasing, fonts)</td>
+<td>same bytes by hash; checked by clean-room (Appendix C)</td>
+</tr>
+<tr>
+<td>Resizing</td>
+<td>interpolation, blur</td>
+<td>interpolation, blur</td>
+<td>redrawn, sharp</td>
+<td>recomputed, sharp; normalised coordinates</td>
+</tr>
+<tr>
+<td>Readable content</td>
+<td>no</td>
+<td>no</td>
+<td>yes, for flat shapes</td>
+<td>yes, including volume, lighting, texture</td>
+</tr>
+<tr>
+<td>Editing one detail</td>
+<td>repaint a pixel region</td>
+<td>repaint a pixel region</td>
+<td>edit one shape</td>
+<td>change one named parameter; the perturbation test checks the consequence</td>
+</tr>
+<tr>
+<td>Size in case 1</td>
+<td>91,064 B (source photo)</td>
+<td>549 KB (render)</td>
+<td>—</td>
+<td>460,692 B of code, 95.5 % measurement tables; 115,771 B zlib-compressed</td>
+</tr>
+</tbody>
+</table>
+<p>The last row is a reminder that this approach is not a better compression: in case 1 the specification is larger than the original JPEG, because it must carry 36,450 measurements to match a photograph. Its value lies in the three preceding columns: deterministic decoding, readable content, and editing by object. The central question is therefore not "can a picture be represented mathematically", since every image file already is a mathematical representation, but: which representation is short enough, structured enough, cheap enough to evaluate, and still rebuilds the picture at the desired quality. The two cases of this paper are two measured answers to that question on one image.</p>
+<h3>1.3 Why now</h3>
+<p>The idea "image as function" is not new. Hamid Naderi Yeganeh has built many pictures in which the colour of pixel $(m, n)$ is $\big(F(H_0(x, y)), F(H_1(x, y)), F(H_2(x, y))\big)$, with $H_v$ a network of functions built from a multi-step idea; he describes how he assembles the functions of each step and runs the program many times to try them [1]. Karl Sims, in 1991, let a machine mutate mathematical expressions into images and let a human choose the beautiful ones over many generations [2]. Procedural graphics and signed distance fields (SDF) are familiar tools of shader writers [7, 8]. What is new at this moment is that an AI can read an image with code, write formulas, render, compare and revise in a loop that a human can watch and check. Finding formulas, until recently the handwork of a few people fluent in mathematics and programming, can now be delegated to an AI under a written rule set, and the person posing the problem need only know what they want.</p>
+<h3>1.4 Contributions</h3>
+<p>The paper contributes four things, at the level of "a checkable process plus observations". First, a process: measure the image with code, decompose, write formulas, render, verify with a hash, revise; every step leaves an artifact. Second, a way to separate two goals that are usually blurred together: matching the source pixel for pixel (Problem 1) and a compact definition that is similar enough and beautiful (Problem 2). Third, figures from two cases carried out on the same image: numbers of layers, constants, lengths, errors, hashes, revision rounds, trial images, together with the alternatives that were tried and not chosen. Fourth, a short guide (Section 9) so that anyone with a code-executing AI can rebuild this system for their own image.</p>
+<h3>1.5 What this paper is not</h3>
+<p>The paper does not say the AI "understands beauty". It does not say formulas "compress" images better than JPEG; in Problem 1 the compressed specification is larger than the original JPEG file. It does not say this is image generation by a diffusion model; the renderer only evaluates a function. It does not say how many times faster the AI is than a person, because no controlled experiment has been run (Section 8.1).</p>
+<p>Figure 1 places the picture of Problem 2 beside its root formula. Section 2 states the two problems in words. Section 3 teaches the ten mathematical steps needed to read the two cases. Sections 4 and 5 give the principles and the method of search. Sections 6 and 7 are the two cases, including the alternatives not chosen. Section 8 discusses. Section 9 is the guide to building the system. Section 10 considers near and far applications. Section 11 concludes.</p>
+<figure><img src="figures/fig01_p2_vs_ref.jpg" alt="Figure 1. Left: the picture &quot;Pile of Strawberries — Macro Focus&quot; v1.1," loading="lazy"><figcaption>Figure 1. Left: the picture &quot;Pile of Strawberries — Macro Focus&quot; v1.1, 1108 × 1108, rendered from its specification, pixel hash 3710e8ec…. Right: the 554 × 554 reference image the picture adapts at level 2 (layout, palette and light direction taken; contours and texture not taken). Root formula of the left picture: $(R, G, B)(m, n) = F\big(\tfrac14 \sum_{\mu_1, \mu_2} H(x, y)\big)$ with four samples per pixel; all helper functions in Appendix B.</figcaption></figure>
+<h2 id="2-the-two-problems-in-words">2. The two problems, in words</h2>
+<p>The claim of this section: the two problems use the same mathematical tools but differ in goal, and therefore in the criterion of success.</p>
+<p>Let $W$ and $H$ be the width and height of the image in pixels. Let $I$ be a given image and $\hat I$ the image computed from a mathematical specification (spec).</p>
+<blockquote>
+<p><strong>Problem 1.</strong> Given an image $I$ of size $W \times H$. Find a self-sufficient mathematical specification, made of clearly defined shape, colour and relation components, such that the computed image $\hat I$ is close to $I$ under chosen criteria, and $\hat I$ can be recomputed pixel for pixel from the specification on any machine. When the deviation is to be reduced, which formulas must be added or changed, and at what cost in length?</p>
+<p><strong>Problem 2.</strong> Given a reference image $I_r$ and the features one wishes to keep. Find a complete image function, compactly defined, with parameters generated by rules, that produces a new picture similar enough and of visual quality, without storing every detail of $I_r$; among the alternatives tried, a human chooses the final one.</p>
+</blockquote>
+<p>The criteria of success differ. Problem 1 measures the error against the original with four numbers familiar in image processing (MAE, PSNR, SSIM, $\Delta E_{2000}$, defined in 4.4) and measures pixel-exact reproduction against the specification with a hash. Problem 2 does not measure pixel error against the reference, because copying pixels is forbidden; it measures similarity at three levels (semantic, structural, surface), measures formula length, and lets a human choose among the alternatives surveyed. A detail that differs from the source is a deviation to examine in Problem 1, but may be a legitimate creative choice in Problem 2, unless it touches a locked feature.</p>
+<p>The phrase "one formula" in Problem 2 has three meanings, and the paper uses all three in their places.</p>
+<table>
+<thead>
+<tr>
+<th>Meaning</th>
+<th>Content</th>
+<th>Role</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>One output function</td>
+<td>all colour is determined by one function with a single root; every helper function fully defined</td>
+<td>the formal condition of Problem 2</td>
+</tr>
+<tr>
+<td>One expanded expression</td>
+<td>substitute every helper into the root to get a single expression; may run to tens of thousands of characters</td>
+<td>not produced in case 2; mentioned only in Appendix B</td>
+</tr>
+<tr>
+<td>One compact definition with rules</td>
+<td>an output function with a small network of helpers, many components generated from an index rather than from separate tables of numbers</td>
+<td>the additional condition of Problem 2, measured and reported separately</td>
+</tr>
+</tbody>
+</table>
+<p>One thing must be said at once to prevent a misunderstanding: the decomposition of Problem 1 can also be written as a single function (Section 3, step 10). The difference between the two problems lies not in the number of equals signs but in the goal of fidelity to the source, the organisation of parameters and the degree to which shared rules are used. A table of tens of thousands of parameters wrapped inside $F$ is still "one function", but it is not "one compact definition".</p>
+<p>The two cases in this paper use the same image. They illustrate two different tasks on one dataset; they are not a controlled experiment comparing two algorithms. Section 3 teaches the shared tools before entering the cases.</p>
+<h2 id="3-foundations-ten-steps">3. Foundations: ten steps</h2>
+<p>The claim of this section: from a single pixel to a whole picture as one function takes only ten steps, each with one formula. All ten steps use one guiding scene: "Sunset over the Sea", an 800 × 500 scene of 9 layers from Appendix A of the project's operating rules (Volume I), which we re-ran from its own code; the pixels matched the hash <code>8c0cd218…</code> (Appendix C). The guiding scene is an illustration; it is not data from the two cases.</p>
+<h3>3.1 Step 1 — An image is a table of numbers</h3>
+<p>Zoom into a corner of an image and squares appear. Each square holds three numbers from 0 to 255 for the three channels red, green and blue. An image of $W \times H$ is a table of $W \cdot H$ cells, three numbers each:</p>
+<p>$$(m, n) \mapsto (R, G, B), \qquad m = 0 \ldots W - 1,\quad n = 0 \ldots H - 1.$$</p>
+<p>Reading: $m$ is the column index counted from the left; $n$ is the row index counted from the top. Try a value: the top-left cell is $(0, 0)$; the bottom-right cell of a 554 × 554 image is $(553, 553)$. Change $W$ or $H$ and the table changes size, but the numbering rule does not. Figure 2 enlarges one pixel of the guiding scene with its three numbers.</p>
+<figure><img src="figures/H2_pixel-zoom.png" alt="Figure 2. Six by six pixels cut from the render of the guiding scene around colu" loading="lazy"><figcaption>Figure 2. Six by six pixels cut from the render of the guiding scene around columns 397–402, rows 242–247, enlarged 96 times; each cell shows its three numbers R, G, B. The centre cell is one probe of the guiding scene: (255, 236, 144). Illustration.</figcaption></figure>
+<h3>3.2 Step 2 — Putting the table on the mathematical plane</h3>
+<p>To write a function we need real coordinates instead of indices. Put the centre of the image at the origin, let the $y$ axis point up as in a mathematics book, and give both axes the same scale so that a circle in the formula is a circle in the image:</p>
+<p>$$x = \left(\frac{m + \tfrac12}{W}\cdot 2 - 1\right) A, \qquad y = 1 - \frac{n + \tfrac12}{H}\cdot 2, \qquad A = \frac{W}{H}.$$</p>
+<p>Reading: $(x, y)$ are the coordinates of the centre of cell $(m, n)$; the $\tfrac12$ is added because the centre lies between the two edges; $A$ is the aspect ratio, so $x$ runs over $[-A, A]$ and $y$ over $[-1, 1]$. Try a value: with $W = H = 554$, cell $(0, 0)$ has $x = (0.5/554)\cdot 2 - 1 \approx -0.998$ and $y \approx 0.998$, the top-left corner. Cell $(277, 277)$ has $x = y \approx 0.0018$, next to the centre. Change $H$ and the distance between two neighbouring cell centres, $2/H$, changes with it; this is the unit "one pixel" in every later formula. Figure 3 draws the pixel grid and the axes.</p>
+<figure><img src="figures/H3_luoi-toa-do.png" alt="Figure 3. An 8 × 5 pixel grid with axes $(x, y)$: red dots are cell centres, whe" loading="lazy"><figcaption>Figure 3. An 8 × 5 pixel grid with axes $(x, y)$: red dots are cell centres, where samples are taken; three cells show both the index $(m, n)$ and the coordinates $(x, y)$ from the formula of step 2 with $A = 1.6$. Illustration.</figcaption></figure>
+<h3>3.3 Step 3 — A function is an image</h3>
+<p>Take any function of $(x, y)$ with values in $[0, 1]$, assign it to all three channels, and we have a grey image. For example, stripes:</p>
+<p>$$H(x, y) = \tfrac12 + \tfrac12 \sin(10x).$$</p>
+<p>To turn this into 8-bit numbers we need an output function:</p>
+<p>$$(R, G, B)(m, n) = \big(F(H_0(x, y)),\; F(H_1(x, y)),\; F(H_2(x, y))\big), \qquad F(t) = \left\lfloor 255\,\mathrm{clamp}(t, 0, 1) + \tfrac12 \right\rfloor.$$</p>
+<p>Reading: $H_0, H_1, H_2$ are three functions for three channels; $\mathrm{clamp}(t, 0, 1)$ pins $t$ to the interval $[0, 1]$; $\lfloor \cdot \rfloor$ takes the integer part; adding $\tfrac12$ rounds half up. Try a value: at $x = 0$, $H = \tfrac12$, $F(\tfrac12) = \lfloor 127.5 + 0.5 \rfloor = 128$. At $x = \pi/20$, $\sin(10x) = 1$, $H = 1$, $F = 255$. Change 10 to 20 and the stripes are twice as dense. Figure 4 renders two functions: the sine stripes, and a gradient in $y$ with a different function for each channel, which is exactly how the sky is painted in step 6. We compute $H_v$ in sRGB numeric space; numeric blending is not by default a physical computation of light, and the paper records the actual choice of each renderer.</p>
+<figure><img src="figures/H4_strip.jpg" alt="Figure 4. Two functions, two images, 400 × 400. (a) stripes $\tfrac12 + \tfrac12" loading="lazy"><figcaption>Figure 4. Two functions, two images, 400 × 400. (a) stripes $\tfrac12 + \tfrac12\sin(10x)$ on all three channels; (b) three piecewise linear functions of $y$ for three channels. Pixel hashes 478ad1fe…, 79fda2d0…. Illustration.</figcaption></figure>
+<h3>3.4 Step 4 — Shape from distance</h3>
+<p>To draw a circle, compute the distance from every point to that circle. With centre $(c_x, c_y)$ and radius $r$:</p>
+<p>$$d(x, y) = \sqrt{(x - c_x)^2 + (y - c_y)^2} - r, \qquad d_{\text{ring}} = |d| - \tfrac{w}{2}.$$</p>
+<p>Reading: $d$ is negative inside, zero on the circle, positive outside; this is a signed distance field (SDF). $d_{\text{ring}}$ is negative in a band of width $w$ around the circle, that is, a ring. Try a value: centre at the origin, $r = \tfrac12$; at $(0, 0)$, $d = -\tfrac12$; at $(1, 0)$, $d = \tfrac12$; at $(\tfrac12, 0)$, $d = 0$. Change $r$ to $\tfrac34$ and every $d$ drops by $\tfrac14$: the circle grows. Figure 5 draws $d$ as grey, the sign of $d$, and the ring with $w = 0.1$. Every more complex shape in the two cases begins with a distance function like this: ellipse, polygon, or a "star" whose radius varies with angle.</p>
+<figure><img src="figures/H5_strip.jpg" alt="Figure 5. Distance to the circle $r = \tfrac12$: (a) $d$ shown as grey $\tfrac12" loading="lazy"><figcaption>Figure 5. Distance to the circle $r = \tfrac12$: (a) $d$ shown as grey $\tfrac12 + d$; (b) the sign of $d$: inside white, outside black; (c) the ring $|d| - 0.05$ with a soft edge. Hashes 99bc72ba…, 284778bb…, 96e261ec…. Illustration.</figcaption></figure>
+<h3>3.5 Step 5 — Hard edge, then soft edge</h3>
+<p>If we turn the distance $d$ into colour by the rule "negative means paint, positive means do not", the edge of the shape shows jagged steps, because each pixel can only take one of two values:</p>
+<p>$$M_{\text{hard}} = \begin{cases} 1, &amp; d \le 0 \\ 0, &amp; d &gt; 0. \end{cases}$$</p>
+<p>Instead we let pixels close to the edge receive part of the colour:</p>
+<p>$$\sigma = \mathrm{clamp}\!\left(\frac{d + \varepsilon}{2\varepsilon}, 0, 1\right), \qquad M = 1 - \sigma^2(3 - 2\sigma), \qquad \varepsilon = 0.75 \cdot \frac{2}{H}.$$</p>
+<p>This formula computes the coverage of the object at each pixel: 1 when the pixel lies well inside ($d \le -\varepsilon$), 0 when it lies well outside ($d \ge \varepsilon$), and a smooth slide between the two levels over a band of width $2\varepsilon$, that is, 1.5 pixels. Try it at the edge, $d = 0$: $\sigma = \tfrac12$, $M = 1 - \tfrac14 \cdot 2 = \tfrac12$; a pixel right on the edge receives exactly half the colour. Double $\varepsilon$ and the edge is twice as soft; set $\varepsilon = 0$ and the steps return. Figure 6 enlarges the rim of a disc eightfold in the two ways: hard and soft. A value of $M$ between 0 and 1 is the coverage at the edge or the transparency the specification assigns; no physical meaning is attached unless the specification says so. We call $M$ a mask.</p>
+<p>$M$ can also be written with a named function, the smoothstep $S$:</p>
+<p>$$S(e_0, e_1, t) = \sigma^2(3 - 2\sigma), \quad \sigma = \mathrm{clamp}\!\left(\frac{t - e_0}{e_1 - e_0}, 0, 1\right), \qquad M = 1 - S(-\varepsilon, \varepsilon, d).$$</p>
+<p>The two forms give the same numbers. Case 2 uses a third form, $S(\delta)$ with $\delta = d/\varepsilon$; Appendix A shows the three forms coincide.</p>
+<figure><img src="figures/H6_strip.jpg" alt="Figure 6. The rim of a disc at the edge point $(\tfrac12, 0)$, a 50 × 50 pixel t" loading="lazy"><figcaption>Figure 6. The rim of a disc at the edge point $(\tfrac12, 0)$, a 50 × 50 pixel tile enlarged 8 times: (a) hard edge, each pixel takes one of two colours; (b) soft edge with $\varepsilon = 0.75$ pixel, pixels near the edge receive part of the colour. Hashes 0f872112…, 5b8a307d…. Illustration.</figcaption></figure>
+<h3>3.6 Step 6 — Colour is three functions</h3>
+<p>A colour is three numbers, so a coloured region is three functions. The sky of the guiding scene is three piecewise linear functions of $y$: at the top ($y = 1$) deep blue, in the middle pink, at the horizon ($y = 0$) orange. In general: given stops $(t_k, K_k)$, the colour at $t$ is the linear interpolation between the two neighbouring stops. Reading: $K_k$ is the triple of numbers of the $k$-th colour; $t$ here is $y$. Try a value: at $y = 0.5$, between the pink stop ($y = 0.35$) and the blue stop ($y = 1$), the colour is a mix of the two with ratio $(0.5 - 0.35)/(1 - 0.35) \approx 0.23$ leaning towards pink. Move the pink stop down to $y = 0.2$ and the pink band narrows. Figure 7 is layer L01 of the guiding scene rendered alone.</p>
+<p>In the two cases, colour does not depend on $y$ alone. In case 1, the body colour of each berry is a combination of seven functions of position inside the berry (6.4). In case 2, colour is a function of the surface normal and the light direction (7.5).</p>
+<figure><img src="figures/H7_L01-troi.jpg" alt="Figure 7. Layer L01 of the guiding scene: the sky from three piecewise linear fu" loading="lazy"><figcaption>Figure 7. Layer L01 of the guiding scene: the sky from three piecewise linear functions of $y$ with three colour stops at $y = 0$, $0.35$, $1$. 800 × 500, hash ec024a7a…. Illustration, guiding scene.</figcaption></figure>
+<h3>3.7 Step 7 — Stacking layers</h3>
+<p>A picture has many objects; those in front hide those behind. Let $C$ be the image under construction, $K$ the colour of the new layer, $M$ its mask. Three common stacking operations:</p>
+<p>$$\text{over: } C \leftarrow C\,(1 - M) + K M, \qquad \text{add: } C \leftarrow C + K M, \qquad \text{multiply: } C \leftarrow C\,\big(1 - M(1 - K)\big).$$</p>
+<p>Reading: over replaces the old colour by the new in proportion $M$ (an opaque object hides); add adds (light, glow); multiply darkens (shadow, vignette). Try a value: $C = 0.2$, $K = 0.8$, $M = \tfrac12$: over gives $0.5$; add gives $0.6$; multiply gives $0.2 \cdot (1 - 0.5 \cdot 0.2) = 0.18$. Swap the order of two over layers and the result changes: the layer drawn later lies on top. The order of layers is therefore data of the picture, not an implementation detail. The over operation belongs to the compositing algebra of Porter and Duff [4]; we use the convention of colour not premultiplied by alpha and clamp values to $[0, 1]$ only once at the end. Figure 8 renders the guiding scene with the three operations on the same sun layer to show the difference.</p>
+<figure><img src="figures/H8_strip.jpg" alt="Figure 8. The same sun-disc mask on the same sky of the guiding scene, three sta" loading="lazy"><figcaption>Figure 8. The same sun-disc mask on the same sky of the guiding scene, three stacking operations: (a) over hides the background; (b) add brightens, the disc burns to white; (c) multiply darkens the disc. Hashes 269fa279…, fc4d06ca…, 0d1e9943…. Illustration.</figcaption></figure>
+<h3>3.8 A small complete example — a disc on a background (illustration)</h3>
+<p>Steps 2 to 7 gathered into one example that can be computed by hand. A disc centred at the origin, radius $r = \tfrac12$, $\varepsilon = \tfrac1{20}$; background $\Gamma = \big(\tfrac1{10}, \tfrac3{10}, \tfrac35\big)$, disc $K = \big(\tfrac45, \tfrac15, \tfrac15\big)$:</p>
+<p>$$d = \sqrt{x^2 + y^2} - \tfrac12, \qquad \sigma = \mathrm{clamp}\big(10\,(d + \tfrac1{20}), 0, 1\big), \qquad M = 1 - \sigma^2(3 - 2\sigma), \qquad C_v = (1 - M)\,\Gamma_v + M K_v.$$</p>
+<table>
+<thead>
+<tr>
+<th>Point $(x, y)$</th>
+<th>$d$</th>
+<th>$\sigma$</th>
+<th>$M$</th>
+<th>$C$ before quantisation</th>
+<th>$(R, G, B)$ after $F$</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>$(0, 0)$, centre of disc</td>
+<td>$-\tfrac12$</td>
+<td>0</td>
+<td>1</td>
+<td>$(0.8;\ 0.2;\ 0.2)$</td>
+<td>$(204, 51, 51)$</td>
+</tr>
+<tr>
+<td>$(1, 0)$, outside the disc</td>
+<td>$\tfrac12$</td>
+<td>1</td>
+<td>0</td>
+<td>$(0.1;\ 0.3;\ 0.6)$</td>
+<td>$(26, 77, 153)$</td>
+</tr>
+<tr>
+<td>$(\tfrac12, 0)$, on the edge</td>
+<td>0</td>
+<td>$\tfrac12$</td>
+<td>$\tfrac12$</td>
+<td>$(0.45;\ 0.25;\ 0.4)$</td>
+<td>$(115, 64, 102)$</td>
+</tr>
+<tr>
+<td>$(\tfrac{19}{40}, 0)$, inside the edge band</td>
+<td>$-\tfrac1{40}$</td>
+<td>$\tfrac14$</td>
+<td>$\tfrac{27}{32}$</td>
+<td>$(0.6906;\ 0.2156;\ 0.2625)$</td>
+<td>$(176, 55, 67)$</td>
+</tr>
+</tbody>
+</table>
+<p>Compute the edge row in front of the reader: $\sigma = \tfrac12$ so $M = 1 - \tfrac14(3 - 1) = \tfrac12$; red channel $(0.1 + 0.8)/2 = 0.45$; $F(0.45) = \lfloor 114.75 + 0.5 \rfloor = 115$. The last row: $d = -\tfrac1{40}$, $\sigma = 10 \cdot \tfrac1{40} = \tfrac14$, $M = 1 - \tfrac1{16} \cdot \tfrac52 = \tfrac{27}{32}$; red channel $\tfrac{5}{32} \cdot 0.1 + \tfrac{27}{32} \cdot 0.8 = 0.690625$; $F = \lfloor 176.11 + 0.5 \rfloor = 176$. The four points above are evaluation points of the continuous field; when Figure 9 is built at 400 × 400, the four points fall into pixels $(200, 200)$, $(399, 200)$, $(300, 200)$ and $(295, 200)$, and the pixel values there, sampled at pixel centres, differ from the table by a few levels at the two points near the edge. Move the centre to $(0.3, 0)$ and all four values of $d$ change and the disc shifts right; change $r$ to $0.3$ and the disc shrinks while the edge stays exactly 1.5 pixels soft. This example teaches how to read a formula; it says nothing about the capability of the AI.</p>
+<figure><img src="figures/H9_dia-tren-nen.jpg" alt="Figure 9. The disc on a background of example 3.8, 400 × 400, hash a233d374…. Th" loading="lazy"><figcaption>Figure 9. The disc on a background of example 3.8, 400 × 400, hash a233d374…. The four points of the table fall into pixels $(200, 200)$, $(399, 200)$, $(300, 200)$, $(295, 200)$ counted from the left and from the top. Illustration.</figcaption></figure>
+<h3>3.9 Step 8 — Objects from several parts, moved by local coordinates</h3>
+<p>A real object has several parts. The boat in the guiding scene is three shapes: a hull that is a rounded box, a sail that is a triangle, a mast that is a thick line segment; each shape a distance function, each function a mask, three masks stacked with over. To move or rotate the whole boat without editing each part, we place every part in the object's local coordinates $(u, v)$:</p>
+<p>$$\begin{pmatrix} u \\ v \end{pmatrix} = \begin{pmatrix} \cos\beta &amp; \sin\beta \\ -\sin\beta &amp; \cos\beta \end{pmatrix} \begin{pmatrix} x - c_x \\ y - c_y \end{pmatrix}.$$</p>
+<p>Reading: $(c_x, c_y)$ is where the object is placed, $\beta$ its rotation angle; $(u, v)$ are "the coordinates as seen from the object". Try a value: $\beta = 0$ gives $(u, v) = (x - c_x, y - c_y)$, a pure shift. With $\beta = \pi/2$, a point to the right of the object ($u &gt; 0$) corresponds to a point above it in the image. Change $c_x$ and the whole boat shifts; change $\beta$ and the whole boat tilts. From this step on the paper uses complex numbers: $z = x + iy$, $c = c_x + i c_y$, and</p>
+<p>$$w = (z - c)\,e^{-i\beta}$$</p>
+<p>is the same shift and rotation written in one line, where $e^{-i\beta}$ means "rotate by the angle $-\beta$". Appendix A gives the equivalent real two-coordinate form. In case 1, the seeds and glints of each berry are stored relative to the centre of their parent berry, so moving the berry moves its details; case 1 made this mistake once and fixed it (6.6). Figure 10 builds the boat of the guiding scene part by part.</p>
+<p>One more trick of step 8: a radius that varies with angle. In polar coordinates around the object's centre, $\rho = |w|$ and $\varphi = \operatorname{atan2}(\Im w, \Re w)$, an organic contour is written as a Fourier series:</p>
+<p>$$r(\varphi) = R\Big(1 + \sum_{k=1}^{K} a_k \cos k\varphi + b_k \sin k\varphi\Big),$$</p>
+<p>and the approximate distance function is $\rho - r(\varphi)$. Reading: $R$ is the mean radius; $a_k, b_k$ are distortions at angular frequency $k$; $K$ is the number of harmonics. Try: $a_2 = 0.1$ with all other coefficients zero gives $r(0) = 1.1R$ and $r(\pi/2) = 0.9R$, an egg elongated along the horizontal axis. Change $a_3$ and the shape grows three lobes. Case 1 uses $K = 6$ for 24 berries; case 2 uses three low-order terms so that each berry has its own shape.</p>
+<figure><img src="figures/H10_strip.jpg" alt="Figure 10. The boat of the guiding scene built part by part on a simple sky and " loading="lazy"><figcaption>Figure 10. The boat of the guiding scene built part by part on a simple sky and sea, cropped around the boat and enlarged 2 times: (a) the hull is a rounded box; (b) plus the sail, a triangle; (c) plus the mast, a thick line segment. Three masks stacked with over in that order. Hashes f84f9163…, 73c3dcfc…, 4aeb2ca4…. Illustration.</figcaption></figure>
+<h3>3.10 Step 9 — Texture, and "randomness" that is not random</h3>
+<p>Real surfaces are not flat: sea waves, film grain, the bumpy skin of a fruit. Two ways to make texture with functions. First, add a few sine waves at a few frequencies:</p>
+<p>$$T(x, y) = \tfrac12 + \sum_{k} a_k \sin\!\big(p_k x + q_k y + \varphi_k\big).$$</p>
+<p>Reading: each term is a wave with direction $(p_k, q_k)$, amplitude $a_k$, phase $\varphi_k$; if $\sum_k |a_k| \le \tfrac12$ then $T \in [0, 1]$. The sea surface of the guiding scene is one sine wave whose phase is bent by another sine wave.</p>
+<p>Second, "randomness" by integer hash. A hash function takes two integers $(i, j)$ and returns a number in $[0, 1)$ that looks random but is fully determined, so every machine computes the same number. All arithmetic is modulo $2^{32}$, $\oplus$ is XOR, $\gg$ is a right shift:</p>
+<p>$$n_0 = 374761393\,i + 668265263\,j + 2654435769,\quad n_1 = (n_0 \oplus (n_0 \gg 16)) \cdot 2146121005,$$
+$$n_2 = (n_1 \oplus (n_1 \gg 15)) \cdot 2221713035,\quad h(i, j) = \frac{n_2 \oplus (n_2 \gg 16)}{2^{32}}.$$</p>
+<p>Reading: three rounds of "bit mixing" by multiplication and XOR; the result is divided by $2^{32}$ to land in $[0, 1)$. Try a value: $h(0, 0) = 0.007765133399516344$, exactly the check value recorded in the rule set and in the code of both cases. Add 1 to $i$ and the result changes completely; that is what one wants from a hash. From $h$ we build value noise $\nu_f$ by bilinear interpolation of $h$ at the four corners of the grid cell containing $(fx, fy)$, and fBm as a sum of a few layers of $\nu$ at increasing frequency:</p>
+<p>$$\mathrm{fBm}(x, y) = \frac{\sum_{o=0}^{O-1} g^{o}\, \nu_{f\lambda^{o}}(x, y)}{\sum_{o=0}^{O-1} g^{o}}.$$</p>
+<p>Reading: $O$ layers, each with frequency multiplied by $\lambda$ and amplitude multiplied by $g$. The film grain in case 2 is one value noise at frequency 520; the dark gaps between berries use a variant called Worley F1, the distance to the nearest "seed" placed by $h$ [7]. Figure 10b renders three textures: multi-scale sine, hash noise, fBm. Texture does not by itself make a picture beautiful; both cases show that "irregularity must be moderate" (7.9).</p>
+<figure><img src="figures/H10b_strip.jpg" alt="Figure 10b. Three textures, 400 × 400: (a) a sum of three sine waves at three fr" loading="lazy"><figcaption>Figure 10b. Three textures, 400 × 400: (a) a sum of three sine waves at three frequencies and directions; (b) value noise at frequency 8, seed 7; (c) four-layer fBm from the same hash function. Hashes 23983c64…, 293fe930…, f298f5a8…. Illustration.</figcaption></figure>
+<h3>3.11 Step 10 — The whole scene is one function, and that function can be checked</h3>
+<p>Now gather every layer into one formula. First two layers, by hand. Background $\Gamma$, layer 1 behind, layer 2 in front:</p>
+<p>$$C_1 = (1 - M_1)\,\Gamma + M_1 K_1, \qquad C_2 = (1 - M_2)\,C_1 + M_2 K_2,$$
+$$C_2 = (1 - M_2)(1 - M_1)\,\Gamma + (1 - M_2)\,M_1 K_1 + M_2 K_2.$$</p>
+<p>Reading: the background is seen only where neither layer covers; layer 1 is seen only where layer 2 does not cover; layer 2 is nearest the viewer. Try a value: $M_1 = M_2 = \tfrac12$, $\Gamma = 0$, $K_1 = K_2 = 1$: $C_2 = 0 + \tfrac14 + \tfrac12 = \tfrac34$. In general for $N$ layers, with the symbols $\sum$ (sum) and $\prod$ (product) appearing for the first time here:</p>
+<p>$$H_v = \Gamma_v \prod_{k=1}^{N} (1 - M_k) + \sum_{k=1}^{N} M_k\, K_{k,v} \prod_{j=k+1}^{N} (1 - M_j).$$</p>
+<p>Reading: $v$ is the colour channel; the $k$-th term is the colour of layer $k$ times the fraction it covers times the fraction every layer above it leaves uncovered; an empty product equals 1. This formula applies to a chain of over operations in one colour space without intermediate quantisation; if the specification also uses add, multiply or clamping between steps, those must appear in their places. Algebraic equivalence over the reals does not guarantee the same bytes in floating point; after changing the way of computing one must re-run and compare hashes. Case 2 uses exactly this formula for 91 layers; case 1 performs the chain of over operations sequentially, algebraically equivalent.</p>
+<p>Step 10 is also where tables of numbers are replaced by rules. Instead of recording the position of each object in a table, we let object $s$ have a position that is a function of $s$. For example the golden-angle spiral [6] and a radius indexed by $s$:</p>
+<p>$$c_s = \rho\sqrt{s - \tfrac12}\; e^{i\gamma s}, \qquad \gamma = \pi(3 - \sqrt5), \qquad R_s = R_0\Big(1 + \frac{\cos 7s}{4}\Big).$$</p>
+<p>Reading: $c_s$ is the complex centre of object $s$, moving away from the origin and turning by one golden angle per step; $R_s$ oscillates around $R_0$. Try: $s = 1$ gives $|c_1| = \rho/\sqrt2$; $s = 2$ gives $|c_2| = \rho\sqrt{1.5}$. Case 2 does not use a spiral because its layout is taken from a real image (7.3), but it uses the same idea "parameter as a function of index" for individual shapes, seed-lattice phases and sepal blades. Yeganeh uses this device for object positions in his pictures [1]; his gate,</p>
+<p>$$\mathcal{G}(u) = e^{-e^{u}}, \qquad \mathcal{G}(u) \approx 1 \text{ for } u \ll 0,\quad \mathcal{G}(u) \approx 0 \text{ for } u \gg 0,$$</p>
+<p>is another soft step function, and appears in one candidate of case 2.</p>
+<p>Figure 11 draws the formula tree: $F(H_v)$ at the root, below it the layer fold, below that the individual layers, then the primitive shapes, then the coordinates. Once the whole picture is one function, we check it the way we check a calculation: recompute at a few points (probes), recompute the whole image and compare one summary number (hash). With a formula in hand, computing the image is the forward problem. With only an image or an idea, finding the structure and the parameters is the inverse problem; that is where the AI takes part, and it is the subject of Sections 4 and 5.</p>
+<figure><img src="figures/H11_cay-cong-thuc.png" alt="Figure 11. The formula tree: the output function at the root; below it the layer" loading="lazy"><figcaption>Figure 11. The formula tree: the output function at the root; below it the layer fold; each layer a pair of mask and colour; masks from the distance function of a shape, colours from gradients, lighting or texture; everything computed from the coordinates $(x, y)$ and parameters. Diagram.</figcaption></figure>
+<h2 id="4-principles">4. Principles</h2>
+<p>The claim of this section: seven principles make a picture-by-formula checkable, and they were applied in both cases under the project's two operating rule books (Volume I for reproduction, Volume II for creation and adaptation) [11].</p>
+<p><strong>Formula first.</strong> Every pixel is the value of a function. Hiding an image under a mathematical name is forbidden: no base64 code, no RGB arrays, no error grids laid over the image. Using a generative model as the renderer is forbidden. The code of the specification uses only numpy and the standard library, reads no external files and calls no library random functions.</p>
+<p><strong>Parameters with cause and effect.</strong> Every parameter has a name, an identifier, a basis (measured, observed, estimated or chosen), and changing it changes the picture as predicted. Both cases test this with perturbation tests: write the expectation first, change one parameter, render, compare with the expectation, revert. Wrong expectations are kept in the record (6.6, 7.8).</p>
+<p><strong>Deterministic and verifiable.</strong> Same specification, same bytes. Three tools: probes (a few pixels with expected values, tolerance ±2 per channel), the pixel hash (one number summarising the whole image), and the clean-room test (extract the code from the specification file, run it in an empty folder with a fresh process, no source image present). The EP-PIX v1 pixel hash:</p>
+<p>$$\mathrm{hash} = \mathrm{SHA\text{-}256}\big(\text{"EP-PIX v1 } W\ H\text{ RGB\textbackslash n"} \,\|\, \text{bytes } RGB \text{ row by row from the top}\big).$$</p>
+<p>Reading: SHA-256 is a standard hash function; its input is a header line followed by all colour bytes. Two images differing in one pixel give entirely different hashes. Try: case 1 changed one edge-softness parameter for the seeds, 83,237 pixels changed, 16/16 probes still passed but the hash differed; probes check a few points, the hash checks the whole image, and the two complement each other.</p>
+<p><strong>Measure, do not guess.</strong> Colours, positions and sizes are taken from the image by code; the eye is used only for semantic decisions (what is this object, which one is in front). Case 1 had one parameter set by intuition; when it was measured its best value was 0 and it was dropped (6.6).</p>
+<p><strong>Beauty and resemblance are two axes.</strong> Problem 1 optimises resemblance; Problem 2 holds resemblance at a constraint level and lets a human choose beauty. The two are never combined into one score.</p>
+<p><strong>Two periods of a work.</strong> The period of finding the formula has non-deterministic choices, changes of brief, many alternatives and human feedback. The period of reproduction only runs a frozen specification. Reproducing the output does not mean the discovery process can be repeated.</p>
+<p><strong>The human's role.</strong> Pose the problem, set the constraints, approve the plan at stopping points, choose the final picture. In case 2 there was one more task: approving a change of measure when the rule book's measure did not suit the image.</p>
+<p>Figure 12 draws the loop measure → decompose → write → render → verify → revise with a "who does it" column for each step. Section 5 describes that loop in more detail.</p>
+<figure><img src="figures/H12_vong-lap.png" alt="Figure 12. The loop measure → decompose → write → render → verify → revise, with" loading="lazy"><figcaption>Figure 12. The loop measure → decompose → write → render → verify → revise, with the work of scripts, AI and human at each step. Diagram.</figcaption></figure>
+<h2 id="5-method-how-the-ai-finds-a-formula">5. Method: how the AI finds a formula</h2>
+<p>The claim of this section: finding a formula is a finite search with five operations, run in a loop where every round leaves evidence.</p>
+<h3>5.1 Formal statement (an interpretive model)</h3>
+<p>Let $\mathcal{R}$ be the renderer with a published computation contract (coordinates, sampling, colour space, quantisation), and $\hat I = \mathcal{R}(\text{spec}, \theta)$ with $\theta$ the parameter set. Let $D$ be the deviation from the source and $\ell$ the description length under a published counting rule.</p>
+<p>Problem 1 can be described as finding</p>
+<p>$$\min_{(\text{spec},\, \theta) \in \mathcal{S}_1} \Big[ D\big(\mathcal{R}(\text{spec}, \theta),\, I\big) + \lambda\, \ell(\text{spec}, \theta) \Big], \qquad \lambda \ge 0,$$</p>
+<p>with $\mathcal{S}_1$ the specifications satisfying the hard constraints. Case 1 did not optimise length numerically; it used a separate budget (specification under 500 KB), so the term $\lambda\ell$ is dropped.</p>
+<p>Problem 2 is a solution set and a choice:</p>
+<p>$$\mathcal{S}_2 = \Big\{ (\text{spec}, \theta) : \text{spec is a closed image function};\ \ell(\text{spec}, \theta) \le B;\ \mathcal{R}(\text{spec}, \theta) \text{ keeps the features in } \mathcal{A} \Big\},$$</p>
+<p>the surveyed set $\mathcal{T} \subseteq \mathcal{S}_2$, the set put before the human $\mathcal{P} \subseteq \mathcal{T}$, and the final picture chosen by the human from $\mathcal{P}$. In case 2, $B$ is the HYBRID length class (≤ 12,000 characters, ≤ 1,500 constants, one anchor table of ≤ 48 rows), $\mathcal{A}$ is six hard constraints plus the similarity band, $|\mathcal{T}| = 60$ renders and $|\mathcal{P}| = 9$ finalists over two batches.</p>
+<p>Both statements are interpretive models. The real process is measurement, expert choice and a finite search for a solution that meets requirements, not global optimisation. "The finalists" means good alternatives, sufficiently different, within the surveyed set, under published criteria.</p>
+<h3>5.2 Five search operations</h3>
+<table>
+<thead>
+<tr>
+<th>Operation</th>
+<th>Meaning</th>
+<th>Example in the two cases</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Choose a representation</td>
+<td>change the form of the model</td>
+<td>case 1: berry contour by Fourier series instead of ellipse; case 2: berry shape by warping the unit disc</td>
+</tr>
+<tr>
+<td>Find parameters</td>
+<td>keep the form, change the numbers: measure, fit or choose</td>
+<td>case 1: 12 Fourier and 21 colour coefficients per berry fitted by least squares; case 2: 105 measured numbers in the anchor table</td>
+</tr>
+<tr>
+<td>Choose a structure</td>
+<td>add or remove parts, change occlusion, change the repetition rule</td>
+<td>case 1: add 1,418 dark pits; case 2: add contact shadows, change sepals from stars to lanceolate blades</td>
+</tr>
+<tr>
+<td>Revise from feedback</td>
+<td>read the deviation by eye or by measurement → name the problem → change → keep or revert</td>
+<td>case 1: 12 rounds D1–D12; case 2: three rounds in batch 1, two in batch 2, two polishing steps</td>
+</tr>
+<tr>
+<td>Reduce</td>
+<td>share helpers, replace private data by rules, drop terms</td>
+<td>case 2: each berry's own shape from a hash of its object id instead of a table of coefficients; reduction must be re-checked since it may change the image</td>
+</tr>
+</tbody>
+</table>
+<p>Changing a seed is not a search operation.</p>
+<h3>5.3 The loop and the evidence of each round</h3>
+<p>A round consists of: measure (scripts compute palette, segmentation, contours, frequencies), decompose (the AI proposes layers and objects), write (the AI writes formulas and code), render (the renderer computes the image), verify (scripts compute error, probes, hash; the AI reads the results and looks at the image), revise (the AI changes one thing and writes one log line). Each log line has the form: observation → suspected cause → change → measurement → keep or revert. Stop when several consecutive rounds bring no improvement (case 1 stopped after D9) or when the human chooses (case 2).</p>
+<h3>5.4 Measuring tools</h3>
+<p>In case 1: k-means in Lab space for the palette; marker-based watershed to separate each berry; constrained least squares to fit contours and colour fields; colour and geometric thresholds to find seeds, glints and sepals; comparison of the rendered image against the source to find what was missing. In case 2: k-means Lab for six colours; watershed on the dark gaps for 21 berries; connected components for 14 sepals; highlight offset from berry centres for the light direction; and two similarity measures (edge-map correlation, luminance-map correlation) tested on the reference image itself before use. The measurements are performed by scripts and libraries (scikit-image, OpenCV, numpy); the AI issues the commands and reads the results.</p>
+<h3>5.5 Two rule books</h3>
+<p>Both cases ran under two internal documents of the project, called Volume I and Volume II [11]. Volume I fixes coordinates, sampling, colour, compositing, masks, noise, hash, the structure of a specification, and six phases for the reproduction problem. Volume II adds the "One Formula" standard (one output function, three levels of representation, three length classes, seven verification criteria), a kit of helper functions, and a selection process with idea cards, blind pairwise judging and five roles in the finalist set. The reports of the two cases record where a rule book did not suit the image and was adjusted with approval (7.3, 8.2).</p>
+<h3>5.6 Why the loop is fast at the level of mechanism, and what belongs to the human</h3>
+<p>At the level of mechanism: rendering one 554 × 554 image of case 1 takes about 1.5 to 2 seconds; rendering one 1108 × 1108 image with four samples per pixel in case 2 takes about 42 seconds; computing error, probes and hash takes a few seconds. The process therefore gives the AI the measuring, the proposing and implementing of trial versions, the rendering and the checking within each round, so that the human concentrates on criteria and choice. Rendering time says nothing about the time to find a formula; the two are reported separately in 6.7 and 7.10.</p>
+<p>To the human belong: posing the problem and the image; setting hard constraints; approving the plan (case 2 had one stopping point before painting); feedback on direction (case 2: "photographic"); choosing the final picture; approving the polished version. To scripts and libraries belong every measured number and every pixel value. To the AI belong: reading the image and the measurements, deciding which objects exist and which is in front, writing the formulas, choosing the hypothesis for each revision, and blind-judging the trial images in case 2, with the limitation that the judge is also the author (7.6).</p>
+<p>The two cases show how, and how much, the AI took part in building and checking formulas; they are not enough to estimate how much time is saved compared with a person equipped with computing tools doing the same work. Section 5.7 describes the two text products of each job; Section 6 begins with the case that had the fewest stopping points.</p>
+<h3>5.7 Two products of one job: formulas for human readers and a specification for other AIs</h3>
+<p>Each picture in this paper exists in two textual forms. The first is the mathematics for human readers, as in Sections 3, 6, 7 and Appendix B. The second is a self-contained specification file in Markdown, written by the AI at the end of each job, intended for another AI to read and rebuild the exact picture. The file has eleven fixed parts: metadata (size, samples per pixel, colour space, render environment, hash); four prompts in English for four kinds of receiving AI; the computation conventions written out in full so that no other document is needed; the palette; the mathematical definitions with identifiers for every formula, object, layer and parameter; exactly one Python code block needing only numpy; the probe table and hash; a structured verbal description for generative models; a report; the adjustment knobs; and a version log.</p>
+<p>The four prompts are divided by the receiving AI's capability. An AI that can run Python is told: copy the code block verbatim, run it, change nothing, report probe and hash results; a matching hash means the specification was reproduced, not that the picture resembles the original. An AI that can only read mathematics is told: implement the convention and definition sections in its own language, with the error-prone points named (argument order of atan2, floor towards minus infinity, clamp once at the end, round half up). A generative model receives a structured description and a warning line that its output is only an approximation and must never be used to update the probes or the hash. An AI asked to edit the picture is told: change only the objects and parameters concerned, re-render, regenerate probes and hash, increment the version.</p>
+<p>In the two cases, the first prompt was tested in the strictest way possible on one machine: the code block was extracted from the Markdown file itself, run by a fresh Python process in a temporary folder without the original image, and the pixels matched the hash. The next two prompts are designed for the same purpose but no other AI has tried them in these two cases (Appendix C). The point for the non-specialist reader: the specification file is how two AIs can talk to each other about a picture without sending a bitmap and without losing information. The sender sends text; the receiver computes the image; both compare one number. That is the difference from a description sent to a generative model, where the receiver can only produce something similar.</p>
+<h2 id="6-case-study-1-repainting-the-strawberry-photograph-with-many-formulas">6. Case study 1: repainting the strawberry photograph with many formulas</h2>
+<p>The claim of this section: a real photograph was rewritten as a deterministic program of three layers and 4,831 primitive draws; the program reproduces its specification pixel for pixel, and resembles the source at the level of "instantly recognisable" by four measures. Every event and figure comes from the report of the session of 5 October 2026 [11].</p>
+<h3>6.1 The brief Henry set</h3>
+<p>Henry wrote one sentence: "Read the file "equation_painting_bible" and then create an md file to repaint the attached picture." The attachment was a 554 × 554 JPEG of 91,064 bytes, a top-down close-up of a pile of ripe strawberries filling the frame; provenance unknown. Claude Code (model Claude Opus 5.5) decided four things on its own and stated them at hand-over: the goal is reproduction; mode H (a hybrid of semantic and numerical, target PSNR 20–28 dB under the rule book); run straight through without stopping to ask; keep the source size with one sample per pixel. Hard constraints: 1:1 frame; the number, position, size, silhouette and occlusion order of every berry; the positions of the sepals; no text. Soft goals: seed and pit texture, glints, the red hue of each berry, sepal detail.</p>
+<p>Figure 15 places the source image (left) beside the image computed from formulas (centre) and the error map (right). The centre image contains not one pixel of the left one; it was computed from 494 KB of text.</p>
+<figure><img src="figures/p1_compare_v1.jpg" alt="Figure 15. Case 1. Left: the 554 × 554 source. Centre: the image computed from t" loading="lazy"><figcaption>Figure 15. Case 1. Left: the 554 × 554 source. Centre: the image computed from the specification, hash 24fbfe2b…. Right: the per-pixel error map (bright is large error). MAE 14.55/255, PSNR 20.99 dB, SSIM 0.602. Source: the project's out/dau-tay_compare_v1.png.</figcaption></figure>
+<h3>6.2 Measurement</h3>
+<p>Scripts measured, Claude Code read the results. Palette: k-means in Lab space with 12 clusters gave six shades of red covering ≈ 75 % of the area (from #220A07 dark gaps at 7.3 % to #EA2312 bright red at 17.0 %), two greens of the sepals, one orange of the seeds, two pinks and whites of the glints. This palette was only for orientation; the colours in the specification are those of each individual primitive, measured in place.</p>
+<p>Segmenting each berry is where "seeing" decides and "measuring" executes. Claude Code looked at the image enlarged twice with a 25-pixel grid and placed one marker per berry, named B01 to B24; the watershed algorithm spread from those markers over an "elevation" map built from the luminance gradient and the dark regions, so that the dark gaps became ridges. The first pass went wrong in three places (B07 swallowed by B08, B01 merged with B02, the top strip merged); after inspecting two crops, Claude Code added markers and the second pass gave 24 regions. The number of objects and their identity were decided by sight; the algorithm only measured the boundaries. Figure 13 is the source image overlaid with the 24 region boundaries.</p>
+<p>The other measurements, described in 6.4: each berry's contour, body colour field, seeds, glints, sepals, dark pits.</p>
+<figure><img src="figures/p1_seg_overlay.jpg" alt="Figure 13. Case 1: the source overlaid with the boundaries of 24 watershed regio" loading="lazy"><figcaption>Figure 13. Case 1: the source overlaid with the boundaries of 24 watershed regions and labels B01–B24 (a working image of the session, enlarged 2 times). The number of objects and their names were set by Claude Code by sight; the boundaries were measured by the algorithm.</figcaption></figure>
+<h3>6.3 Decomposition</h3>
+<p>Three layers: L01, the background, a single colour constant; L02, the 24 berries in occlusion order, each berry consisting of its body followed by all its details; L03, the sepals on top. Five kinds of object: berry bodies (24), dark pits (1,418), seeds with pit rims (740, each drawn twice), glints (1,772: 1,210 ellipses and 562 polygons with holes), sepal polygons (137 in 18 blocks, three brightness tiers). In total 4,831 primitive draws.</p>
+<p>This decomposition suits the image for three reasons the report gives. The soft shading of a berry body needs a colour field, not a flat colour. The edges of berries and sepals are sharp, so they need a shape function with angle-dependent radius or a polygon. Repeated details (seeds, pits, glints) share one ellipse template with a parameter table. What was dropped: the fuzz and veins of the sepals (replaced by three brightness tiers), the micro-texture of the body between seeds, the hidden parts of berries (interpolated). The number of draws exceeds the typical 100–1,000 of mode H; the report states that the specification is closer to the boundary of mode N than the rule book's description, but every primitive is still a meaningful object, with no grid laid over the image.</p>
+<h3>6.4 One component explained in full: a strawberry</h3>
+<p>Take a berry $b$ with centre $c = (c_x, c_y)$ measured as the centroid of its watershed region. Four steps from rough shape to texture; each step is a formula in the specification.</p>
+<p><strong>Step one, the rough shape.</strong> A berry is closer to a rounded triangle than to an ellipse, so the contour is written as a Fourier series in the polar angle $\varphi$ around the centre, with $K = 6$ harmonics (a choice):</p>
+<p>$$r(\varphi) = r_0\Big(1 + \sum_{k=1}^{6} a_k \cos k\varphi + b_k \sin k\varphi\Big), \qquad d_b(x, y) = \rho - r(\varphi),$$</p>
+<p>with $\rho = \sqrt{(x - c_x)^2 + (y - c_y)^2}$ and $\varphi = \operatorname{atan2}(y - c_y, x - c_x)$. Reading: $r_0$ is the mean radius; the 12 coefficients $a_k, b_k$ are the distortions at each angular frequency; $d_b$ is negative inside the berry. Try: berry B22 has $r_0 = 0.1374$, $a_1 = 0.0413$, $b_1 = 0.3028$, $a_2 = 0.0997$ (from table P-08 of the specification). The term $b_1 \sin\varphi$ alone lengthens the radius by $0.30 r_0$ in the direction $\varphi = \pi/2$; the term $a_2 \cos 2\varphi$ subtracts $0.10 r_0$ in the same direction; the remaining harmonics add and subtract a little more. The berry reaches upward. Change $a_3$ and the berry grows three lobes.</p>
+<p>How the 12 coefficients were obtained, according to the report: constrained least squares on the boundary pixels of the watershed region. Each boundary pixel was classified by its 5 × 5 neighbourhood. A pixel bordering the background or a berry that lies behind is a true boundary and gives an equality constraint $r(\varphi_i) \approx r_i + 0.5$ px. A pixel bordering a berry in front or a sepal is an occluded boundary and gives only a lower bound $r(\varphi_i) \ge r_i + 2$ px, handled as a hinge: four iterations, keeping only the constraints currently violated, weight 0.3. High harmonics are penalised by a ridge term $\lambda_k = 0.006\,k^2$ so that the hidden part is interpolated smoothly. Result: every berry has $\min_\varphi r(\varphi)/r_0 = 0.40 &gt; 0$, so the shape is always valid. The hidden part is an interpolation that cannot be checked against the source: berry B21 in the top strip has $a_2 = 0.65$, a distorted shape, but its visible part fits (IoU 0.779).</p>
+<p><strong>Step two, the soft edge.</strong> The berry body mask follows step 5, with the softness proper to this kind of object:</p>
+<p>$$M_b = 1 - S\big(-\varepsilon_b, \varepsilon_b, d_b\big), \qquad \varepsilon_b = 3.0 \cdot \tfrac{2}{554}.$$</p>
+<p>Reading: a transition band 6 pixels wide, softer than the 1.5-pixel anti-aliasing level, because the rim of a real berry in a photograph is not sharp. The value 3.0 was found by a sweep against the MAE, not set by hand. Change 3.0 to 0.75 and the berry acquires a vector-graphics edge.</p>
+<p><strong>Step three, colour and shading.</strong> The berry body as a dome. Let $t = \rho / r(\varphi)$ (0 at the centre, 1 at the edge), $p = t\cos\varphi$, $q = t\sin\varphi$, $n_z = \sqrt{\max(1 - t^2, 0)}$. The body colour is a combination of seven basis functions:</p>
+<p>$$K_b(x, y) = \sum_{i=0}^{6} \phi_i\, C_i, \qquad (\phi_0, \ldots, \phi_6) = \big(1,\ n_z,\ p,\ q,\ t^2,\ p^2 - q^2,\ 2pq\big).$$</p>
+<p>Reading: $C_i$ are RGB triples, 21 numbers per berry, fitted by least squares on the body pixels (excluding seed, glint and sepal pixels). $C_0$ is the base colour of the berry; $C_1$ times $n_z$ gives a bright centre and dark rim, that is, volume; $C_2$ and $C_3$ give the light direction; the three second-order coefficients capture the residual. Try: at the centre, $t = 0$, $n_z = 1$, $K_b = C_0 + C_1$; at the edge, $t = 1$, $n_z = 0$. The report tried enriching the basis to 10, 14 and 18 functions: the body error fell from 11.66 to 10.04 on the 255 scale, 14 % for 2.5 times as many functions; the report's conclusion was that the remaining error is micro-texture, not shading, and it kept 7 functions for readability.</p>
+<p><strong>Step four, texture.</strong> Three kinds of detail, one template: an ellipse placed relative to the berry centre, multiplied by the mask of its parent berry so that it does not spill into the gaps. For an ellipse with semi-axes $a, b$, angle $\beta$, centre $c + (\delta_x, \delta_y)$:</p>
+<p>$$M = \Big(1 - S(-e, e, d_{\text{ellipse}})\Big) \cdot M_b, \qquad C \leftarrow C\,(1 - M) + K M,$$</p>
+<p>with $d_{\text{ellipse}} = \big(\sqrt{(u/a)^2 + (v/b)^2} - 1\big)\min(a, b)$ in the rotated coordinates $(u, v)$ of step 8. Dark pits: 1,418 dark-red ellipses, found by rendering the scene without pits and taking the spots where the source is darker than the render by at least 0.05 in luminance (analysis by synthesis). Seeds: 740 ellipses, each drawn twice, a pit rim with semi-axes multiplied by 2.5 and a colour measured on the annulus around the seed, then the seed core. Glints: ellipses for small components, polygons with holes for large ones. Lower the rim factor 2.5 to 1.6 and the error rises from 14.63 to 14.79: the report swept three values and kept 2.5.</p>
+<p>Figure 14 renders berry B08 through the four steps above, rebuilt from specification v1.0 for presentation. The report has no four intermediate renders of a single berry; the historical rounds D1–D12 applied to the whole scene.</p>
+<figure><img src="figures/H14_strip_B08.jpg" alt="Figure 14. Berry B08 of case 1 through four steps, rebuilt from specification v1" loading="lazy"><figcaption>Figure 14. Berry B08 of case 1 through four steps, rebuilt from specification v1.0 on the dark-gap background, cropped around the berry and enlarged 2 times: (a) rough shape: a 0.75-pixel anti-aliasing mask with the flat colour $C_0$; (b) a 3-pixel soft edge and the seven-function colour field; (c) plus the dark pits belonging to this berry; (d) plus the seeds with rims, glints and sepal of this berry. Whole-image hashes of the four versions: 93c2b44d…, 264e8985…, f0b1d2b3…, 01c54322….</figcaption></figure>
+<h3>6.5 Assembling the whole scene</h3>
+<p>Only one stacking operation is used, over. Execution order: the background $K_{\text{GAP}} = $ #270305 (the median colour of the region belonging to no berry) over the whole image; then the 24 berries from back to front in the observed order (B21, B22, B02, …, B11, B08), each berry drawing its body, then all its pits, then all its seeds, then all its glints; then the 137 sepal polygons by tier. Clamp to $[0, 1]$ once at the end and quantise with $F$. In short:</p>
+<p>$$\hat I = F\Big(\mathrm{clamp}\big(L_{03}(L_{02}(L_{01}))\big)\Big).$$</p>
+<p>By step 10, this chain of over operations equals the one-function formula $H_v$ with $N = 4{,}831 + 1$ masks; case 1 did not write that form out, and algebraic equivalence does not guarantee identical bytes if the computation is reorganised. The renderer does not read the source image while rendering: this was checked by the clean-room test (6.7). One speed optimisation, evaluating each primitive only inside a bounding box, was proved equivalent by re-rendering the whole image without boxes: 0 pixels differ, 623 seconds against 1.5 seconds.</p>
+<h3>6.6 The decisive revisions</h3>
+<p>The report records 12 rounds D1–D12, each with one change, four measurements after it, and one decision. The layout was right from D1 (MAE 17.00); every later round lowered the MAE to 14.55, that is by 14 %. Five notable milestones:</p>
+<table>
+<thead>
+<tr>
+<th>Milestone</th>
+<th>What was seen</th>
+<th>Recorded hypothesis</th>
+<th>What changed, who did it</th>
+<th>Measured</th>
+<th>Decision</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>D2</td>
+<td>flat olive sepals</td>
+<td>the linear gradient mixed in the red rim</td>
+<td>three brightness tiers by k-means Lab; Claude Code</td>
+<td>MAE 17.00 → 16.17; SSIM 0.555 → 0.573</td>
+<td>keep</td>
+</tr>
+<tr>
+<td>D3</td>
+<td>pale orange seeds missing on four berries</td>
+<td>the threshold caught only clearly yellow seeds</td>
+<td>a detector on locally prominent green channel, 381 → 741 seeds; Claude Code, scripts</td>
+<td>MAE 16.17 → 16.55 (worse); SSIM 0.573 → 0.578</td>
+<td>keep, with the report's reason: "MAE worse, SSIM better, looks more right"</td>
+</tr>
+<tr>
+<td>D4</td>
+<td>the dark halo around seeds used a guessed value 0.35</td>
+<td>not recorded</td>
+<td>sweep of amplitude 0 / 0.1 / 0.2 / 0.35 / 0.5 → MAE 15.53 / 15.70 / 15.99 / 16.55 / 17.20; halo dropped entirely; Claude Code, scripts</td>
+<td>MAE 15.36</td>
+<td>keep</td>
+</tr>
+<tr>
+<td>D5</td>
+<td>smooth bodies, dark-red pits missing</td>
+<td>the body model has only low frequencies</td>
+<td>dark pits by analysis-by-synthesis, threshold 0.05 (tried 0.05 / 0.07 / 0.10); Claude Code, renderer, scripts</td>
+<td>MAE 14.95; SSIM 0.604</td>
+<td>keep</td>
+</tr>
+<tr>
+<td>D11</td>
+<td>moving a berry left its seeds, pits, glints and sepal behind; exposed while preparing the perturbation test</td>
+<td>details stored in absolute coordinates</td>
+<td>detail coordinates made relative to the parent berry's centre; Claude Code</td>
+<td>MAE 14.55, almost unchanged</td>
+<td>keep, freeze</td>
+</tr>
+</tbody>
+</table>
+<p>The effect of D3 can be understood as follows (retrospective explanation): MAE penalises every displaced pixel, so adding many small seeds a few pixels off raises the MAE even though the structure is more correct; SSIM is sensitive to local structure and so rises. D11 did not make the image closer but fixed a design flaw that only the causality test revealed.</p>
+<p>Two failures are in the record. The first attempt at finding pits, "image minus a 9 × 9 median", gave 3,911 components which, on inspecting the overlay, were mostly the dark rims beside glints rather than pits; it was dropped. D6, enriching the colour basis, was reverted despite lowering the error, because the gain was small compared with the loss of readability.</p>
+<p>The perturbation test, expectations written before running: remove berry B08 and only the probe on B08 fails, pixel (281, 247) changing from (200, 6, 18) to (39, 3, 5), exposing the background. Shift B12 right by 0.10 (27.7 pixels) and the mask centroid shifts exactly 27.70 pixels and its sepal follows; but the expectation "probe on B12's sepal fails" was wrong, because the probe point landed again inside the same flat-coloured polygon; the report kept the wrong expectation in the specification. Change the background colour to black and exactly the four probes on the background fail. Change the seed edge softness from 1.5 to 0.5 and 83,237 pixels change, 16/16 probes still pass, the hash does not match.</p>
+<h3>6.7 Results</h3>
+<p>The table below separates four axes. The first two rows measure against the source (Fidelity A); the verification rows measure against the specification (Fidelity B).</p>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Value</th>
+<th>Conditions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Size</td>
+<td>554 × 554, A = 1, one sample per pixel</td>
+<td>the source size</td>
+</tr>
+<tr>
+<td>Layers, objects, draws</td>
+<td>3 layers; 24 berries; 4,831 primitive draws</td>
+<td></td>
+</tr>
+<tr>
+<td>Formulas, named parameters</td>
+<td>7 formulas F-00…F-06; 5 object templates; 12 parameter groups</td>
+<td></td>
+</tr>
+<tr>
+<td>Description length</td>
+<td>code 460,692 bytes, 4,599 lines: shared kernel 9,814 B (2.1 %), data tables 439,962 B (95.5 %), scene functions 6,639 B (1.4 %); the tables hold 36,450 reals and 4,807 colour codes</td>
+<td>bytes of the code block; not Kolmogorov complexity</td>
+</tr>
+<tr>
+<td>Sizes compared</td>
+<td>original JPEG 91,064 B; zlib-compressed code 115,771 B; specification file 494 KB; rendered PNG 549 KB</td>
+<td>the specification is not compression</td>
+</tr>
+<tr>
+<td>Error against source</td>
+<td>MAE 14.55/255; max 246/255; PSNR 20.99 dB; SSIM 0.602; mean $\Delta E_{2000}$ 6.03</td>
+<td>554 × 554, scikit-image 0.26.0</td>
+</tr>
+<tr>
+<td>Region overlap</td>
+<td>area-weighted mean IoU of visible regions 0.893; lowest B20 0.113; sepal mask IoU 0.990</td>
+<td>against the source watershed regions</td>
+</tr>
+<tr>
+<td>Pixel hash</td>
+<td><code>24fbfe2b4a63127b6d0e96ad2c8c8dc5eb3f0ea649bb4c7a75990461b9776f3a</code></td>
+<td>EP-PIX v1</td>
+</tr>
+<tr>
+<td>Probes</td>
+<td>16/16 PASS, tolerance ±2</td>
+<td></td>
+</tr>
+<tr>
+<td>Clean-room</td>
+<td>PASS: code extracted from the <code>.md</code> file, run by a fresh process in an empty temporary folder without the source image; pixels match the hash; CODE_SHA256 <code>027139ea…3f46</code></td>
+<td>one machine: Windows 11, Python 3.14.3, numpy 2.4.6</td>
+</tr>
+<tr>
+<td>Mathematics–code agreement</td>
+<td>27/27 identifiers; five formulas re-implemented independently in pure Python, largest difference $1.1 \cdot 10^{-16}$</td>
+<td></td>
+</tr>
+<tr>
+<td>Second environment</td>
+<td>NOT_RUN</td>
+<td></td>
+</tr>
+<tr>
+<td>Render time</td>
+<td>≈ 1.5–2 s</td>
+<td></td>
+</tr>
+<tr>
+<td>Calendar time of the session</td>
+<td>≈ 48 minutes (21:22 → 22:10 by file timestamps), including reading the rule book, installing tools, 12 rounds, packaging and verification; plus one 623 s test</td>
+<td>not pure "formula-finding" time; no control</td>
+</tr>
+</tbody>
+</table>
+<p>Error decomposition at round D7: berry bodies account for 46 % of the error (58.5 % of the area, MAE 11.4); seeds and glints 28 %; sepals 16 %; berry edges 10 %. The green channel on the sepals is off by +10.4: the render is less green than the source. Figure 15 (right) is the error map; the three worst cells are the top edge above B05 and the bottom below B16, where the contours of berries behind fit short and expose dark gaps, and the lower-left region of B11, where the seven-function colour field is too smooth.</p>
+<h3>6.8 Work of the human, work of the machine, work of scripts</h3>
+<table>
+<thead>
+<tr>
+<th>Task</th>
+<th>Henry</th>
+<th>Claude Code</th>
+<th>Scripts / libraries / renderer</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Pose the problem, choose the image</td>
+<td>✔ (one command)</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Choose goal, mode, resolution, run straight through</td>
+<td></td>
+<td>✔ (own decision, stated at hand-over)</td>
+<td></td>
+</tr>
+<tr>
+<td>Measure the image (palette, segmentation, contours, colour fields, seeds, glints, sepals, pits)</td>
+<td></td>
+<td>issue commands, read results, place berry markers, choose detection thresholds by inspecting overlays</td>
+<td>✔ compute (k-means, watershed, least squares, thresholds)</td>
+</tr>
+<tr>
+<td>Decompose and plan</td>
+<td></td>
+<td>✔ propose and execute</td>
+<td></td>
+</tr>
+<tr>
+<td>Write formulas and the code that generates the specification</td>
+<td></td>
+<td>✔</td>
+<td></td>
+</tr>
+<tr>
+<td>Render, probes, hash, clean-room</td>
+<td></td>
+<td>issue commands, read results</td>
+<td>✔ compute</td>
+</tr>
+<tr>
+<td>Read deviations, hypothesise, revise (12 rounds)</td>
+<td></td>
+<td>✔</td>
+<td>metrics by scripts</td>
+</tr>
+<tr>
+<td>Choose the final picture</td>
+<td>(approval status PENDING)</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Number of times Henry stopped to decide: 0. Revision rounds: 12. Perturbation tests: 4.</p>
+<h3>6.9 Limits of this case</h3>
+<p>One image, one kind of scene (repeated objects on a dark background). The micro-texture of berry bodies and the veins of sepals were not captured; enriching the smooth model reduced body error by only 14 %. Berries behind are interpolations that cannot be checked; B20 has only 174 pixels in the render against 937 in the source. The number of berries and the occlusion order were decided by Claude Code by sight; another person might count the rim berries differently. No other AI has yet tried to reproduce from the specification (Tiers 2, 3), nothing has run on a second machine, and no viewer perception study exists. One successful case does not prove the method suits every image. The lesson carried into case 2: once the goal is no longer to match every pixel, is that 440 KB table still needed?</p>
+<h2 id="7-case-study-2-painting-after-a-reference-with-one-formula">7. Case study 2: painting after a reference with one formula</h2>
+<p>The claim of this section: from the same strawberry image, a new 1108 × 1108 picture was defined by one function with 27 helper functions and 91 layers; the mathematical text of that function is the bit-exact definition of the image; a human chose this picture among 9 finalists out of 60 trial renders. Every event comes from the report of the session of 6 October 2026 [11].</p>
+<h3>7.1 The reference and the similarity contract</h3>
+<p>Henry wrote: "Read the CLAUDE file and then use the attached image as the reference to carry out image creation under EP-II TASK, ADAPTATION." The attachment was the same JPEG file as in case 1. Under the rule book's defaults (Volume II), adaptation at level 2: take the palette, layout, subject, counts and light direction; take neither the contour of each berry nor the texture. The contract in the brief had six hard constraints: ripe red strawberries recognisable in a 240 px thumbnail; a pile filling the frame, no background or other objects; at least 15 visible berries; at least 6 sepal clusters; a 1:1 frame; no text, no people. Five things to keep so that the source stays recognisable: the subject; the largest berry at the centre slightly above; vermilion red with green sepal accents and cream glints; soft light from the upper left with dark gaps; a feeling of freshness and juiciness. The soft preferences (fresh, juicy, highly saturated) were Claude Code's choice because Henry did not say. Figure 1 places the reference beside the final picture.</p>
+<h3>7.2 Three levels of similarity</h3>
+<p>The semantic level is a hard constraint: fail it and the candidate is out. The structural level must stay within the band of level 2: positions and sizes of the large masses, light direction, palette. The surface level is free: seed texture, gloss, detailed shapes, degree of stylisation. The final picture keeps 21 berries and 14 sepals at the measured positions and sizes, keeps the six measured colours, keeps the light direction; it repaints the surface entirely with a lighting model, so the reference is recognised without being mistaken for a copy.</p>
+<h3>7.3 From features to rules</h3>
+<p><strong>Measure what level 2 allows.</strong> Six-colour k-means palette in Lab: #DF2212 27.7 %, #AF221B 22.5 %, #6E1013 21.9 %, #2F0E09 12.6 % (gaps), #EBB49F 7.7 % (glints), #898F3E 7.5 % (sepals and seeds). Luminance percentiles p5/p50/p95 of 0.061/0.246/0.744; dark gaps 15.47 % of the frame. Light direction: highlight offset from berry centres gives 131.8°, diffuse gradient gives 119.8°; conclusion: a soft, broad light source, offset to the upper left. Watershed on the dark gaps separated 21 berries with equivalent radii 0.10–0.337 (frame height = 2) and 14 sepal clusters; no perspective gradient. Anchor table: 21 rows $(X_p, Y_p, r_p)$ and 14 rows $(X'_k, Y'_k, s_k)$, 105 measured numbers in total. Figure 16 overlays the measurements on the image.</p>
+<figure><img src="figures/p2_overlay_layout.jpg" alt="Figure 16. Case 2: the reference overlaid with the measurements allowed at level" loading="lazy"><figcaption>Figure 16. Case 2: the reference overlaid with the measurements allowed at level 2: watershed boundaries (yellow), equivalent-radius circles of 21 berries (white), highlight directions (green), centres of 14 sepals (blue squares), sepal mask (cyan). A working image of the session.</figcaption></figure>
+<p><strong>Measuring the measure itself.</strong> The rule book measures layout similarity by the correlation of 48 × 36 edge maps, with a band of 0.25–0.60. Before any candidate existed, Claude Code ran this measure on transformed versions of the reference itself and on a crude scene of red discs:</p>
+<table>
+<thead>
+<tr>
+<th>Test image</th>
+<th>edge correlation</th>
+<th>12 × 12 luminance correlation (<code>lum12</code>)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>the source blurred, σ = 6 px</td>
+<td>0.597</td>
+<td>0.999</td>
+</tr>
+<tr>
+<td>the source mirrored</td>
+<td>0.109</td>
+<td>0.247</td>
+</tr>
+<tr>
+<td>discs at the 21 measured positions</td>
+<td>−0.014</td>
+<td>0.505</td>
+</tr>
+<tr>
+<td>discs mirrored</td>
+<td>0.041</td>
+<td>0.129</td>
+</tr>
+<tr>
+<td>a triangular grid (entirely different layout)</td>
+<td>−0.000</td>
+<td>−0.031</td>
+</tr>
+</tbody>
+</table>
+<p>The edge measure gives correctly placed discs the same score as a formula grid: it measures seed and glint texture, not layout. The luminance measure separates the four situations. Claude Code proposed and Henry approved: the structural band uses <code>lum12</code> in $[0.30; 0.85]$, the edge measure is still reported but not used to eliminate.</p>
+<p><strong>The decision about tables.</strong> The rule book's SHORT class (≤ 3,000 characters, ≤ 200 constants, no tables) forces the layout to be a formula of an index, a grid or a spiral. A triangular grid was tried: <code>lum12</code> = −0.03, that is, the layout is lost. Because the 21 berries in the image are placed without a rule, Claude Code proposed the HYBRID class (≤ 12,000 characters, ≤ 1,500 constants, one anchor table of ≤ 48 rows). Henry asked "If you were me, how would you decide to get the most beautiful picture" and after the proposal replied "OK, go with the proposal. Thank you." At the same time Henry approved the 1108 × 1108 frame with four samples per pixel, three revision rounds, and the replacement of two idea cards. This is the fundamental difference from Yeganeh's pictures, where object positions are generated from an index [1]: the similarity constraint to a real image forces a table of measurements, at the cost of a longer formula.</p>
+<p>So in the final picture, what is table and what is rule? Table: 35 rows of positions and sizes, 6 colours, 1 light direction. Rule: the shape of each berry, its pose, the seed lattice, the pits, the normals, the lighting, the sepals, the gaps. Every remaining constant is a choice.</p>
+<h3>7.4 One rule explained from beginning to end: each berry's own shape</h3>
+<p>The visual requirement, recorded at the polishing round: at 100 % the berries looked "stamped from one mould". To give each berry its own shape without adding 21 coefficient sets to the table, the coefficients are made functions of the object id $\iota_p$ (a fixed integer attached to berry $p$, not its row position). Take five hash values $h_l = h(\iota_p + 401, l)$, $l = 0 \ldots 4$, with $h$ the hash function of step 9, then</p>
+<p>$$b_1 = 0.045\,(1.6h_0 - 0.5), \quad a_2 = 0.045\,(0.4 + 0.6h_1), \quad f_2 = 2\pi h_2, \quad a_3 = 0.045\,(0.15 + 0.35h_3), \quad f_3 = 2\pi h_4,$$
+$$\varrho(\varphi) = 1 + b_1 \sin\varphi + a_2 \cos(2\varphi + f_2) + a_3 \cos(3\varphi + f_3).$$</p>
+<p>Reading: $\varphi$ is the angle in the berry's frame, with $\varphi = \pi/2$ towards the stem; $\varrho$ is a radial stretch factor depending on angle; $b_1$ swells the shoulders (positive) or the tip (negative); $a_2$ with phase $f_2$ flattens the berry along one axis; $a_3$ with phase $f_3$ gives three gentle lobes. The constant 0.045 is the common amplitude (parameter SHP). Try three index values, taken from the table of numbers in the mathematical text:</p>
+<table>
+<thead>
+<tr>
+<th>$p$</th>
+<th>$b_1$</th>
+<th>$a_2$</th>
+<th>$f_2$</th>
+<th>$a_3$</th>
+<th>$f_3$</th>
+<th>upper bound on rim offset, $|b_1| + a_2 + a_3$</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>−0.01170</td>
+<td>0.04264</td>
+<td>5.8327</td>
+<td>0.01079</td>
+<td>2.9488</td>
+<td>6.5 % of the radius</td>
+</tr>
+<tr>
+<td>1</td>
+<td>0.02987</td>
+<td>0.01977</td>
+<td>0.5308</td>
+<td>0.01576</td>
+<td>5.9375</td>
+<td>6.5 %</td>
+</tr>
+<tr>
+<td>2</td>
+<td>0.01541</td>
+<td>0.03914</td>
+<td>3.8359</td>
+<td>0.01778</td>
+<td>6.1464</td>
+<td>7.2 %</td>
+</tr>
+</tbody>
+</table>
+<p>Berry 0 has $b_1 &lt; 0$, so its tip swells slightly; berry 1 has $b_1 &gt; 0$, so its shoulders swell; berry 2 is flattened along an oblique axis. The report measured the largest rim offset over the 21 berries: 3.9 to 8.5 % of the radius, median 5.8 %. The berries resemble each other because they share one formula with one amplitude, but do not repeat rigidly because the five hash values differ with $\iota_p$. Change 0.045 to 0.07 and the report notes "a few berries have a flat face as if pressed", and that version lost the blind pairwise comparison; set it to 0 and every berry returns to the common shape of version v1.0. Figure 19 places v1.0 beside v1.1 at three 100 % crops: exactly this group of parameters changed, everything else held.</p>
+<p>Why the id $\iota_p$ and not the row position? In the first batch, the seed-lattice phase and the default tip direction were computed from the table row index. When the perturbation test removed row 19, the focal berry in row 20 also changed its texture, because its index shifted. The flaw was present in all 9 pictures; the earlier test had not caught it because it only removed the last row. The fix: add a fixed-id column to the table, set equal to the old index so that no pixel changed, then re-check: removing row 19 now changes exactly that berry.</p>
+<figure><img src="figures/p2_polish_v1.0_vs_v1.1.jpg" alt="Figure 19. Changing one group of parameters: v1.0 (top, hash ed459cd6…) and v1.1" loading="lazy"><figcaption>Figure 19. Changing one group of parameters: v1.0 (top, hash ed459cd6…) and v1.1 (bottom, hash 3710e8ec…) differ only in the shape amplitude (0 → 0.045) and three seed parameters (0 → 0.02 / 0.08 / 0.3); three 100 % crops show the centre berry's shoulder shifted and seed pits of varying size. The session's comparison sheet.</figcaption></figure>
+<h3>7.5 From one circle to one function for the whole picture</h3>
+<p>Each step below is a real formula in the mathematical text of the final picture (Appendix B); a few symbols have been changed to match the paper's symbol table (Appendix A). Figure 17 renders four milestones: one berry; two berries; 21 berries; the complete picture.</p>
+<p><strong>One berry: from disc to strawberry shape.</strong> Start with the local coordinates of step 8, divided by the radius $R_p = 1.1 r_p$ and by the stretch factor $\varrho$ of 7.4:</p>
+<p>$$\omega = u + iv = \frac{(z - c_p)\,e^{-i\alpha_p}}{R_p\,\varrho(\varphi)}.$$</p>
+<p>Reading: $\alpha_p$ is the pose angle of the berry (tip pointing away from its host sepal); $|\omega| = 1$ on the rim. The unit disc is warped into a heart-cone shape by a change of coordinates:</p>
+<p>$$\hat\omega = \frac{u}{\max(1 + 0.36\,e_p v,\ 0.3)} + i\,\frac{v + 0.15\,e_p\,(v^+)^2\, e^{-6u^2}}{1 + 0.1\,e_p}, \qquad d_p(z) = 0.85\,R_p\,\varrho(\varphi)\,\big(|\hat\omega| - 1\big).$$</p>
+<p>Reading: $v^+ = \max(v, 0)$; $e_p \in [0, 1]$ is how much of a stem end the berry has; the first denominator narrows the berry towards the tip ($v &lt; 0$) and widens it towards the stem; the term $0.15\,e_p (v^+)^2 e^{-6u^2}$ pushes in a small dimple at the shoulder near the stem. Try: at $u = 0$, $v = -1$ (the tip), $v^+ = 0$ so $\hat\omega = -i/(1 + 0.1 e_p)$, $|\hat\omega| = 1/1.1 &lt; 1$ when $e_p = 1$, and $d_p &lt; 0$: the point on the unit circle at the tip side is still inside the berry, so the tip extends beyond the disc. $d_p$ is an approximate distance function, negative inside. The berry mask follows step 5: $M_p = S(d_p / \varepsilon_p)$ with $\varepsilon_p = 0.75/1108 + 0.03 D_p$, where $D_p$ is the defocus level of the berry (0 for the focal berry, up to 0.82 for distant ones). Change $D_p$ and the rim softens progressively: that is depth of field made from edge softness, with no blur operation.</p>
+<p><strong>Two berries, then 91 layers.</strong> Each berry produces three layers in order: a cast shadow (mask $0.55\,S(d_p(z + 0.05\hat L)/0.3R_p)$, colour black; $\hat L$ is the light direction in the image plane), a contact shadow (mask $0.7\,\langle 1 - d_p/0.25R_p\rangle^2$, colour black), then the berry (mask $M_p$, colour $K_p$). Each sepal produces two layers: shadow and blades. In total $21 \cdot 3 + 14 \cdot 2 = 91$ layers, ordered from the rearmost berry to the frontmost, each sepal immediately after its host berry. Folded by the formula of step 10:</p>
+<p>$$C(z) = \Gamma(z) \prod_{j=1}^{91} \big(1 - M_j(z)\big) + \sum_{j=1}^{91} M_j(z)\, K_j(z) \prod_{l=j+1}^{91} \big(1 - M_l(z)\big).$$</p>
+<p>With two berries this is exactly $C_2$ of step 10 with $\Gamma$ the dark gap. The gap $\Gamma$ is not a flat colour: $\Omega = \langle 1 - \mathcal{W}(x, y; 4.5, 3)/0.8\rangle^2$ with $\mathcal{W}$ the Worley distance, then $\Gamma = \Gamma_0(0.45 + 0.3\Omega) + 0.18(\Gamma_1 - \Gamma_0)\Omega^2$: berries below sink into darkness.</p>
+<p><strong>Volume and light.</strong> The base normal of a berry is treated as a hemisphere: $\nu = \hat\omega e^{i\alpha_p}$ for the two in-plane components, $\nu_3 = \sqrt{(1 - |\hat\omega|^2)^+}$ for the component towards the viewer. The flesh colour is the measured colour $\mathbf{A}$ times a channel-wise "wrapped" diffuse light:</p>
+<p>$$K^{t} = \mathbf{A}\,\beta\,\Big( \big\langle \tfrac{\mathbf{n}\cdot\mathbf{L} + W}{1 + W} \big\rangle + 0.1\,(0.55 + 0.45\,n_3) \Big)\big(0.32 + 0.68\sqrt{\nu_3}\big)\big(1 - 0.5\hat P\big), \qquad W = (0.45;\ 0.12;\ 0.12).$$</p>
+<p>Reading: $\langle\cdot\rangle$ clamps to $[0, 1]$; $\mathbf{n}\cdot\mathbf{L}$ is the angle between the normal and the lamp; $W$ lets the red channel receive light further round the dark side than the other two, giving the impression of red glowing through the flesh (subsurface scattering); $\beta$ is a gentle colour mottling; the last factor darkens inside the seed pits. Specular reflection adds one real number $\mathrm{Sp}$ to all three channels: Schlick's Fresnel $(0.03 + 0.97\,t^5)$ with $t = \langle 1 - n_3\rangle$, times two rectangular "softboxes" in reflection-vector space plus an environment brightening upwards. This model creates a sense of volume under its own assumptions; it does not recover the three-dimensional geometry of the original. Colours are computed in linear space and then encoded to sRGB per sample before the four samples are averaged; the report notes that this order differs from Volume I's linear profile, chosen so that the pointwise check (Test A) still runs.</p>
+<p><strong>Texture on the volume.</strong> The surface coordinate $\zeta' = \hat\omega(1 + 0.57\min(|\hat\omega|^2, 1))\,e^{i\phi_p}$ makes the lattice denser towards the rim (an approximation of the $\arcsin$ projection on a sphere); the hexagonal lattice</p>
+<p>$$T(\zeta) = \tfrac13\Big[\cos(30\,\Re\zeta) + \cos(30\,\Re(\zeta E)) + \cos(30\,\Re(\zeta/E))\Big], \qquad E = e^{2\pi i/3},$$</p>
+<p>equals 1 at the centre of each seed. Reading: three families of cosine waves 120° apart, frequency 30 giving about 14 seeds per diameter. The pit $P = S\big((\chi - T)/0.25\big)$ with a threshold $\chi$ around 0.45; the normal is tilted by the gradient of $P$ computed by finite differences ($P$ at $\zeta + 0.02$ and $\zeta + 0.02i$); the yellow seed is another smoothstep shifted towards the stem. The second polishing step adds two value noises $\nu_1, \nu_2$ on the surface coordinate so that each seed drifts 0.02 off its lattice node, pits vary 8 % in size and 30 % in depth; setting the three amplitudes to 0 gives an image bit-identical to the version before.</p>
+<p><strong>Closed-form fold.</strong> The final image, with four samples per pixel ($\mu_1, \mu_2 \in \{0, 1\}$):</p>
+<p>$$(R, G, B)(m, n) = F\Big(\tfrac14 \sum_{\mu_1}\sum_{\mu_2} H(x, y)\Big), \quad x = \frac{m + (2\mu_1 + 1)/4}{554} - 1, \quad y = 1 - \frac{n + (2\mu_2 + 1)/4}{554},$$
+$$H(x, y) = \mathrm{srgb}\Big(\mathrm{tone}\big(C(z)\,(1 - 0.11(x^2 + y^2))\big)\Big) + 0.018\,\big(\nu(x, y; 520, 99) - \tfrac12\big).$$</p>
+<p>Reading: the factor $1 - 0.11(x^2 + y^2)$ is lens vignetting, multiplied in linear space; $\mathrm{tone}$ is a "shoulder" that softens highlights above 0.75; $\mathrm{srgb}$ is the sRGB encoding; the last term is film grain of amplitude 0.018 added after encoding. Try: pixel $(0, 0)$ has four samples at $x \in \{-0.99955, -0.99864\}$ and symmetric $y$, next to the top-left corner. The whole picture is this expression. Figure 20 shows the one-page formula panel of the poster; Appendix B writes out every helper function.</p>
+<figure><img src="figures/H17_strip.jpg" alt="Figure 17. From one berry to one function for the whole picture, rebuilt from sp" loading="lazy"><figcaption>Figure 17. From one berry to one function for the whole picture, rebuilt from specification v1.1 at 554 × 554, one sample per pixel: (a) only the focal berry on the dark-gap background; (b) two berries, the later layer hiding the earlier; (c) 21 berries without sepals; (d) 35 objects, 91 layers. Hashes: 73253bf7…, e63c13ae…, 3594edfb…, e59d4ef9… (different from the standard hash because resolution and sampling differ).</figcaption></figure>
+<figure><img src="figures/H20_poster-cong-thuc.jpg" alt="Figure 20. The formula panel of the poster &quot;Pile of Strawberries — Macro Fo" loading="lazy"><figcaption>Figure 20. The formula panel of the poster &quot;Pile of Strawberries — Macro Focus&quot; v1.1: the whole function typeset beneath the picture after the layout of Yeganeh's posters; the lists of numbers are generated directly from the specification's tables. The poster's notation differs from the paper's in a few places (Appendix A.2); Appendix B is the version in the paper's notation.</figcaption></figure>
+<h3>7.6 The space of alternatives and the selection</h3>
+<p>Exactly what happened, according to the report and the candidate records:</p>
+<table>
+<thead>
+<tr>
+<th>Stage</th>
+<th>Content</th>
+<th>Count</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Idea cards, batch 1</td>
+<td>12 cards A–M, each with a "thesis" (one sentence stating the bet and its trade-off) and seven axes; e.g. card D "Stained glass": dark gaps become lead lines, each Voronoi cell carries the formula colour at its centre</td>
+<td>12 cards, 10 candidates in round 0, 8 formula families</td>
+</tr>
+<tr>
+<td>Round 0, batch 1</td>
+<td>blind pairwise judging of 45 pairs at three sizes, each pair one winner and one sentence of reason; ranking by wins: H 9 · D 8 · F 7 · L 6 · B 5 · A 4 · E 3 · M 2 · C 1 · J 0</td>
+<td>10 pictures, 45 pairs</td>
+</tr>
+<tr>
+<td>Rounds 1–3, batch 1</td>
+<td>one problem fixed per picture per round; 4 revisions reverted (E1 outside the $\Delta E$ band at 17.8; F2 "diagonal stripes like a watermelon"; L2 lost its glowing core; B3 seeds split in two at 1108 px); ranking after round 3: D 5 · H 4 · F 3 · B 2 · L 1 · E 0</td>
+<td>6 pictures, 3 × 15 pairs</td>
+</tr>
+<tr>
+<td>Finalists, batch 1</td>
+<td>A Chiaroscuro (safe), B Three-tone poster (balanced), C Glass candy (material), D Golden lattice (Yeganeh grammar), E Stained glass (wild card); each with one role and one line "choose this when you want…"</td>
+<td>5 specifications</td>
+</tr>
+<tr>
+<td>Henry's feedback</td>
+<td>"Keep these 5 options, but I want to develop some further options that make the image look photographic (and closer to reality)."</td>
+<td></td>
+</tr>
+<tr>
+<td>Batch 2, "photographic"</td>
+<td>6 cards N–S on one shared physically based lighting core; round p0 with 15 pairs (R eliminated: "the displaced seed lattice looks like worm holes"), p1 (a shared sepal fix), p2 (one fix per picture); P eliminated</td>
+<td>6 cards, 4 finalists F–I</td>
+</tr>
+<tr>
+<td>Total</td>
+<td>candidate records rendered, including eliminated and reverted versions</td>
+<td>60</td>
+</tr>
+</tbody>
+</table>
+<p>The finalist set is a spectrum of choices, not the five highest scores; that is why E ranked first in round 3 and still carried the wild-card role. A change of structure (a different formula family) is distinguished from a change of parameters within the same structure: the report notes that three pictures G, H, I of batch 2 are almost the same image at the texture level, and calls them variants of one direction, not three directions. Figure 18 is the sheet of nine finalists with each one's measurements.</p>
+<p>On "blind": temporary codes were generated from the SHA-256 of the round name, not from the card letters; the auxiliary metrics were opened only after judging. The report records the limitation: Claude Code wrote every formula and therefore recognises the styles; "blind" means only that it did not know which code belonged to which card and had not seen metrics or lengths while judging. One "really different" measure of the rule book (Hamming distance of dhash ≥ 12) failed on 9 of 10 pairs because every candidate shares the measured layout; Claude Code calibrated on the project's data with "same idea" and "different idea" benchmarks, rejected a measure it had itself proposed (edge_dhash) when it failed on the finalist set, and proposed another (LBP χ²) without using it to declare a pass, since Henry had not approved it.</p>
+<h3>7.7 Reduction and packaging</h3>
+<p>How definitions were shared: one geometric core for every candidate of batch 1 (anchor table, host sepal, pose, berry shape, surface coordinate, hexagonal lattice, sepals, gaps, layer fold) and one lighting core for batch 2; each card changed only the colouring and material part. At packaging, unused functions were pruned, identifiers renumbered, and the pixels at 480 px were checked identical to the judged version, since cleaning must not change the image. Where tables were replaced by rules: the individual shape (7.4), the seed-lattice phase, the default tip direction, the length and width of each sepal blade are all hashes of the object id; what information was given up: the true shape of each berry in the photograph (which level 2 forbids taking); how the image changed: a berry in the painting does not coincide with the contour of the berry in the photograph. Henry accepted this trade-off when approving level 2 and the HYBRID class.</p>
+<p>Length, under the rule book's counting rule (the formula section between two marker lines, comments and whitespace removed, every numeric literal counted as a constant): 11,489 characters, 663 constants, 207 lines, 27 helper functions beyond the shared kernel and kit. The picture meets the HYBRID budget; it is longer than the four batch-1 pictures (4,165–6,085 characters) because of the lighting model. The shared part (kernel and kit) is not counted in these figures; when the specification is called "self-contained", the file holds both.</p>
+<h3>7.8 Henry chooses, and the polishing round</h3>
+<p>Henry wrote: "Take picture F." No reason was given; the taste record holds only the words and the choice. This is the author's choice, not a consensus about beauty; Claude Code's ranking is one source of comment, not an independent confirmation.</p>
+<p>Henry asked "In your view, should there be a polishing round?", Claude Code advised one narrow round, Henry wrote "Do one polishing round as you suggest". Two steps, each with one goal, each judged blind among three versions at three sizes: each berry's own shape at amplitude 0.045 beat amplitude 0.07 and the original; a less orderly seed lattice at the moderate level beat the strong level ("large pits rising like disease spots") and the regular lattice. Final v1.0 against v1.1: v1.1 won at 100 %; at thumbnail size the two were nearly identical (dhash differing by 1 bit); 58.6 % of pixels differed by more than 2 levels, 91.7 % of them on berries. Henry: "Ok, approved." The report records the interpretation: the sentence answered the question of choosing v1.0 or v1.1, so v1.1 is the main version.</p>
+<p>The perturbation test of v1.1, expectations written first: removing row 19 changes exactly that berry; shrinking the shape radius from 1.1 to 1.0 raises the dark-gap fraction from 0.0989 to 0.157, in the expected direction; setting the three seed parameters to 0 touches no probe, the evidence of effect being the bit-exact comparison; setting the shape amplitude to 0 was expected to raise the dark-gap fraction slightly because berries shrink, but it fell (0.0989 → 0.0973). Measured afterwards: the total berry area fell as predicted (0.9803 → 0.9764) but the area of their union did not change (0.8505 → 0.8505), because the changed rims lie beneath other berries. The wrong expectation was kept in the specification with the explanation.</p>
+<h3>7.9 Results</h3>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Value</th>
+<th>Conditions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Size</td>
+<td>1108 × 1108, A = 1, four samples per pixel</td>
+<td>twice the source, approved by Henry</td>
+</tr>
+<tr>
+<td>Layers, helpers</td>
+<td>91 layers folded in closed form; 27 own helper functions; anchor table of 35 rows (105 measured numbers)</td>
+<td></td>
+</tr>
+<tr>
+<td>Description length</td>
+<td>11,489 characters; 663 constants; 207 lines</td>
+<td>counting rule in 7.7; kernel and kit not counted</td>
+</tr>
+<tr>
+<td>Structural similarity</td>
+<td><code>lum12</code> 0.634 (approved band 0.30–0.85); palette $\Delta E$ 7.2 (≤ 10); edge correlation 0.175 (reported only)</td>
+<td>against the 554 × 554 reference</td>
+</tr>
+<tr>
+<td>Hard constraints</td>
+<td>6/6 PASS: 21 berries, 14 sepals visible</td>
+<td></td>
+</tr>
+<tr>
+<td>Pixel hash</td>
+<td><code>3710e8ecd15e3374fd93ca4d422df7cdc2f2136791747505130b955a7486076c</code></td>
+<td>EP-PIX v1</td>
+</tr>
+<tr>
+<td>Probes</td>
+<td>14/14 PASS, tolerance ±2</td>
+<td></td>
+</tr>
+<tr>
+<td>Pointwise Test A</td>
+<td>100/100 pixels recomputed with the scalar <code>math</code>/<code>cmath</code> libraries match the render</td>
+<td></td>
+</tr>
+<tr>
+<td>Clean-room</td>
+<td>PASS twice on the final file, fresh process, empty folder; CODE_SHA256 <code>093fed4f…3540</code></td>
+<td>one machine: Windows 11, Python 3.14.3, numpy 2.4.6</td>
+</tr>
+<tr>
+<td>Mathematics–code agreement</td>
+<td>28/28 identifiers; 11 functions re-implemented in <code>cmath</code> from the mathematical text, largest difference $1.1 \cdot 10^{-16}$</td>
+<td></td>
+</tr>
+<tr>
+<td>Mathematical text</td>
+<td>re-implemented independently from the text itself, 5,000/5,000 pixels match the render, deviation 0</td>
+<td></td>
+</tr>
+<tr>
+<td>Tiled = whole-image computation</td>
+<td>PASS at 1108 px</td>
+<td>a speed optimisation that does not change the image</td>
+</tr>
+<tr>
+<td>Second environment</td>
+<td>NOT_RUN for this specification</td>
+<td>two sample specifications of the rule book passed on two environments</td>
+</tr>
+<tr>
+<td>Render time</td>
+<td>42.3 s (tiled); 289.9 s (whole image, no tiling)</td>
+<td></td>
+</tr>
+<tr>
+<td>Calendar time</td>
+<td>one day, many exchanges; the report does not record total machine minutes</td>
+<td>no control</td>
+</tr>
+</tbody>
+</table>
+<p>Features kept, with photographic evidence (Figure 1): 21 berries and 14 sepals at the measured positions and sizes; the largest berry at the centre slightly above; the six measured colours; light from the upper left. Features interpreted: shapes, seeds, gloss, depth of field, film grain, vignetting. The project's own honest assessment: viewed at 100 %, the final picture still reads as a high-quality 3D render; the three remaining tells are berries too uniform in shape, sepals too simple, a seed lattice too orderly, and the first two were polished by one step.</p>
+<h3>7.10 Comparing the two cases on the same image</h3>
+<p>Before the numbers: the two cases differ in resolution (554² with one sample per pixel against 1108² with four) and in how length is counted (bytes of the whole code block against characters of the formula section with comments and whitespace removed). The table only places them side by side; it does not rank.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Case 1 (P1)</th>
+<th>Case 2 (P2)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Goal</td>
+<td>match the source pixel for pixel</td>
+<td>level-2 similarity, compact definition, human choice</td>
+</tr>
+<tr>
+<td>Data taken from the image</td>
+<td>36,450 reals and 4,807 colour codes (position, size, angle, colour of 4,831 primitives)</td>
+<td>105 numbers (35 positions and sizes) + 6 colours + 1 light direction</td>
+</tr>
+<tr>
+<td>Rules replacing data</td>
+<td>none; one row per detail</td>
+<td>shapes, seeds, sepals, lighting from functions of index and hash</td>
+</tr>
+<tr>
+<td>Length</td>
+<td>460,692 bytes of code</td>
+<td>11,489 characters of formula (plus the shared kernel and kit)</td>
+</tr>
+<tr>
+<td>Fidelity to source</td>
+<td>MAE 14.55; PSNR 20.99 dB; SSIM 0.602</td>
+<td>no pixel measure; <code>lum12</code> 0.634, palette $\Delta E$ 7.2</td>
+</tr>
+<tr>
+<td>Reproduction</td>
+<td>hash, 16/16 probes, clean-room R1</td>
+<td>hash, 14/14 probes, clean-room R1, 100/100 pointwise, 5,000/5,000 from the mathematical text</td>
+</tr>
+<tr>
+<td>Render</td>
+<td>≈ 1.5–2 s</td>
+<td>42.3 s</td>
+</tr>
+<tr>
+<td>Points where Henry stopped</td>
+<td>0</td>
+<td>5</td>
+</tr>
+<tr>
+<td>Trials</td>
+<td>12 rounds on one structure</td>
+<td>60 renders, 9 finalists, 2 polishing steps</td>
+</tr>
+</tbody>
+</table>
+<p>The justified conclusion: once the requirement to match every pixel is dropped and a 35-row anchor table is accepted, the scene-specific description becomes more than forty times shorter in bytes, but the picture no longer matches the source at any pixel, and that is intended. Case 1 matches a specimen; case 2 matches the way a group of shapes is organised.</p>
+<h3>7.11 Limits of this case</h3>
+<p>Only R1: two processes on the same machine. Not yet a photograph, by the project's own assessment. Blind judging is limited because the judge wrote the formulas, and in the polishing round there were only two or three versions with a judge who knew what had changed. The new thresholds (<code>lum12</code> 0.30–0.85, LBP χ² 0.01) are data from one project, not standards. Because the layout came from an image placed without a rule, a table is still needed; a picture with a free layout could fall into the SHORT class, but this case did not try it. What was learned: matching a specimen and matching the way a group of shapes is organised are two different tasks, needing two different measures, and only the second allows a short formula.</p>
+<h3>7.12 The alternatives not chosen, and their formulas</h3>
+<p>Of the 60 renders of case 2, nine reached the final and one was chosen. The other eight finalists are complete formulas that passed the clean-room test and Test A like the chosen one; they differ in the idea of colouring and material on the same geometric core. Figure 18 is the sheet of nine finalists with their measurements; Figure 18b is the round-0 judging sheet with the ten candidates of batch 1, four of which were eliminated early. The table below records, for each picture not chosen, its thesis, its measurements, its hash and its characteristic formula, that is, the formula that makes it differ from the others. Notation follows Appendix A; $\hat\omega$ is the warped coordinate inside the berry, $\mathbf{n}$ the normal, $\mathbf{L}$ the light direction, $\tilde{\mathbf{H}}$ the half vector, $\Lambda$ the light direction projected into the berry's coordinates, $K_S, K_M, K_L$ the three measured reds, $K_{HL}$ the glint colour, $K_{SEED}$ the seed colour, $\mathcal{G}$ Yeganeh's gate.</p>
+<figure><img src="figures/p2_contact_sheet_all.jpg" alt="Figure 18. The nine finalists of case 2, each with its measurements: characters," loading="lazy"><figcaption>Figure 18. The nine finalists of case 2, each with its measurements: characters, constants, render time, lum12, palette $\Delta E$, pairwise rank, first eight characters of the hash. Top and middle-left: batch 1 (A–E); middle-right and bottom: batch 2 &quot;photographic&quot; (F–I). F is the picture Henry chose.</figcaption></figure>
+<figure><img src="figures/p2_round0_labeled_sheet.jpg" alt="Figure 18b. The round-0 judging sheet of batch 1 with ten candidates (cards A B " loading="lazy"><figcaption>Figure 18b. The round-0 judging sheet of batch 1 with ten candidates (cards A B C D E F H J L M, blinded with temporary codes when judged). Four pictures eliminated after round 0: J &quot;vertical stripes make the berries look like striped melons, losing recognisability&quot;; C &quot;brush strokes became fabric stripes&quot;; M &quot;eggshell patches in the middle of every berry are distracting&quot;; A overlapped in idea with H. Card E was eliminated in round 3.</figcaption></figure>
+<table>
+<thead>
+<tr>
+<th>Picture</th>
+<th>Thesis (abridged)</th>
+<th>Characters / constants / render</th>
+<th>Hash</th>
+<th>Characteristic formula</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A Chiaroscuro (card H)</td>
+<td>harsh, narrow light, most of the frame sunk in dark red; seeds show only where light falls</td>
+<td>5,612 / 350 / 18.0 s</td>
+<td><code>be3cfe20</code></td>
+<td>$d = \langle \mathbf{n}\cdot\mathbf{L} \rangle^{1.6}$, $\ell = 0.3 + 0.7d$; body colour $K_b = \mathrm{ramp}(\langle 1.2d \rangle; K_S, K_M, K_L)$ with $\mathrm{ramp}(t; K_0, K_1, K_2) = K_0 + (K_1 - K_0)\langle 2t\rangle + (K_2 - K_1)\langle 2t - 1\rangle$; seeds $\sigma \propto \langle 2d \rangle$</td>
+</tr>
+<tr>
+<td>B Three-tone poster</td>
+<td>flat three-tone fills with ink outlines; yellow seeds printed out of register</td>
+<td>4,838 / 294 / 13.1 s</td>
+<td><code>ecb0a345</code></td>
+<td>three tones by $s_1 = S\big((0.22 - \mathbf{n}\cdot\mathbf{L})/0.025\big)$, $s_2 = S\big((0.64 - \mathbf{n}\cdot\mathbf{L})/0.025\big)$; ink outline by two layers: ink $M = S(d/\varepsilon)$ then fill $M = S\big((d + 0.011)/\varepsilon\big)$; offset yellow plate: lattice $T$ evaluated at $z + (0.009 - 0.006i)$</td>
+</tr>
+<tr>
+<td>C Glass candy (card L)</td>
+<td>translucent berries, glowing core on the shadow side, Fresnel rim</td>
+<td>5,100 / 321 / 15.6 s</td>
+<td><code>2b97e6cf</code></td>
+<td>$\mathrm{glow} = e^{-|\hat\omega + 0.4\Lambda|^2/0.55}$; $\mathrm{fr} = (1 - n_3)^3$; body $= 0.7K_S + (1.3K_L - 0.42K_S)\,\mathrm{glow}$; rim $(0.6K_L + 0.4K_{HL})\cdot\langle 1.8\,\mathrm{fr}\rangle$</td>
+</tr>
+<tr>
+<td>D Golden lattice (card F)</td>
+<td>Yeganeh's grammar: gate, sphere, lattice on the sphere, seven-pointed star</td>
+<td>4,165 / 277 / 18.8 s</td>
+<td><code>dc69dad7</code></td>
+<td>$\zeta = \arcsin(\min(|\hat\omega|, 1))\,e^{i\arg\hat\omega}e^{i\phi}$; $T = \cos(12\Re\zeta)\cos(15\Im\zeta)$; bead $\mathcal{G}\big(14(0.8 - T)\big)$; berry mask $\mathcal{G}(2d/\varepsilon)$; sepal as a star $k(\psi) = 0.3 + 0.7\big(1 - |\sin(7\psi/2)|\big)^{0.8}$</td>
+</tr>
+<tr>
+<td>E Stained glass (card D, wild card)</td>
+<td>dark gaps become lead lines, each berry a set of Voronoi panes carrying the colour at the pane centre</td>
+<td>6,085 / 352 / 40.3 s</td>
+<td><code>d3de1929</code></td>
+<td>Voronoi $(F_1, F_2, P)$ in the $\hat\omega$ frame at frequency 4.2; lead $= S\big((F_2 - F_1 - 0.085)/w\big)$; pane colour takes the normal at the pane centre $P$ rather than at the pixel, three tones by $\mathbf{n}\cdot\mathbf{L}$</td>
+</tr>
+<tr>
+<td>G Dew (card Q)</td>
+<td>as studio, plus refracting water droplets on the skin</td>
+<td>10,628 / 626 / 42.6 s</td>
+<td><code>da3d528e</code></td>
+<td>droplet $k$ of the berry with id $\iota$: centre $0.78\sqrt{h_1}\,e^{2\pi i h_2}$, radius $0.045 + 0.06h_3$ with $h_j$ hashes of $(\iota, k)$; inside the droplet, $\rho = |\hat\omega - q_d|/r_d$: dark rim $1.12 - 0.62\,S\big((0.86 - \rho)/0.1\big)$, bright caustic $e^{-|d + 0.45\Lambda|^2/0.12}$</td>
+</tr>
+<tr>
+<td>H Analogue film (card S, wild card)</td>
+<td>film look: warm lamp, red halation around highlights, lifted blacks, film grain</td>
+<td>10,458 / 634 / 29.5 s</td>
+<td><code>c225e03f</code></td>
+<td>halo $\mathrm{halo} = \langle 1 - (|a| - 0.3)^+/0.35\rangle^2 \langle 1 - (|b| - 0.2)^+/0.35\rangle^2 \langle(\boldsymbol\ell\cdot\mathbf{L} - 0.55)/0.3\rangle\langle(n_3 - 0.3)/0.3\rangle$, $K \leftarrow K + 0.5\,\mathrm{halo}\,(1;\ 0.3;\ 0.12)$; warm lamp $(1.05;\ 0.97;\ 0.86)$; lifted blacks $H = \mathrm{FADE} + (1 - \mathrm{FADE})\,\mathrm{srgb}(\cdot)$; grain 0.035</td>
+</tr>
+<tr>
+<td>I Studio softbox (card N)</td>
+<td>product photography: every berry sharp, softbox reflections on wet skin</td>
+<td>9,625 / 585 / 28.9 s</td>
+<td><code>2859ba58</code></td>
+<td>the lighting core of 7.5 without depth of field, vignetting or grain; a paler, wider contact shadow: $0.5\langle 1 - d/0.38R\rangle^2$</td>
+</tr>
+</tbody>
+</table>
+<p>Three things follow from the table. First, one measured layout and one geometric core can carry eight entirely different colourings, from a flat poster to stained glass; the "personality" of a picture lies in a few colour formulas, not in the anchor table. Second, length grows with realism: the four batch-1 pictures run 4,165–6,085 characters, the four batch-2 pictures 9,625–11,489 because of the lighting model; photographic beauty is paid for with a formula more than twice as long. Third, G, H and I of batch 2 are almost the same image at the texture level (7.6); they are three post-processing treatments of one picture, not three directions. These eight pictures remain complete works, reproducible from their specifications; they were not eliminated for being wrong but because one person chose another.</p>
+<h2 id="8-discussion">8. Discussion</h2>
+<h3>8.1 Human and machine, at the right level of evidence</h3>
+<p>The paper makes statements about the AI at two levels. The level of mechanism: by the design of the two rule books, and confirmed by the reports to have run that way, the process gives the AI the measuring, the proposing and implementing of trial versions, the rendering and the hash checking in every round, so that the human concentrates on criteria and choice. The level of observation in the cases: in case 1, Claude Code performed measurement, decomposition, writing, 12 revision rounds, packaging and verification within about 48 calendar minutes by file timestamps, with no stopping point for Henry; in case 2, Claude Code rendered 60 trials, judged 90 pairs in batch 1 (45 + 15 + 15 + 15) and 15 pairs in the first round of batch 2 (the two later rounds of batch 2 do not record pair counts), packaged 9 specifications and one polished version within one day, and Henry stopped to decide at five recorded points.</p>
+<p>Time must be separated. Render time (1.5–2 s; 42.3 s) is not formula-finding time. The calendar time of case 1 includes reading the rule book and installing tools. The cost of building reusable tools (kernel, kit, two rule books, verification scripts) lies outside both reports. No number in the two cases allows the ratio</p>
+<p>$$S(q) = \frac{T_{\text{human + tools}}(q)}{T_{\text{AI-assisted}}(q)}$$</p>
+<p>to be computed, because no person equipped with computing tools did the same work to the same level $q$. The two cases show how, and how much, the AI took part in building and checking formulas; they are not enough to estimate how much time is saved compared with a person equipped with computing tools doing the same work.</p>
+<p>The two periods must also be separated. A reproducible specification does not mean that another model, given the original image again, would find the same formula. Case 2 had 60 trials and five human decisions on the way to one picture; reproducing the output only requires running one file.</p>
+<h3>8.2 Yeganeh's two questions and the data of the two cases</h3>
+<p>Yeganeh asks: can every picture be described by a function with a definition that is not too long; is there a method for finding the simplest definition [1]. The two cases do not answer in theory. They give two data points on one image. When the requirement is to match a photograph pixel for pixel at PSNR 21 dB, the definition runs to 460 KB of which 95.5 % is a table of measurements; adding 2.5 times as many shading functions reduced the error by only 14 %, so the remainder is micro-texture that a readable model does not reach. When the requirement is changed to controlled similarity and a compact definition, 11,489 characters with one 35-row table were enough for a picture chosen by a human. On the second question, the process of case 2 does not find the simplest definition; it finds a set of definitions that are good enough, different enough, within a budget, and measures each by characters, constants, render time, hash and one human choice. The paper does not use superlatives about shortness.</p>
+<h3>8.3 Limits, and a counting argument (advanced, optional)</h3>
+<p>Common limits of the two cases: one image; one kind of scene; one machine; no other AI has reproduced; no viewer perception study beyond the author. A limit of the method: the existence of a representation does not mean a good representation. Every finite image can be written as</p>
+<p>$$I(m, n) = \sum_{i=0}^{W-1}\sum_{j=0}^{H-1} p_{ij}\, \mathbf{1}_{\{m = i\}}\, \mathbf{1}_{\{n = j\}},$$</p>
+<p>which still stores every pixel in the guise of a "formula"; the project excludes this from the class of desired solutions without denying its mathematical validity. Many different formulas can give the same image; matching one image does not mean finding "the true formula".</p>
+<p>On compactness, a counting argument: over a binary alphabet, the number of strings of length at most $L$ is $2^{L+1} - 1$, while there are $2^{24WH}$ 8-bit RGB images of size $W \times H$; if $L &lt; 24WH$ there cannot be such short codes for every image. This argument lives in the stated coding model; it does not measure the formulas of the two cases, does not say that a particular image is incompressible, and does not forbid structured images from having very short descriptions. Counting characters is not counting bits. The paper calls the numbers of 6.7 and 7.9 "measured description length", not Kolmogorov complexity, and does not call their ratio to the PNG size a "compression ratio".</p>
+<h3>8.4 Related work and credit</h3>
+<p>The one-function frame $(F(H_0), F(H_1), F(H_2))$ and the gate $e^{-e^{u}}$ follow Yeganeh [1]; the project describes his way of working exactly as his article does and infers nothing further. Searching for image-generating formulas and selecting them by human visual judgement is already in Sims [2]; this project is not where that idea first appeared. The over operation and the alpha convention follow Porter and Duff [4]. Procedural noise follows Perlin [7]; the polygon distance function follows Quilez [8]; the golden-angle spiral follows Vogel [6]. SSIM follows Wang and colleagues [3]; $\Delta E_{2000}$ follows Sharma and colleagues [5]. Coordinate networks (SIREN) [9] are another way of representing an image by a function, mathematically valid, outside the transparent representation class the project chose; the paper does not conclude that they are "not mathematics". The project's level of contribution: an AI-assisted process verifiable by artifacts; a way of distinguishing and presenting two goals; observations from two cases.</p>
+<h3>8.5 Intellectual property and the reference</h3>
+<p>The strawberry image used in both cases has unknown provenance. The specification of case 1 reproduces the layout faithfully, so the rights to the image follow the specification. The specification of case 2 contains no pixel of the reference and takes from it 105 position-and-size numbers, 6 colours and one light direction; the degree of similarity is published numerically. Turning an image into a formula does not make the question of provenance disappear. The paper prints the original beside the renders for comparison, with the note that provenance is unknown. Credit to Yeganeh appears in every specification that uses the one-function frame; Yeganeh is not associated with and did not approve this work.</p>
+<h3>8.6 Future work</h3>
+<p>A controlled experiment not yet run: a person who knows mathematics, has a computer and a ready kernel, builds a 5–7 layer scene from the same brief and records the time; the AI does the same brief; compare at the same level $q$. Run both specifications on Linux or macOS with another numpy version to reach R2, R3. Give two or three other AIs, with and without code execution, the specifications and record probe and hash results (Tiers 1, 2) and the images generated from the description (Tier 3). Repeat on several images of other kinds. Try mode N on the same image to obtain a curve of primitive count – PSNR – readability. For case 2: the decisions on the "really different" measure, on level 3 (taking rough shapes from the image), and on fixing the five batch-1 pictures by object id have not been taken; the proposed 13 amendments to the rule book have not been applied.</p>
+<h2 id="9-guide-building-an-image-to-formula-system-with-an-ai">9. Guide: building an image-to-formula system with an AI</h2>
+<p>The claim of this section: the reader does not need to write code to have a system like the one in this paper. What is needed is a code-executing AI on one's own machine (for example Claude Code or an equivalent tool, with Python and numpy), this paper, and a short prompt. This section is written as principles, not as a keystroke-by-keystroke tutorial.</p>
+<h3>9.1 Seven principles to tell the AI</h3>
+<ol>
+<li><strong>Separate the two goals from the start.</strong> Say clearly whether you want the image repainted exactly (Problem 1) or a new picture painted after the image (Problem 2). The two goals have two different measures and must not be merged into one score.</li>
+<li><strong>Fix the computation contract before painting.</strong> Pixel-centre coordinates (step 2), the round-half-up output function (step 3), the 1.5-pixel soft mask (step 5), the over operation with a single clamp at the end (step 7), the integer hash in place of every random function (step 9), the EP-PIX pixel hash (Section 4). Every formula is written on that contract; changing the contract means a new version.</li>
+<li><strong>Measure, do not guess.</strong> Every position, size and colour comes from the image by code (k-means, watershed, least squares); the eye only decides which objects exist and which is in front. Every parameter records its basis: measured, observed, estimated or chosen.</li>
+<li><strong>One change per round, one log line.</strong> Observation, hypothesis, what changed, what was measured, keep or revert. Stop when several consecutive rounds bring no improvement, or when the human chooses.</li>
+<li><strong>Verify with four tools, not with feelings.</strong> Probes (a few expected pixels), the pixel hash (the whole image), the clean-room test (re-run from the file in an empty folder with a fresh process), the perturbation test (write the expectation first, change one parameter, compare, revert). Status values are only PASS, FAIL, NOT_RUN, N/A.</li>
+<li><strong>No disguised bitmaps.</strong> No base64, no pixel arrays, no error grids over the image, no generative model as renderer, no external file reads in the specification's code.</li>
+<li><strong>The human keeps three tasks.</strong> Pose the problem, set the hard constraints, choose the final picture. For Problem 2, ask the AI to present several sufficiently different alternatives with theses, to judge them blind in pairs, and to stop and wait for the human's choice; never let the AI hand over one picture on its own.</li>
+</ol>
+<h3>9.2 The starting prompt</h3>
+<p>Give this paper to the AI (as a text file or a PDF) together with your image, then send the prompt below. The prompt is given in English first, then in Vietnamese. Replace the parts in braces.</p>
+<pre><code class="language-text">Read the paper &quot;Equation Painting: two problems, two ways of finding the formula&quot; in full,
+especially Section 3 (ten steps), Section 4 (principles), Section 5 (method), Section 9
+(seven principles) and Appendices A, B, C. Then build me an image-to-formula system that
+follows it exactly.
+
+Step 1. Write the system's operating rules as a CLAUDE.md (or equivalent instruction file):
+the computation contract (Section 3 steps 2, 3, 5, 7, 9 and Appendix A), the forbidden list
+(9.1 item 6), the four verification tools (9.1 item 5), the eleven-part specification file
+(5.7), and the six-step loop measure → decompose → write → render → verify → revise with a
+one-line log per round (5.3). Write a Python kernel using only numpy and the standard library
+for the functions of Section 3 (coordinates, mask, over, hash, value noise, basic SDFs, output
+function, pixel hash). Test the kernel on the disc example of 3.8 and match the four values
+(204, 51, 51), (26, 77, 153), (115, 64, 102), (176, 55, 67) before doing anything else.
+
+Step 2. Take my image: {path}. Goal: {repaint the image exactly | paint a new picture after
+the image, keeping layout, palette and light direction}. Hard constraints: {e.g. 1:1 frame,
+object count, no text}. Measure the image with code first, report the measurement table and
+the decomposition plan, then stop and wait for my approval.
+
+Step 3. After approval, follow 5.3: one change per round, one log line, a real render after
+each round. For &quot;paint a new picture&quot;: write at least 8 idea cards with a thesis, build at
+least 6 candidates, judge blind in pairs at three sizes, keep 3–5 finalists that differ in
+idea, each with a role, then stop and wait for my choice. Never choose for me.
+
+Step 4. Package the final picture as an eleven-part .md specification (5.7) with exactly one
+code block, a probe table, the pixel hash, CODE_SHA256 and the four prompts for other AIs.
+Run the clean-room test: extract the code block from the .md itself, run it in an empty
+temporary folder with a fresh Python process, print REPLAY OK and the hash. Run perturbation
+tests with expectations written before running. Write the human-readable mathematics in the
+format of Appendix B.
+
+General rules: report only PASS/FAIL/NOT_RUN/N/A; never write &quot;x% similar&quot;; never claim a
+test you did not run; never change the goal or narrow the scope silently; every number in
+the report comes from a real run.
+</code></pre>
+<pre><code class="language-text">Đọc trọn bài &quot;Vẽ tranh bằng phương trình: hai bài toán, hai cách tìm công thức&quot;, đặc biệt
+mục 3 (mười bậc thang), mục 4 (nguyên lý), mục 5 (phương pháp), mục 9 (bảy nguyên tắc) và
+Phụ lục A, B, C. Sau đó dựng cho tôi một hệ thống đổi ảnh thành công thức theo đúng bài đó.
+
+Bước 1. Viết bộ quy tắc vận hành của hệ thống thành một file CLAUDE.md (hoặc tệp chỉ dẫn
+tương đương) gồm: hợp đồng tính toán (mục 3 bậc 2, 3, 5, 7, 9 và Phụ lục A), danh sách cấm
+(mục 9.1 điểm 6), bốn công cụ kiểm (mục 9.1 điểm 5), cấu trúc file đặc tả mười một mục
+(mục 5.7), và quy trình sáu bước đo → phân rã → viết → render → kiểm → sửa với nhật ký
+một dòng mỗi vòng (mục 5.3). Viết kernel Python chỉ dùng numpy và thư viện chuẩn cho các
+hàm của mục 3 (toạ độ, mask, over, hash, value noise, SDF cơ bản, hàm xuất màu, hash pixel).
+Chạy thử kernel trên ví dụ đĩa ở mục 3.8 và đối chiếu bốn giá trị (204, 51, 51), (26, 77, 153),
+(115, 64, 102), (176, 55, 67) trước khi làm việc khác.
+
+Bước 2. Nhận ảnh của tôi: {đường dẫn ảnh}. Mục tiêu: {vẽ lại đúng ảnh | vẽ một bức mới theo
+ảnh, giữ bố cục, màu và hướng sáng}. Ràng buộc cứng: {ví dụ: khung 1:1, số vật thể, không
+chữ}. Đo ảnh bằng code trước, báo cho tôi bảng số đo và kế hoạch phân rã, rồi dừng chờ tôi
+duyệt.
+
+Bước 3. Sau khi tôi duyệt, làm theo mục 5.3: mỗi vòng một thay đổi, một dòng nhật ký, render
+thật sau mỗi vòng. Với mục tiêu &quot;vẽ một bức mới&quot;: viết ít nhất 8 thẻ ý tưởng có thesis, dựng
+ít nhất 6 ứng viên, chấm mù theo cặp ở ba cỡ, giữ 3–5 bức chung kết đủ khác nhau, mỗi bức một
+vai, rồi dừng chờ tôi chọn. Không tự chọn thay tôi.
+
+Bước 4. Đóng gói bức cuối thành file đặc tả .md mười một mục (mục 5.7) với đúng một khối
+code, bảng probe, hash pixel, CODE_SHA256, và bốn lời dẫn cho AI khác. Chạy clean-room:
+trích khối code từ chính file .md, chạy trong thư mục tạm trống bằng tiến trình Python mới,
+in REPLAY OK và hash. Chạy phép thử nhiễu loạn với kỳ vọng ghi trước. Viết công thức toán
+cho người đọc theo mẫu Phụ lục B.
+
+Quy tắc chung: chỉ báo PASS/FAIL/NOT_RUN/N/A; không ghi &quot;giống x%&quot;; không tuyên bố đã kiểm
+khi chưa chạy; không đổi mục tiêu hay thu hẹp phạm vi mà không nói; mọi số trong báo cáo
+lấy từ lần chạy thật.
+</code></pre>
+<h3>9.3 What to expect</h3>
+<p>The times and results of the two cases in this paper are reference points, not promises. Case 1 ran about 48 calendar minutes for a 554 × 554 image with one command and no stopping point; case 2 ran one day with five stopping points and 60 renders. Images with clear, repeated objects on a simple background suit this method better than images with faces, text or dense foliage. The result of Problem 1 on a photograph stops at "instantly recognisable" (PSNR about 21 dB); going further costs many more primitives and a longer specification. The result of Problem 2 depends on the idea cards and on the person who chooses. A system built from this section will differ from the one in the paper in its details; what must be the same are the computation contract, the four verification tools, and the human keeping the three decisions.</p>
+<h2 id="10-near-and-far-applications-in-the-age-of-ai">10. Near and far applications in the age of AI</h2>
+<p>The claim of this section: the value of this approach lies not in replacing generative image AI, but in giving machine-made content a form of existence that can be read, checked, edited and handed over. This section is the authors' assessment, not an experimental result.</p>
+<h3>10.1 Near: what can be done now with the two cases as templates</h3>
+<p><strong>Deterministic image assets for software.</strong> Icons, patterns, backgrounds and technical illustrations written as formulas do not depend on resolution, need no multiple sizes, and can be checked automatically in a release pipeline by hash. A change of brand colour is a change of one named constant.</p>
+<p><strong>An official version after generative AI has suggested.</strong> Generative AI produces many ideas quickly; once one is chosen, the method of this paper turns it into a picture with a formula that can be printed at any size and reproduced later. Case 2 did exactly this with a photograph as the reference; the process does not change when the reference is an AI-generated image.</p>
+<p><strong>Communication between AIs by specification instead of bitmap.</strong> One AI system sends a specification file to another; the receiver computes the image and compares the hash. No lossy compression, no "approximately the same". This matters when several AI agents work on one visual product and need a single source of truth.</p>
+<p><strong>Storing intent instead of pixels.</strong> The 1108 × 1108 picture of case 2 is a text file of a few tens of kilobytes that can be read by eye. A collection of such pictures can be searched, compared and edited by mathematical content, which cannot be done with bitmaps.</p>
+<p><strong>Teaching mathematics through pictures.</strong> The ten steps of Section 3 are a short course: every formula has a picture, and changing a parameter shows the effect at once. A student can read the specification of a picture, change one number, and see what happens.</p>
+<p><strong>Auditing AI-made content.</strong> When an organisation needs to know exactly how an image was produced, a specification with a hash is checkable evidence; a bitmap with a story is not.</p>
+<h3>10.2 Far: when AI can do this for every kind of image</h3>
+<p><strong>A checkable language for describing images.</strong> Today images are exchanged as pixels and intentions as words. If AI becomes good enough to write formulas for most structured images, the formula becomes the medium of exchange between people and machines and between machines: shorter than pixels, more exact than words. Case 1 shows the present limit for real photographs; case 2 shows that for designed images the limit is already gone.</p>
+<p><strong>A library of formulas like a library of code.</strong> The kernel, the kit and the two rule books of the project are the first version of such a library. As the library grows, each new picture reuses what exists and adds only what is new; the length of the new part is the true measure of "a new idea". Yeganeh's question about short definitions [1] then has data to be answered statistically.</p>
+<p><strong>A trust layer for AI content.</strong> Most AI-made content today is not reproducible; every generation is a different event. A deterministic layer of content, with hashes, artifacts and a human signature, is a foundation for work that carries responsibility: publishing, contracts, evidence, education. Images are an easy place to start because the check is simple: recompute and compare one number.</p>
+<p><strong>A durable division of labour between human and machine.</strong> The two cases give a pattern of division that does not depend on how strong the AI is: the human poses, constrains and chooses; the machine measures, writes, renders and checks. As AI grows stronger, the middle becomes faster and wider, but the three human tasks do not disappear, because they are not computations. The paper does not predict the speed of that progress; it shows that the loop ran today, on one image, under a written rule set, and left enough evidence for others to do it again.</p>
+<h2 id="11-conclusion">11. Conclusion</h2>
+<p>A picture can be defined completely by a function: the two cases give two functions on the same strawberry image, one of 460 KB matching the source at PSNR 20.99 dB and one of 11,489 characters keeping the layout, colours and light of the source in a new painting; both reproduce pixel for pixel from their text on the tested machine, and so do the eight other finalists of case 2. Unlike an image made by generative AI, an image with a formula is a fixed object: whoever computes it gets exactly it, and one number suffices to check. People have found such functions by hand, and Yeganeh has described how he builds networks of functions and runs them many times; this project uses his frame and gives credit. A code-executing AI carried out the loop of measuring, writing, rendering, checking and revising in a process that left an artifact at every step: 12 rounds and 4 perturbation tests in case 1; 60 trials, 9 finalists, 2 polishing steps and 4 tests in case 2. The human kept three tasks in both cases: posing the problem, setting the constraints, and choosing the beautiful picture. Section 9 gives the reader the way to repeat this with an AI and an image of their own. The two cases do not measure how much faster the AI is than a person; they measure what the AI did, how much, and how far it can be checked.</p>
+<h2 id="references">References</h2>
+<ol class="refs">
+<li>Yeganeh, H. N. (2024). <em>Pictures from Networks of Mathematical Functions.</em> Math Horizons 32(1), 22–23. DOI 10.1080/10724117.2024.2368373. Open version: discovery.ucl.ac.uk/id/eprint/10203425.</li>
+<li>Sims, K. (1991). <em>Artificial Evolution for Computer Graphics.</em> Computer Graphics 25(4), 319–328 (SIGGRAPH 1991). DOI 10.1145/127719.122752.</li>
+<li>Wang, Z., Bovik, A. C., Sheikh, H. R., Simoncelli, E. P. (2004). <em>Image quality assessment: from error visibility to structural similarity.</em> IEEE Transactions on Image Processing 13(4), 600–612.</li>
+<li>Porter, T., Duff, T. (1984). <em>Compositing Digital Images.</em> Computer Graphics 18(3), 253–259.</li>
+<li>Sharma, G., Wu, W., Dalal, E. N. (2005). <em>The CIEDE2000 color-difference formula: implementation notes, supplementary test data, and mathematical observations.</em> Color Research &amp; Application 30(1), 21–30.</li>
+<li>Vogel, H. (1979). <em>A better way to construct the sunflower head.</em> Mathematical Biosciences 44, 179–189.</li>
+<li>Perlin, K. (1985). <em>An image synthesizer.</em> SIGGRAPH Computer Graphics 19(3), 287–296.</li>
+<li>Quilez, I. <em>2D distance functions.</em> iquilezles.org.</li>
+<li>Sitzmann, V., Martel, J. N. P., Bergman, A. W., Lindell, D. B., Wetzstein, G. (2020). <em>Implicit Neural Representations with Periodic Activation Functions.</em> arXiv:2006.09661.</li>
+<li>Hugging Face. <em>Diffusers documentation: Reproducible pipelines (Reusing seeds).</em> huggingface.co/docs/diffusers/using-diffusers/reusing_seeds (accessed 6 October 2026). — reproducibility of diffusion models depends on seed, hardware and library version.</li>
+<li>Accompanying project documents: report P1 <code>dau-tay_bao-cao-qua-trinh.md</code> (5–6 October 2026); report P2 <code>bao-cao-toan-bo_dong-dau-tay.md</code> (6 October 2026); operating rule books Volume I <code>equation_painting_bible.md</code> v1.1 and Volume II <code>equation_painting_ii_bible.md</code> v1.1 (5–6 October 2026); specifications <code>dau-tay_spec_v1.0.md</code>, <code>dong-dau-tay_spec_v1.1.md</code>, mathematical text <code>dong-dau-tay_cong-thuc_v1.1.md</code>. See Appendix C.</li>
+<li>ITU-T Recommendation T.81 | ISO/IEC 10918-1 (1992). <em>Information technology — Digital compression and coding of continuous-tone still images: Requirements and guidelines</em> (the JPEG standard). The compliance part ISO/IEC 10918-2 specifies DCT and IDCT accuracy by tolerance.</li>
+<li>W3C / ISO/IEC 15948:2003. <em>Portable Network Graphics (PNG) Specification (Second Edition).</em> W3C Recommendation, 10 November 2003. — lossless compression by predictive filtering and DEFLATE.</li>
+<li>W3C. <em>Scalable Vector Graphics (SVG) 1.1 (Second Edition).</em> W3C Recommendation, 16 August 2011.</li>
+</ol>
+<hr />
+<h2 id="appendix-a-notation-and-conventions">Appendix A — Notation and conventions</h2>
+<h3>A.1 Symbol table</h3>
+<table>
+<thead>
+<tr>
+<th>Symbol</th>
+<th>Meaning</th>
+<th>In code</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>$W, H$</td>
+<td>image width and height (pixels)</td>
+<td><code>W, H</code></td>
+</tr>
+<tr>
+<td>$(m, n)$</td>
+<td>pixel indices: column from the left $0 \ldots W-1$, row from the top $0 \ldots H-1$</td>
+<td><code>m, n</code></td>
+</tr>
+<tr>
+<td>$A = W/H$</td>
+<td>aspect ratio</td>
+<td><code>A</code></td>
+</tr>
+<tr>
+<td>$(x, y)$</td>
+<td>continuous coordinates at the pixel centre (or sample centre), $x \in [-A, A]$, $y \in [-1, 1]$, $y$ upward</td>
+<td><code>x, y</code></td>
+</tr>
+<tr>
+<td>$I$, $I_r$, $\hat I$</td>
+<td>source image; reference image; image computed from the specification</td>
+<td><code>src</code>, <code>u8</code></td>
+</tr>
+<tr>
+<td>$\varepsilon$</td>
+<td>anti-aliasing half-width, $\varepsilon = 0.75 \cdot 2/H$ (further divided by the samples per side when supersampling)</td>
+<td><code>EDGE</code></td>
+</tr>
+<tr>
+<td>$z = x + iy$</td>
+<td>complex coordinate</td>
+<td><code>z</code></td>
+</tr>
+<tr>
+<td>$w = (z - c)\,e^{-i\beta}$</td>
+<td>local coordinate of an object placed at $c$, rotated by $\beta$</td>
+<td><code>w</code></td>
+</tr>
+<tr>
+<td>$d(x, y)$</td>
+<td>signed distance field: negative inside, positive outside; stated when approximate</td>
+<td><code>sd_*</code></td>
+</tr>
+<tr>
+<td>$M \in [0, 1]$</td>
+<td>mask: coverage of the object at a pixel</td>
+<td><code>mask</code></td>
+</tr>
+<tr>
+<td>$K$, $K_v$</td>
+<td>colour of a layer, channel $v \in \{0, 1, 2\}$</td>
+<td><code>K</code></td>
+</tr>
+<tr>
+<td>$\Gamma_v$</td>
+<td>background colour</td>
+<td><code>bg</code></td>
+</tr>
+<tr>
+<td>$C$, $H_v$</td>
+<td>image under construction; channel $v$ before quantisation</td>
+<td><code>img</code>, <code>H0, H1, H2</code></td>
+</tr>
+<tr>
+<td>$F(t)$</td>
+<td>8-bit output function</td>
+<td><code>to_uint8</code></td>
+</tr>
+<tr>
+<td>$G$</td>
+<td>two-dimensional Gaussian</td>
+<td><code>gauss</code></td>
+</tr>
+<tr>
+<td>$S$</td>
+<td>smoothstep</td>
+<td><code>smoothstep</code>, <code>sstep</code></td>
+</tr>
+<tr>
+<td>$\mathcal{G}(u) = e^{-e^{u}}$</td>
+<td>Yeganeh's gate</td>
+<td><code>gate</code></td>
+</tr>
+<tr>
+<td>$s$</td>
+<td>object index in a sequence</td>
+<td><code>s</code></td>
+</tr>
+<tr>
+<td>$\gamma = \pi(3 - \sqrt5)$</td>
+<td>golden angle</td>
+<td>in <code>spiral</code></td>
+</tr>
+<tr>
+<td>$h(i, j) \in [0, 1)$</td>
+<td>deterministic integer hash</td>
+<td><code>hash2</code></td>
+</tr>
+<tr>
+<td>$\nu$, $\mathrm{fBm}$, $\mathcal{W}$</td>
+<td>value noise, fBm, Worley F1 distance</td>
+<td><code>value_noise</code>, <code>fbm</code>, <code>worley</code></td>
+</tr>
+<tr>
+<td>$\tau, \mathbf{n}, \mathbf{L}$</td>
+<td>normalised radius, normal, light direction</td>
+<td><code>sphere</code></td>
+</tr>
+<tr>
+<td>$\varphi$</td>
+<td>polar angle</td>
+<td><code>th</code></td>
+</tr>
+<tr>
+<td>$\theta$</td>
+<td>parameter set of a specification</td>
+<td>—</td>
+</tr>
+<tr>
+<td>$D$, $\ell$</td>
+<td>deviation from the source; description length under a published counting rule</td>
+<td>—</td>
+</tr>
+<tr>
+<td>$\langle a \rangle$</td>
+<td>$\min(\max(a, 0), 1)$; $a^+ = \max(a, 0)$</td>
+<td><code>clip</code></td>
+</tr>
+</tbody>
+</table>
+<p>Symbols specific to case 2, declared here so that Appendix B can be read: $p$ berry index ($0 \ldots 20$), $k$ sepal index ($0 \ldots 13$); $\iota_p$, $\iota_k$ object ids (the <code>sid</code> column); $c_p$, $r_p$ measured centre and radius; $o_k$, $s_k$ measured sepal centre and size; $R_p = 1.1 r_p$; $\alpha_p$ pose angle; $e_p$ stem-end level; $\phi_p = 1.7\,\iota_p$ seed-lattice phase; $\varrho$ individual shape stretch; $\omega$, $\hat\omega$ local coordinates before and after warping; $\zeta$ surface coordinate; $T$ hexagonal lattice; $P$ pit; $\Psi$ seed; $\mathrm{Sp}$ specular reflection; $D_p$, $D'_k$ defocus levels; $\lambda_p = 1 - 0.85 D_p$ detail level; $\mathbf{L}$, $\hat L$ light direction in three dimensions and in the image plane; $U, V, U', V'$ axes of the two softboxes; $\mathbf{A}$ (triple) flesh colour, $\mathbf{A}_h$ seed, $G_0, G_1$ sepal, $\Gamma_0, \Gamma_1$ gap. Because $A$ is also the aspect ratio, the flesh colour is written in bold $\mathbf{A}$ in Appendix B.</p>
+<h3>A.2 Conversions of convention from the sources</h3>
+<table>
+<thead>
+<tr>
+<th>Point in the source</th>
+<th>Treatment in the paper</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>The mathematical text of case 2 uses $\theta$ for the angle in the berry frame, $\sigma_p$, $\tau_k$ for object ids, $\varepsilon_p$ for the stem-end level, $q$ for the warped coordinate, $\kappa_1, \kappa_2$ for the two noises</td>
+<td>the paper writes $\varphi$, $\iota_p$, $\iota_k$, $e_p$, $\hat\omega$, $\nu_1, \nu_2$; Appendix B keeps the numbers and structure exactly</td>
+</tr>
+<tr>
+<td>Case 1 uses $\theta$ for the polar angle and $(p, q)$ for $t\cos\theta$, $t\sin\theta$</td>
+<td>the paper writes $\varphi$; $(p, q)$ is kept because it appears only in 6.4</td>
+</tr>
+<tr>
+<td>The kit's smoothstep $S(\delta) = \tfrac14(1 - \hat\delta)^2(2 + \hat\delta)$, $\hat\delta = \mathrm{clamp}(\delta, -1, 1)$</td>
+<td>equals $M = 1 - \sigma^2(3 - 2\sigma)$ with $\sigma = (\hat\delta + 1)/2$: expand $1 - \tfrac14(\hat\delta + 1)^2(2 - \hat\delta) = \tfrac14(1 - \hat\delta)^2(2 + \hat\delta)$; checked numerically at 10,000 points, largest difference $2.2 \cdot 10^{-16}$</td>
+</tr>
+<tr>
+<td>An internal draft recorded the two hash multipliers as 2126687533 and 2221647499</td>
+<td>the kernel code of both cases and Volume I §5.6 use 0x7FEB352D = 2146121005 and 0x846CA68B = 2221713035; the paper uses the code's values; check value $h(0, 0) = 0.007765133399516344$</td>
+</tr>
+<tr>
+<td>Case 2 encodes sRGB per sample before averaging the four samples</td>
+<td>differs from Volume I's "linear" profile (encode after averaging); the paper describes the renderer actually used</td>
+</tr>
+<tr>
+<td>Case 1 computes entirely in sRGB numeric space</td>
+<td>recorded as such; numeric blending is not a computation of light</td>
+</tr>
+<tr>
+<td>Yeganeh's output function $\big\lfloor 255\, e^{-e^{-1000t}}\, |t|^{\,e^{-e^{1000(t-1)}}} \big\rfloor$</td>
+<td>not used in the two cases; the paper's $F$ rounds half up</td>
+</tr>
+<tr>
+<td>Reproduction grades R0–R3 of the rule books</td>
+<td>the paper states reproduction in words (Appendix C)</td>
+</tr>
+<tr>
+<td>"Pixel-exact to the spec"</td>
+<td>always stated as: against the source (Fidelity A) or against the specification's standard render (Fidelity B)</td>
+</tr>
+<tr>
+<td>Caps of 3,000 characters / 200 constants (SHORT), 12,000 / 1,500 (HYBRID)</td>
+<td>project budgets; case 2 used HYBRID with Henry's approval</td>
+</tr>
+<tr>
+<td>Real two-coordinate form of $w = (z - c)e^{-i\beta}$</td>
+<td>$u = \cos\beta\,(x - c_x) + \sin\beta\,(y - c_y)$, $v = -\sin\beta\,(x - c_x) + \cos\beta\,(y - c_y)$</td>
+</tr>
+</tbody>
+</table>
+<h2 id="appendix-b-full-formulas">Appendix B — Full formulas</h2>
+<h3>B.1 The picture "Pile of Strawberries — Macro Focus" v1.1 (case 2), one function with every helper numbered</h3>
+<p>Source: the mathematical text <code>dong-dau-tay_cong-thuc_v1.1.md</code> (Level B, every parameter substituted by its number), re-implemented independently and matching 5,000/5,000 pixels of the standard render. Notation follows Appendix A. The letters $\mathbf{A}, \mathbf{A}_h, G_0, G_1, \Gamma_0, \Gamma_1, W, K, C, H$ are channel triples; $+, -, \cdot, /$ with a real number act per channel.</p>
+<p><strong>B1. Root.</strong>
+$$(R, G, B)(m, n) = F\Big(\tfrac14 \sum_{\mu_1 \in \{0,1\}} \sum_{\mu_2 \in \{0,1\}} H(x, y)\Big), \quad x = \frac{m + (2\mu_1 + 1)/4}{554} - 1, \quad y = 1 - \frac{n + (2\mu_2 + 1)/4}{554}, \quad m, n = 0 \ldots 1107.$$
+$$F(t) = \lfloor 255\langle t\rangle + \tfrac12 \rfloor, \qquad H(x, y) = \mathrm{srgb}\Big(\mathrm{tone}\big(C(z)(1 - 0.11(x^2 + y^2))\big)\Big) + 0.018\big(\nu(x, y; 520, 99) - \tfrac12\big), \quad z = x + iy.$$
+$$C(z) = \Gamma(z)\prod_{j=1}^{91}(1 - M_j(z)) + \sum_{j=1}^{91} M_j(z)\,K_j(z)\prod_{l=j+1}^{91}(1 - M_l(z)).$$</p>
+<p><strong>B2. Basic functions.</strong>
+$$S(\delta) = \tfrac14(1 - \hat\delta)^2(2 + \hat\delta), \quad \hat\delta = \min(\max(\delta, -1), 1).$$
+$$h(a, b): \ n_0 = 374761393\,a + 668265263\,b + 2654435769;\ n_1 = n_0 \oplus (n_0 \gg 16);\ n_2 = 2146121005\,n_1;\ n_3 = n_2 \oplus (n_2 \gg 15);\ n_4 = 2221713035\,n_3;\ n_5 = n_4 \oplus (n_4 \gg 16);\ h = n_5/2^{32} \ (\text{all arithmetic mod } 2^{32}).$$
+$$\nu(x, y; f, s): \ X = xf,\ Y = yf,\ a_0 = \lfloor X\rfloor + 7919 s,\ b_0 = \lfloor Y\rfloor,\ t_X = X - \lfloor X\rfloor,\ t_Y = Y - \lfloor Y\rfloor,\ u_X = t_X^2(3 - 2t_X),\ u_Y = t_Y^2(3 - 2t_Y),$$
+$$\nu = \mathrm{mix}\big(\mathrm{mix}(h(a_0, b_0), h(a_0 + 1, b_0), u_X),\ \mathrm{mix}(h(a_0, b_0 + 1), h(a_0 + 1, b_0 + 1), u_X),\ u_Y\big), \quad \mathrm{mix}(a, b, t) = a(1 - t) + bt.$$
+$$\mathcal{W}(x, y; f, s) = \min_{\delta a, \delta b \in \{-1, 0, 1\}} \sqrt{(a + h(a + 7919 s, b) - X)^2 + (b + h(b + 7919 s, a + 1) - Y)^2}, \quad X = xf,\ Y = yf,\ a = \lfloor X\rfloor + \delta a,\ b = \lfloor Y\rfloor + \delta b.$$
+$$\mathrm{lin}(c) = \begin{cases} c/12.92, &amp; c \le 0.04045 \\ ((c + 0.055)/1.055)^{2.4}, &amp; \text{otherwise} \end{cases} \qquad \mathrm{srgb}(l) = \begin{cases} 12.92\,l^+, &amp; l^+ \le 0.0031308 \\ 1.055\,(l^+)^{1/2.4} - 0.055, &amp; \text{otherwise} \end{cases}$$
+$$\mathrm{tone}(l) = \min(l, 0.75) + 0.25\big(1 - e^{-4(l - 0.75)^+}\big), \qquad \mathrm{nor}(a, b, c) = (a, b, c)/\sqrt{a^2 + b^2 + c^2 + 10^{-12}}.$$</p>
+<p><strong>B3. Constants measured from the reference.</strong> Berries $p = 0 \ldots 20$: $(X_p, Y_p, r_p, \iota_p)$ with $\iota_p = p$:</p>
+<table>
+<thead>
+<tr>
+<th>$p$</th>
+<th>$X_p$</th>
+<th>$Y_p$</th>
+<th>$r_p$</th>
+<th>$p$</th>
+<th>$X_p$</th>
+<th>$Y_p$</th>
+<th>$r_p$</th>
+<th>$p$</th>
+<th>$X_p$</th>
+<th>$Y_p$</th>
+<th>$r_p$</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>−0.92</td>
+<td>−0.01</td>
+<td>0.100</td>
+<td>7</td>
+<td>−0.89</td>
+<td>0.77</td>
+<td>0.183</td>
+<td>14</td>
+<td>0.77</td>
+<td>0.28</td>
+<td>0.251</td>
+</tr>
+<tr>
+<td>1</td>
+<td>−0.01</td>
+<td>−0.89</td>
+<td>0.131</td>
+<td>8</td>
+<td>0.89</td>
+<td>−0.19</td>
+<td>0.185</td>
+<td>15</td>
+<td>0.51</td>
+<td>−0.22</td>
+<td>0.259</td>
+</tr>
+<tr>
+<td>2</td>
+<td>0.92</td>
+<td>0.70</td>
+<td>0.135</td>
+<td>9</td>
+<td>−0.42</td>
+<td>0.89</td>
+<td>0.187</td>
+<td>16</td>
+<td>−0.28</td>
+<td>−0.70</td>
+<td>0.263</td>
+</tr>
+<tr>
+<td>3</td>
+<td>0.01</td>
+<td>−0.37</td>
+<td>0.144</td>
+<td>10</td>
+<td>0.54</td>
+<td>0.89</td>
+<td>0.214</td>
+<td>17</td>
+<td>−0.01</td>
+<td>0.61</td>
+<td>0.279</td>
+</tr>
+<tr>
+<td>4</td>
+<td>0.03</td>
+<td>0.92</td>
+<td>0.145</td>
+<td>11</td>
+<td>0.57</td>
+<td>0.62</td>
+<td>0.219</td>
+<td>18</td>
+<td>−0.54</td>
+<td>−0.09</td>
+<td>0.289</td>
+</tr>
+<tr>
+<td>5</td>
+<td>−0.63</td>
+<td>−0.88</td>
+<td>0.158</td>
+<td>12</td>
+<td>0.36</td>
+<td>−0.82</td>
+<td>0.227</td>
+<td>19</td>
+<td>−0.64</td>
+<td>0.47</td>
+<td>0.322</td>
+</tr>
+<tr>
+<td>6</td>
+<td>0.78</td>
+<td>−0.78</td>
+<td>0.176</td>
+<td>13</td>
+<td>−0.84</td>
+<td>−0.50</td>
+<td>0.245</td>
+<td>20</td>
+<td>−0.01</td>
+<td>0.14</td>
+<td>0.337</td>
+</tr>
+</tbody>
+</table>
+<p>Sepals $k = 0 \ldots 13$: $(X'_k, Y'_k, s_k, \iota_k)$ with $\iota_k = k$:</p>
+<table>
+<thead>
+<tr>
+<th>$k$</th>
+<th>$X'_k$</th>
+<th>$Y'_k$</th>
+<th>$s_k$</th>
+<th>$k$</th>
+<th>$X'_k$</th>
+<th>$Y'_k$</th>
+<th>$s_k$</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>0.41</td>
+<td>−0.46</td>
+<td>0.120</td>
+<td>7</td>
+<td>−0.75</td>
+<td>0.92</td>
+<td>0.050</td>
+</tr>
+<tr>
+<td>1</td>
+<td>0.31</td>
+<td>0.62</td>
+<td>0.109</td>
+<td>8</td>
+<td>0.04</td>
+<td>−0.48</td>
+<td>0.039</td>
+</tr>
+<tr>
+<td>2</td>
+<td>−0.38</td>
+<td>−0.35</td>
+<td>0.095</td>
+<td>9</td>
+<td>0.95</td>
+<td>0.86</td>
+<td>0.034</td>
+</tr>
+<tr>
+<td>3</td>
+<td>−0.87</td>
+<td>−0.80</td>
+<td>0.075</td>
+<td>10</td>
+<td>0.10</td>
+<td>−0.98</td>
+<td>0.032</td>
+</tr>
+<tr>
+<td>4</td>
+<td>−0.93</td>
+<td>−0.12</td>
+<td>0.069</td>
+<td>11</td>
+<td>0.23</td>
+<td>0.80</td>
+<td>0.030</td>
+</tr>
+<tr>
+<td>5</td>
+<td>−0.12</td>
+<td>−0.88</td>
+<td>0.069</td>
+<td>12</td>
+<td>−0.19</td>
+<td>−0.13</td>
+<td>0.028</td>
+</tr>
+<tr>
+<td>6</td>
+<td>0.82</td>
+<td>0.60</td>
+<td>0.058</td>
+<td>13</td>
+<td>−0.27</td>
+<td>0.49</td>
+<td>0.025</td>
+</tr>
+</tbody>
+</table>
+<p>Colours (measured sRGB, converted to linear): $\mathbf{A} = \mathrm{lin}(0.875; 0.133; 0.071)/1.05 \cdot (1; 0.8; 0.8)$ flesh; $\mathbf{A}_h = \mathrm{lin}(0.788; 0.647; 0.325)$ seed; $G_1 = \mathrm{lin}(0.612; 0.678; 0.310)$, $G_0 = \mathrm{lin}(0.427; 0.376; 0.149)$ sepal light and dark; $\Gamma_0 = \mathrm{lin}(0.184; 0.055; 0.035)$ gap; $\Gamma_1 = \mathrm{lin}(0.431; 0.061; 0.074)$ dark red. Complex centres $c_p = X_p + iY_p$, $o_k = X'_k + iY'_k$.</p>
+<p><strong>B4. Derived quantities (computed once).</strong>
+$$\mathbf{L} = (-0.5;\ 0.6;\ 1.2)/\sqrt{2.05}, \quad \hat L = (-0.5 + 0.6i)/\sqrt{0.61}, \quad U = (-L_2, L_1, 0)/\sqrt{L_1^2 + L_2^2}, \quad V = \mathbf{L} \times U,$$
+$$\mathbf{L}' = (0.6;\ 0.5;\ 0.62)/\|(0.6;\ 0.5;\ 0.62)\|, \quad U' = (-L'_2, L'_1, 0)/\sqrt{L'^2_1 + L'^2_2}, \quad V' = \mathbf{L}' \times U', \quad W = (0.45;\ 0.12;\ 0.12), \quad E = e^{2\pi i/3}, \quad \varepsilon_0 = 0.75/1108.$$
+Host berry of a sepal: $\eta_k = \max\{p : |o_k - c_p| &lt; r_p\}$ if the set is non-empty, otherwise $\eta_k = \arg\min_p |o_k - c_p|/r_p$. Values: $\eta = (15, 17, 18, 13, 0, 16, 2, 7, 3, 2, 1, 17, 20, 17)$ for $k = 0 \ldots 13$.
+Pose of berry $p$, with $\mathcal{K}_p = \{k : \eta_k = p\}$: if $\mathcal{K}_p \ne \emptyset$, take $k^*$ with the smallest $|c_p - o_k|$, $\Delta_p = c_p - o_{k^*}$, $\alpha_p = \arg\Delta_p + \pi/2$, $e_p = \langle(|\Delta_p|/r_p - 0.15)/0.5\rangle$; if $\mathcal{K}_p = \emptyset$, $\alpha_p = 0.7\cos(2.3\,\iota_p + 1)$, $e_p = 1$. $R_p = 1.1 r_p$; $\phi_p = 1.7\,\iota_p$. (In this picture $e_p = 1$ for every $p$.)
+Individual shape: $h_l = h(\iota_p + 401, l)$, $l = 0 \ldots 4$; $b_1 = 0.045(1.6h_0 - 0.5)$, $a_2 = 0.045(0.4 + 0.6h_1)$, $f_2 = 2\pi h_2$, $a_3 = 0.045(0.15 + 0.35h_3)$, $f_3 = 2\pi h_4$.
+Depth of field: $c_F = c_{20}$; $g(c) = \big(\min((|c - c_F| - 0.35)^+/0.9, 1)\big)^{1.3}$; $D_p = g(c_p)(0.75 + 0.25(1 - r_p/0.337))$; $D'_k = g(o_k)$; $\lambda_p = 1 - 0.85 D_p$; $e^{\mathrm{sp}}_p = 0.06 + 0.3 D_p$.</p>
+<p><strong>B5. Berry $p$.</strong>
+Shape: $\varphi = \arg((z - c_p)e^{-i\alpha_p})$; $\varrho = 1 + b_1\sin\varphi + a_2\cos(2\varphi + f_2) + a_3\cos(3\varphi + f_3)$; $\omega = u + iv = (z - c_p)e^{-i\alpha_p}/(R_p\varrho)$;
+$$\hat\omega = \frac{u}{\max(1 + 0.36 e_p v, 0.3)} + i\,\frac{v + 0.15 e_p (v^+)^2 e^{-6u^2}}{1 + 0.1 e_p}, \qquad d_p(z) = 0.85 R_p\,(|\hat\omega| - 1)\,\varrho.$$
+Base normal: $\nu^{\circ} = \hat\omega e^{i\alpha_p}$, $\nu_3 = \sqrt{(1 - |\hat\omega|^2)^+}$; $q_1 = \Re\hat\omega$, $q_2 = \Im\hat\omega$.
+Surface: $\zeta' = \hat\omega(1 + 0.57\min(|\hat\omega|^2, 1))e^{i\phi_p}$; $\zeta_0 = \zeta' + 0.03(\cos(11\Re\zeta' + 3\alpha_p) + i\sin(9\Im\zeta' + 2\alpha_p))$; $\nu_1 = \nu(\Re\zeta_0, \Im\zeta_0; 4.5, 3\iota_p + 40)$, $\nu_2 = \nu(\Re\zeta_0, \Im\zeta_0; 4.5, 3\iota_p + 41)$; $\zeta = \zeta_0 + 0.02(\cos 2\pi\nu_1 + i\sin 2\pi\nu_2)$; $\chi = 0.45 + 0.08(2\nu_1 - 1)$; $\delta = 1 + 0.3(2\nu_2 - 1)$.
+$$T(\zeta) = \tfrac13[\cos(30\Re\zeta) + \cos(30\Re(\zeta E)) + \cos(30\Re(\zeta/E))]; \quad P = S((\chi - T(\zeta))/0.25),\ P' = S((\chi - T(\zeta + 0.02))/0.25),\ P'' = S((\chi - T(\zeta + 0.02i))/0.25);$$
+$$\gamma_P = ((P' - P) + i(P'' - P))\cdot 110\,\lambda_p\,\delta\,e^{i(\alpha_p - \phi_p)}; \quad g_1 = 0.07\cos(6q_1 + 2q_2 + \phi_p) + 0.05\cos(9q_2 - 3q_1 + 2\phi_p),\ g_2 = 0.07\sin(5q_2 - 2.5q_1 + \phi_p) + 0.05\sin(8q_1 + 4q_2 + 3\phi_p);$$
+$$\mathbf{n} = \mathrm{nor}\big(\Re\nu^{\circ} + 0.02\nu_3\Re\gamma_P + g_1\nu_3,\ \Im\nu^{\circ} + 0.02\nu_3\Im\gamma_P + g_2\nu_3,\ \nu_3\big); \quad \hat P = P\,\delta\,\lambda_p;$$
+$$\Psi = S\Big(\big(0.86 + 0.5(\chi - 0.45) - T(\zeta - 0.025 e^{i(\phi_p - \pi/2)})\big)/0.06\Big)(0.25 + 0.75\lambda_p).$$
+Specular reflection $\mathrm{Sp}(\mathbf{n}; e)$: $\boldsymbol{\ell} = (2n_3n_1, 2n_3n_2, 2n_3^2 - 1)$; $B = S((|\boldsymbol{\ell}\cdot U| - 0.3)/e)\,S((|\boldsymbol{\ell}\cdot V| - 0.2)/e)\,\langle(\boldsymbol{\ell}\cdot\mathbf{L} - 0.3)/0.3\rangle$; $B' = S((|\boldsymbol{\ell}\cdot U'| - 0.25)/e)\,S((|\boldsymbol{\ell}\cdot V'| - 0.35)/e)\,\langle(\boldsymbol{\ell}\cdot\mathbf{L}' - 0.3)/0.3\rangle$; $\mathrm{env} = 0.15(0.25 + 0.75\langle 0.5 + 0.5\ell_2\rangle) + 5B'$; $t = \langle 1 - n_3\rangle$;
+$$\mathrm{Sp}(\mathbf{n}; e) = (0.03 + 0.97 t^5)(18B + \mathrm{env}).$$
+Colour: $\beta = 0.9 + 0.2(0.5 + 0.5\cos(5q_1 + 3q_2 + 1.3\phi_p)\cos(4q_2 - 2q_1 + \phi_p))$; $\hat s = 0.5 + 0.5\cos(7\Re\zeta + 5\Im\zeta + \iota_p)$;
+$$K^t = \mathbf{A}\,\beta\,\Big(\big\langle\tfrac{\mathbf{n}\cdot\mathbf{L} + W}{1 + W}\big\rangle + 0.1(0.55 + 0.45 n_3)\Big)(0.32 + 0.68\sqrt{\nu_3})(1 - 0.5\hat P); \quad \phi_0 = (\Re\nu^{\circ} L_1 + \Im\nu^{\circ} L_2 + \nu_3 L_3)^+;$$
+$$K^h = \big(\mathbf{A}_h(1 - 0.45\hat s) + 0.6\mathbf{A}\hat s\big)(0.35 + 0.75\phi_0)(0.45 + 0.55\nu_3); \qquad K_p(z) = K^t(1 - \Psi) + K^h\Psi + \mathrm{Sp}(\mathbf{n}; e^{\mathrm{sp}}_p).$$</p>
+<p><strong>B6. Sepal $k$.</strong> $\rho_k = 1.75 s_k$; $m_k = 7 + (\iota_k \bmod 3)$; $w = (z - o_k)/\rho_k$, $r = |w|$, $\psi = \arg w$; $\tilde a = (\psi + \pi)m_k/(2\pi) + 0.37\iota_k$; $j = \lfloor\tilde a + \tfrac12\rfloor$; $\upsilon = \tilde a - j$; $j_m = j - m_k\lfloor j/m_k\rfloor$; $\Lambda = 0.75 + 0.4h(j_m + 31\iota_k, 5)$; $\varpi = 0.9 + 0.1h(j_m + 13\iota_k, 3)$; $\varkappa = (1 - 2|\upsilon|/\varpi)^+$; $\hat\upsilon = \upsilon/\varpi$;
+$$d_k(z) = 0.45\rho_k\big(r - 0.18 - (\Lambda - 0.18)\varkappa^{0.6}\big).$$
+Colour: $t = \langle r/\Lambda\rangle$; $\vartheta = 0.05 + (1 - t)^{1.5}$; $\hat c = w/\max(r, 10^{-9})$; $\mathbf{n} = \mathrm{nor}(\sin\vartheta\Re\hat c - 0.9\hat\upsilon\Im\hat c,\ \sin\vartheta\Im\hat c + 0.9\hat\upsilon\Re\hat c,\ \cos\vartheta)$; $\mathrm{dry} = 0.45 S((0.88 - t)/0.06)$; $p_e = (1 - 2|\hat\upsilon|)^+$; $\mathrm{rim} = 0.35 S((p_e - 0.22)/0.12)$; $\mathrm{vein} = 0.3 S((0.93 - p_e)/0.03) S((t - 0.85)/0.1)$;
+$$A^d = \big[(G_0 + (G_1 - G_0)(0.3 + 0.7t))(1 - \mathrm{vein})(1 - \mathrm{rim}) + 1.35 G_1\,\mathrm{rim}\big](1 - \mathrm{dry}) + 0.55 G_0\,\mathrm{dry};$$
+$$K' = A^d\big((\mathbf{n}\cdot\mathbf{L})^+ + 0.35(-\mathbf{n}\cdot\mathbf{L})^+ + 0.1\big)(0.6 + 0.4t) + 0.5\,\mathrm{Sp}(\mathbf{n}; 0.12);$$
+$\mathrm{stem} = S((r - 0.1)/0.025)$; $s_l = 0.55 + 0.225\min(\max(1 + (\Re w\Re\hat L + \Im w\Im\hat L)/0.1, 0), 2)$;
+$$K_k(z) = K'(1 - \mathrm{stem}) + 0.8 G_1(s_l + 0.1)\,\mathrm{stem}.$$</p>
+<p><strong>B7. Background.</strong> $\Omega = \langle 1 - \mathcal{W}(x, y; 4.5, 3)/0.8\rangle^2$; $\Gamma(z) = \Gamma_0(0.45 + 0.3\Omega) + 0.18(\Gamma_1 - \Gamma_0)\Omega^2$.</p>
+<p><strong>B8. The 91 layers $(M_j, K_j)$.</strong> Each berry $p$ produces three layers in order: (1) cast shadow $M = 0.55 S(d_p(z + 0.05\hat L)/(0.3R_p))$, $K = 0$; (2) contact shadow $M = 0.7\langle 1 - d_p(z)/(0.25R_p)\rangle^2$, $K = 0$; (3) berry $M = S(d_p(z)/(\varepsilon_0 + 0.03 D_p))$, $K = K_p(z)$. Each sepal $k$ produces two layers: (1) shadow $M = 0.5 S(d_k(z + 0.03\hat L)/0.012)$, $K = 0$; (2) sepal $M = S(d_k(z)/(\varepsilon_0 + 0.03 D'_k))$, $K = K_k(z)$. Order (q = berry, d = sepal): q0, d4, q1, d10, q2, d6, d9, q3, d8, q4, q5, q6, q7, d7, q8, q9, q10, q11, q12, q13, d3, q14, q15, d0, q16, d5, q17, d1, d11, d13, q18, d2, q19, q20, d12. Total $21 \times 3 + 14 \times 2 = 91$.</p>
+<p>Credit: the one-function frame and the gate $e^{-e^{u}}$ follow Hamid Naderi Yeganeh, <em>Pictures from Networks of Mathematical Functions</em>, Math Horizons 32(1), 2024. The formulas, composition and image here are new work. The expanded expression (Level C) has not been produced; the report estimates it at tens of thousands of characters.</p>
+<h3>B.2 Layer structure and parameter table of case 1</h3>
+<p>Formulas (identifiers in the specification): F-00 the computation window (a speed optimisation, proved not to change the image); F-01 the contour $r(\varphi) = r_0(1 + \sum_{k=1}^{6} a_k\cos k\varphi + b_k\sin k\varphi)$; F-02 the body mask $M_b = 1 - S(-\varepsilon_b, \varepsilon_b, \rho - r(\varphi))$; F-03 the seven-basis body colour field; F-04 an ellipse spot multiplied by the parent berry's mask; F-05 a polygon with holes $d = \max(d_{\text{outer}}, -d_{\text{hole}_1}, \ldots)$; F-06 the background. Layers: L01 background, L02 24 berries (each: body, pits, seeds with rims, glints), L03 sepals. Parameters:</p>
+<table>
+<thead>
+<tr>
+<th>Id</th>
+<th>Name</th>
+<th>Value</th>
+<th>Basis</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>P-01</td>
+<td>body softness</td>
+<td>3.0 px</td>
+<td>measured (MAE sweep)</td>
+</tr>
+<tr>
+<td>P-02</td>
+<td>seed softness</td>
+<td>1.5 px</td>
+<td>measured</td>
+</tr>
+<tr>
+<td>P-03</td>
+<td>pit-rim ratio</td>
+<td>2.5</td>
+<td>measured (tried 1.6 / 2.0 / 2.5)</td>
+</tr>
+<tr>
+<td>P-04</td>
+<td>pit softness</td>
+<td>2.0 px</td>
+<td>measured</td>
+</tr>
+<tr>
+<td>P-05</td>
+<td>glint softness</td>
+<td>0.9 px</td>
+<td>measured</td>
+</tr>
+<tr>
+<td>P-06</td>
+<td>sepal softness</td>
+<td>1.8 px</td>
+<td>measured</td>
+</tr>
+<tr>
+<td>P-07</td>
+<td>Fourier harmonics</td>
+<td>6</td>
+<td>chosen</td>
+</tr>
+<tr>
+<td>P-08</td>
+<td>24 berries: id, centre, $r_0$, 12 coefficients, 7 colour triples</td>
+<td>table</td>
+<td>measured; order: observed</td>
+</tr>
+<tr>
+<td>P-09</td>
+<td>1,418 pits: $\delta_x, \delta_y, a, b, \beta$, colour</td>
+<td>table</td>
+<td>measured</td>
+</tr>
+<tr>
+<td>P-10</td>
+<td>740 seeds: as above plus rim colour</td>
+<td>table</td>
+<td>measured</td>
+</tr>
+<tr>
+<td>P-11</td>
+<td>1,772 glints: ellipse or polygon with holes</td>
+<td>table</td>
+<td>measured</td>
+</tr>
+<tr>
+<td>P-12</td>
+<td>137 sepal polygons: block, parent berry, tier, colour, vertices, holes</td>
+<td>table</td>
+<td>measured</td>
+</tr>
+<tr>
+<td>—</td>
+<td>gap colour</td>
+<td>#270305</td>
+<td>measured (median)</td>
+</tr>
+</tbody>
+</table>
+<p>The full tables are in the specification's code block (439,962 bytes). The report notes: the label "measured" refers to the values in the tables; the detection thresholds used to build the tables are editorial choices, living in the scripts, not in the specification.</p>
+<h2 id="appendix-c-reproduction">Appendix C — Reproduction</h2>
+<p><strong>Case 1.</strong> The specification <code>dau-tay_spec_v1.0.md</code> (494 KB) contains exactly one Python code block requiring only numpy and the standard library. It was re-run in the same environment (Windows 11, Python 3.14.3, numpy 2.4.6) from the specification itself, by a fresh process in a temporary folder with no source image, and the pixels matched the hash <code>24fbfe2b4a63127b6d0e96ad2c8c8dc5eb3f0ea649bb4c7a75990461b9776f3a</code>; 16/16 probes within ±2; <code>REPLAY OK</code> printed; CODE_SHA256 <code>027139eaac4b941cd5904c1ef73602803d5b73c23253bd7bd14c6c1f4eec3f46</code>. Not yet re-run on a second machine. Render time ≈ 1.5–2 s.</p>
+<p><strong>Case 2.</strong> The specification <code>dong-dau-tay_spec_v1.1.md</code> with the kernel and kit copied verbatim. Re-run twice in the same environment from the specification itself, empty temporary folder, pixels matching the hash <code>3710e8ecd15e3374fd93ca4d422df7cdc2f2136791747505130b955a7486076c</code>; 14/14 probes; 100/100 pixels recomputed with the scalar libraries match; CODE_SHA256 <code>093fed4f0aa407b54d935699a702b1fd0fe0533d344ba8f81a647d7262b13540</code>. The mathematical text re-implemented independently matched 5,000/5,000 pixels. On Windows the flag <code>-X utf8</code> is required. Not yet re-run on a second machine. Render time 42.3 s tiled, 289.9 s whole image.</p>
+<p><strong>Guiding scene.</strong> <code>hoang-hon-tren-bien</code> v1.1 from Volume I: we re-ran it on 6 October 2026, Python 3.14.3, numpy 2.4.6; 14/14 probes; hash <code>8c0cd21841c4ff2dd58fbc54622521ceffcc1d75bf0cafa47a5f34babcdf87f0</code>; <code>REPLAY OK</code>. The report of case 2 records the same result on the same machine, compared with the rule book's original environment (Python 3.12.3, numpy 2.4.4): evidence of two environments for the guiding scene, not for the two cases.</p>
+<p><strong>Teaching and rebuilt figures.</strong> Figures 2–10b were rendered with numpy under Volume I's conventions on 6 October 2026; each figure's hash is in its caption and in <code>paper/figures/teaching_figs_hashes.json</code>, <code>teaching_figs2_hashes.json</code>. Figures 14 and 17 were rebuilt from the code of the two specifications themselves, changing only the list of objects or layers drawn; hashes in <code>stages_p1_hashes.json</code>, <code>stages_p2_hashes.json</code>. Figures 11 and 12 are diagrams.</p>
+<p><strong>What the hash does not prove.</strong> Probes check a few points; the hash checks the whole image. The ±2 tolerance of probes is not bit-exact. The hash of a render does not by itself prove that the render came from the formula unless there is a chain of artifact checks and a re-run. An empty folder or the <code>-I</code> flag does not prove the program cannot read other paths, only what was checked. Transcendental functions may differ by one unit in the last bit across platforms; the hash may differ on another machine, not yet measured.</p>
+<p><strong>Where to find code and data.</strong> The two project folders <code>Code to Pic 2/</code> and <code>One Formular to Pic/</code> with <code>work/</code>, <code>out/</code>, <code>review/</code>, <code>final/</code>; the two reports; the two rule books. These folders accompany the paper as supplementary material.</p>
+<h2 id="appendix-d-glossary">Appendix D — Glossary</h2>
+<table>
+<thead>
+<tr>
+<th>English</th>
+<th>Vietnamese</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>pixel</td>
+<td>pixel</td>
+<td>one cell of the image, three numbers</td>
+</tr>
+<tr>
+<td>signed distance field, SDF</td>
+<td>trường khoảng cách có dấu</td>
+<td>a function giving the distance to a shape's boundary, negative inside</td>
+</tr>
+<tr>
+<td>mask</td>
+<td>mask (mặt nạ)</td>
+<td>the 0–1 coverage of an object at each pixel</td>
+</tr>
+<tr>
+<td>smoothstep</td>
+<td>bước mềm</td>
+<td>a function rising smoothly from 0 to 1 over a band</td>
+</tr>
+<tr>
+<td>anti-aliasing</td>
+<td>khử răng cưa</td>
+<td>smoothing edges by partial coverage</td>
+</tr>
+<tr>
+<td>compositing</td>
+<td>chồng lớp</td>
+<td>combining layers into one image; over, add, multiply</td>
+</tr>
+<tr>
+<td>closed-form layer fold</td>
+<td>gộp lớp dạng đóng</td>
+<td>the one-line formula equivalent to a chain of over operations</td>
+</tr>
+<tr>
+<td>output function</td>
+<td>hàm xuất màu</td>
+<td>converting a real number to an 8-bit value</td>
+</tr>
+<tr>
+<td>integer hash</td>
+<td>hash số nguyên</td>
+<td>a deterministic "pseudo-random" function on integers</td>
+</tr>
+<tr>
+<td>value noise, fractional Brownian motion</td>
+<td>value noise, fBm</td>
+<td>texture from the hash, one or several layers</td>
+</tr>
+<tr>
+<td>Worley / Voronoi F1</td>
+<td>Worley</td>
+<td>distance to the nearest seed point</td>
+</tr>
+<tr>
+<td>pixel hash</td>
+<td>hash pixel</td>
+<td>SHA-256 of all colour bytes, for reproduction checks</td>
+</tr>
+<tr>
+<td>probe</td>
+<td>probe</td>
+<td>a pixel with an expected value, tolerance ±2</td>
+</tr>
+<tr>
+<td>clean-room test</td>
+<td>clean-room</td>
+<td>running the code extracted from the specification in an empty folder with a fresh process</td>
+</tr>
+<tr>
+<td>perturbation test</td>
+<td>phép thử nhiễu loạn</td>
+<td>change one parameter, check the image changes as expected in advance</td>
+</tr>
+<tr>
+<td>fidelity A / B</td>
+<td>Fidelity A / B</td>
+<td>resemblance to the source / exact reproduction of the specification</td>
+</tr>
+<tr>
+<td>specification (spec)</td>
+<td>đặc tả</td>
+<td>a self-contained <code>.md</code> file defining one picture</td>
+</tr>
+<tr>
+<td>render</td>
+<td>render</td>
+<td>the image computed from a specification</td>
+</tr>
+<tr>
+<td>Fourier contour</td>
+<td>đường viền Fourier</td>
+<td>a radius varying with angle as a Fourier series</td>
+</tr>
+<tr>
+<td>watershed</td>
+<td>watershed</td>
+<td>an image segmentation algorithm from markers</td>
+</tr>
+<tr>
+<td>k-means in Lab</td>
+<td>k-means Lab</td>
+<td>colour clustering in Lab space</td>
+</tr>
+<tr>
+<td>analysis by synthesis</td>
+<td>phân tích-bằng-tổng-hợp</td>
+<td>comparing a synthesised image with the real one to find what is missing</td>
+</tr>
+<tr>
+<td>anchor table</td>
+<td>bảng neo</td>
+<td>positions and sizes of the main objects measured from the reference</td>
+</tr>
+<tr>
+<td>adaptation, level 2</td>
+<td>phỏng tác bậc 2</td>
+<td>take palette, layout, counts, light direction; not contours or texture</td>
+</tr>
+<tr>
+<td>length class SHORT / HYBRID / LONG</td>
+<td>hạng độ dài NGẮN / LAI / DÀI</td>
+<td>the project's budgets of characters, constants and tables</td>
+</tr>
+<tr>
+<td>idea card, thesis</td>
+<td>thẻ ý tưởng, thesis</td>
+<td>the intent and trade-off of a candidate, written before code</td>
+</tr>
+<tr>
+<td>blind pairwise judging</td>
+<td>so cặp mù</td>
+<td>judging two pictures without knowing their codes, one winner, one sentence of reason</td>
+</tr>
+<tr>
+<td>MAE, PSNR, SSIM, $\Delta E_{2000}$</td>
+<td>—</td>
+<td>mean absolute error; peak signal-to-noise ratio; structural similarity; perceptual colour difference</td>
+</tr>
+<tr>
+<td><code>lum12</code></td>
+<td>—</td>
+<td>correlation of 12 × 12 luminance maps of two images</td>
+</tr>
+<tr>
+<td>depth of field</td>
+<td>độ sâu trường ảnh</td>
+<td>sharp and soft regions; here made by edge softness and loss of detail, not blur</td>
+</tr>
+<tr>
+<td>Fresnel (Schlick)</td>
+<td>Fresnel</td>
+<td>reflection increasing at grazing angles</td>
+</tr>
+<tr>
+<td>subsurface scattering</td>
+<td>tán xạ dưới bề mặt</td>
+<td>light entering a material and leaving elsewhere; here simulated by channel-wise wrapped diffuse</td>
+</tr>
+<tr>
+<td>softbox</td>
+<td>softbox</td>
+<td>a soft rectangular light source, seen as a reflection patch</td>
+</tr>
+<tr>
+<td>interpretive model</td>
+<td>mô hình diễn giải</td>
+<td>a formal statement for reading, not an algorithm that was run</td>
+</tr>
+<tr>
+<td>retrospective explanation</td>
+<td>giải thích hồi cứu</td>
+<td>a reason inferred by the writer after the event, not history</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<p><em>Version.</em> v1.1 — 6 October 2026 — adds Section 1.2 (pictures with a formula compared with JPEG, PNG and SVG files) and references [12]–[14]. v1.0 — 6 October 2026 — complete version: Sections 1.1 (two ways of making pictures), 5.7 (specification for other AIs), 7.12 (alternatives not chosen), 9 (guide to building the system), 10 (near and far applications), 20 figures. English edition translated from the Vietnamese v1.0 of the same date.</p></main><footer>Henry · Claude Code — 2026. Static site; mathematics rendered with KaTeX. Figures carry pixel hashes in their captions; specifications and reports accompany the paper.</footer></body></html>

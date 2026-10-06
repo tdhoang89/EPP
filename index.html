@@ -1,0 +1,93 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Equation Painting — Vẽ tranh bằng phương trình</title><meta name="description" content="Equation Painting: images defined by mathematical formulas, found with a code-executing AI. Bilingual white paper (Vietnamese / English).">
+<style>
+:root { --fg:#111; --bg:#fff; --rule:#000; --muted:#555; }
+* { box-sizing: border-box; }
+html { font-size: 17px; }
+body { margin:0; background:var(--bg); color:var(--fg); font-family: "Times New Roman", Times, Georgia, serif; line-height:1.45; }
+a { color:var(--fg); text-decoration: underline; text-underline-offset: 2px; }
+nav.top { border-bottom: 1px solid var(--rule); padding: 10px 16px; display:flex; gap:18px; align-items:baseline; flex-wrap:wrap; font-size:0.95rem; }
+nav.top .brand { font-weight:bold; letter-spacing: 0.02em; }
+nav.top .spacer { flex:1; }
+main { max-width: 820px; margin: 0 auto; padding: 24px 16px 64px 16px; }
+h1.title { text-align:center; font-size:1.7rem; margin: 18px 0 6px; }
+p.subtitle { text-align:center; font-style: italic; margin:0 0 8px; }
+p.authors { text-align:center; margin:0; } p.authors-meta { text-align:center; color:var(--muted); margin:0 0 18px; font-size:0.9rem; }
+p.abs { margin: 0 24px 8px; text-align: justify; } p.kw { margin: 0 24px 14px; font-size:0.9rem; }
+h2 { font-size:1.2rem; margin: 30px 0 8px; border-top: 1px solid var(--rule); padding-top: 12px; }
+h3 { font-size:1.05rem; font-style: italic; margin: 20px 0 6px; }
+p { text-align: justify; margin: 0 0 10px; }
+table { border-collapse: collapse; margin: 10px auto 16px; font-size: 0.86rem; width:100%; display:block; overflow-x:auto; }
+th, td { border: 1px solid var(--rule); padding: 4px 7px; vertical-align: top; text-align:left; }
+figure { margin: 14px 0 18px; text-align:center; } figure img { max-width:100%; height:auto; border:1px solid #ccc; }
+figcaption { font-size: 0.86rem; text-align: justify; margin: 6px 8px 0; color: var(--muted); }
+pre { white-space: pre-wrap; border: 1px solid #000; padding: 10px; font-size: 0.82rem; font-family: "Courier New", monospace; }
+code { font-family: "Courier New", monospace; font-size: 0.9em; }
+ol.refs { list-style:none; counter-reset: ref; padding-left: 2.4em; } ol.refs li { counter-increment: ref; position: relative; margin-bottom:4px; }
+ol.refs li::before { content: "[" counter(ref) "]"; position:absolute; left:-2.4em; }
+blockquote { margin: 8px 24px; }
+.katex-display { overflow-x:auto; overflow-y:hidden; padding: 2px 0; }
+.landing h1 { text-align:center; font-size:1.8rem; margin: 30px 0 4px; } .landing .sub { text-align:center; font-style:italic; margin:0 0 6px; }
+.landing .meta { text-align:center; color:var(--muted); margin: 0 0 28px; }
+.cols { display:grid; grid-template-columns: 1fr 1fr; gap: 28px; } @media (max-width: 760px) { .cols { grid-template-columns: 1fr; } }
+.col { border: 1px solid var(--rule); padding: 16px 18px; }
+.col h2 { border:0; margin:0 0 6px; padding:0; font-size:1.15rem; }
+.actions { display:flex; gap: 10px; flex-wrap: wrap; margin: 12px 0 14px; }
+.btn { border: 1px solid var(--rule); padding: 8px 14px; text-decoration:none; font-size:0.95rem; background:#fff; display:inline-block; }
+.btn.primary { background:#000; color:#fff; }
+.hero { display:grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 0 0 24px; } @media (max-width:760px) { .hero { grid-template-columns: 1fr; } }
+.hero img { width:100%; height:auto; border:1px solid #000; filter: grayscale(100%); transition: filter .3s; } .hero img:hover { filter:none; }
+.hero figcaption { font-size:0.85rem; color: var(--muted); text-align:center; margin-top:4px; }
+footer { border-top: 1px solid var(--rule); margin-top: 40px; padding: 14px 16px; font-size: 0.85rem; color: var(--muted); text-align:center; }
+details.toc { border:1px solid #000; padding: 8px 14px; margin: 0 0 18px; font-size:0.92rem; } details.toc summary { cursor:pointer; font-weight:bold; }
+details.toc ol { margin: 8px 0 4px; padding-left: 1.4em; } details.toc li { margin: 2px 0; }
+.box { border:1px solid var(--rule); padding: 16px 18px; margin: 26px 0; }
+.box h2 { border:0; margin:0 0 8px; padding:0; font-size:1.15rem; }
+.simple { font-size: 1.15rem; line-height: 1.6; } .simple h1 { text-align:center; font-size:1.9rem; margin: 20px 0 6px; }
+.simple h2 { border:0; padding:0; margin: 22px 0 6px; font-size: 1.3rem; } .simple p { text-align:left; }
+.simple .big { font-size: 1.35rem; text-align:center; border:1px solid #000; padding: 12px; margin: 16px 0; }
+.simple ul { padding-left: 1.3em; } .simple li { margin: 4px 0; }
+</style></head><body><nav class="top"><a class="brand" href="index.html">Equation Painting</a><a href="paper-en.html">Read in English</a><a href="paper-vi.html">Đọc bản tiếng Việt</a><a href="simple-en.html">Simple explanation</a><a href="index.html#try">Try it</a><span class="spacer"></span><a href="pdf/equation_painting_paper_v1_0_en.pdf">PDF (EN)</a><a href="pdf/equation_painting_paper_v1_0.pdf">PDF (VI)</a></nav><main>
+<div class="landing">
+<h1>Vẽ tranh bằng phương trình<br><span style="font-weight:normal">Equation Painting</span></h1>
+<p class="sub">hai bài toán, hai cách tìm công thức · two problems, two ways of finding the formula</p>
+<p class="meta">Henry · Claude Code — white paper, version 1.1, 6 October 2026</p>
+<div class="hero">
+ <figure><img src="figures/fig01_p2_vs_ref.jpg" alt="Formula painting beside its reference photograph"><figcaption>Trái / left: tranh tính từ một công thức (1108 × 1108, hash 3710e8ec…) · Phải / right: ảnh tham chiếu</figcaption></figure>
+ <figure><img src="figures/p1_compare_v1.jpg" alt="Source, formula render and error map"><figcaption>Nguồn · render từ 4 831 công thức · bản đồ sai số (case 1) / source · render · error map</figcaption></figure>
+</div>
+<div class="cols">
+ <div class="col">
+  <h2>Tiếng Việt</h2>
+  <div class="actions"><a class="btn primary" href="paper-vi.html">Đọc trên web</a><a class="btn" href="pdf/equation_painting_paper_v1_0.pdf">Tải PDF</a><a class="btn" href="simple-vi.html">Giải thích đơn giản, 1 trang</a></div>
+  <p><b>Tóm tắt.</b> Chúng tôi trình bày Equation Painting, một cách định nghĩa ảnh bằng hàm số: màu của mỗi pixel là giá trị của một hàm tại toạ độ pixel đó, nên một bức tranh là một biểu thức toán học có thể tính lại và kiểm tra bằng hash. Bài viết đặt hai bài toán trên cùng một ảnh chụp đống dâu tây 554 × 554. Bài toán 1 vẽ lại ảnh bằng cách chia ảnh thành ba lớp với 24 quả và 4 831 lần vẽ hình cơ bản, mỗi hình một công thức có tham số đo từ ảnh; kết quả đạt MAE 14,55/255 và PSNR 20,99 dB so với nguồn, và tái lập từng pixel so với đặc tả. Bài toán 2 vẽ một bức tranh mới theo ảnh tham chiếu, không chép lại, với toàn bộ bức tranh 1108 × 1108 là một hàm duy nhất dài 11 489 ký tự và 663 hằng số theo cách đếm đã công bố, gồm 27 hàm phụ và 91 lớp. Chúng tôi giải thích nền tảng theo mười bậc, từ pixel tới một hàm cho cả bức, rồi kể hai trường hợp từng bước tới công thức. Công việc do một AI chạy được code (Claude Code) thực hiện theo một bộ quy tắc; con người đặt bài toán, đặt ràng buộc và chọn bức cuối. Khác với ảnh do mô hình sinh ảnh tạo ra, một ảnh có công thức được tính lại đúng từng pixel bởi bất kỳ ai, bao nhiêu lần cũng vậy, và kiểm bằng một con số; bài kèm một hướng dẫn để người đọc dựng lại hệ thống này với một AI chạy được code. Trong bài toán 2, AI đã render 60 bản thử qua bảy vòng chấm trong hai lô và một vòng đánh bóng; con người dừng để quyết định ở năm điểm. Hai case cho thấy đổi "khớp từng pixel" lấy "một định nghĩa gọn" làm công thức ngắn đi hơn bốn mươi lần theo byte nhưng không còn khớp nguồn, và cho thấy việc tái lập đúng từng pixel không phụ thuộc vào việc ảnh có giống nguồn hay không.</p>
+ </div>
+ <div class="col">
+  <h2>English</h2>
+  <div class="actions"><a class="btn primary" href="paper-en.html">Read online</a><a class="btn" href="pdf/equation_painting_paper_v1_0_en.pdf">Download PDF</a><a class="btn" href="simple-en.html">Simple explanation, 1 page</a></div>
+  <p><b>Abstract.</b> We present Equation Painting, a way of defining an image by a function: the colour of each pixel is the value of a function at that pixel's coordinates, so a picture is a mathematical expression that can be recomputed and checked with a hash. The paper poses two problems on the same 554 × 554 photograph of a pile of strawberries. Problem 1 repaints the photograph by splitting it into three layers with 24 berries and 4,831 primitive draws, each primitive a formula whose parameters are measured from the image; the result reaches MAE 14.55/255 and PSNR 20.99 dB against the source and is reproduced pixel for pixel from its specification. Problem 2 paints a new 1108 × 1108 picture after the reference, without copying it, where the whole picture is one function of 11,489 characters and 663 constants under a published counting rule, with 27 helper functions and 91 layers. We explain the foundations in ten steps, from a pixel to one function for the whole picture, then narrate both cases step by step to their formulas. The work was carried out by a code-executing AI (Claude Code) under a written rule set; a human posed the problems, set the constraints and chose the final picture. Unlike an image produced by a generative model, an image with a formula is recomputed pixel for pixel by anyone, any number of times, and checked with a single number; the paper includes a guide for readers to rebuild this system with a code-executing AI. In Problem 2 the AI rendered 60 trial images over seven judging rounds in two batches plus one polishing round; the human stopped to decide at five points. The two cases show that trading "match every pixel" for "one compact definition" shortens the formula by more than forty times in bytes but gives up matching the source, and that pixel-exact reproduction does not depend on whether the image resembles the source.</p>
+ </div>
+</div>
+
+<div class="box" id="try">
+<h2>Tự thử · Try it yourself</h2>
+<p>Hai file dưới đây là <b>đặc tả</b> của hai bức trong bài: mỗi file chứa quy ước tính toán, toàn bộ công thức, đúng một khối code Python (chỉ cần numpy), bảng pixel kiểm và hash của ảnh. Đưa một file cho một AI chạy được code và yêu cầu nó làm theo lời dẫn ở mục 1 của file. AI sẽ tính ra đúng bức tranh đã in trong bài, không đổi một pixel; hash in ra phải trùng hash dưới đây. Chúng tôi đã thử với Claude Opus 5.5, Claude Sonnet 5.5, Sol 6.1 và Gemini Flash.</p>
+<p>The two files below are the <b>specifications</b> of the two pictures in the paper: each holds the computation conventions, every formula, exactly one Python code block (numpy only), the probe table and the image hash. Give one file to a code-executing AI and ask it to follow the prompt in Section 1 of the file. The AI computes exactly the picture printed in the paper, not one pixel different; the hash it prints must match the one below. Tested with Claude Opus 5.5, Claude Sonnet 5.5, Sol 6.1 and Gemini Flash.</p>
+<table>
+<tr><th>File</th><th>Bức · picture</th><th>Kích thước · size</th><th>Hash pixel (EP-PIX v1)</th></tr>
+<tr><td><a href="specs/dau-tay_spec_v1.0.md">dau-tay_spec_v1.0.md</a> (494 KB)</td><td>Case 1 — vẽ lại ảnh chụp bằng 4 831 công thức · repaint of the photograph</td><td>554 × 554, SS 1</td><td><code>24fbfe2b4a63127b6d0e96ad2c8c8dc5eb3f0ea649bb4c7a75990461b9776f3a</code></td></tr>
+<tr><td><a href="specs/dong-dau-tay_spec_v1.1.md">dong-dau-tay_spec_v1.1.md</a> (89 KB)</td><td>Case 2 — "Đống dâu — Macro tiêu điểm", một công thức · one formula</td><td>1108 × 1108, SS 2 (≈ 42 s)</td><td><code>3710e8ecd15e3374fd93ca4d422df7cdc2f2136791747505130b955a7486076c</code></td></tr>
+</table>
+<p style="font-size:0.9rem;color:#555">Lời dẫn ngắn nhất · shortest prompt: <i>"Here is an Equation Painting specification. Follow Prompt A in Section 1: run the single code block verbatim, change nothing, and report the probe results and the pixel hash."</i> Trên Windows chạy Python với cờ <code>-X utf8</code>. · On Windows run Python with the flag <code>-X utf8</code>.</p>
+</div>
+
+<h2 style="border:0;margin-top:30px">Hai bài toán · The two problems</h2>
+<table>
+<tr><th></th><th>Bài toán 1 · Problem 1</th><th>Bài toán 2 · Problem 2</th></tr>
+<tr><td>Mục tiêu · goal</td><td>vẽ lại đúng ảnh bằng nhiều công thức · repaint the photograph pixel for pixel</td><td>vẽ bức mới theo tham chiếu bằng một công thức · paint a new picture after the reference with one function</td></tr>
+<tr><td>Kết quả · result</td><td>3 lớp, 24 quả, 4 831 lần vẽ; MAE 14,55/255, PSNR 20,99 dB</td><td>1 hàm, 27 hàm phụ, 91 lớp; 11 489 ký tự, 663 hằng số</td></tr>
+<tr><td>Tái lập · reproduction</td><td>hash <code>24fbfe2b…</code>, 16/16 probe, clean-room</td><td>hash <code>3710e8ec…</code>, 14/14 probe, 100/100 pointwise, 5 000/5 000 từ văn bản toán</td></tr>
+</table>
+<p style="text-align:center;color:#555;font-size:0.9rem">Mọi hình render trong bài kèm hash pixel; đặc tả và report đi kèm bài. · Every rendered figure carries its pixel hash; specifications and reports accompany the paper.</p>
+</div>
+</main><footer>Henry · Claude Code — 2026. Static site; mathematics rendered with KaTeX. Figures carry pixel hashes in their captions; specifications and reports accompany the paper.</footer></body></html>

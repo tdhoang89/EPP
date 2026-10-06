@@ -1,0 +1,81 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Simple explanation — Equation Painting</title><meta name="description" content="Equation Painting: images defined by mathematical formulas, found with a code-executing AI. Bilingual white paper (Vietnamese / English).">
+<style>
+:root { --fg:#111; --bg:#fff; --rule:#000; --muted:#555; }
+* { box-sizing: border-box; }
+html { font-size: 17px; }
+body { margin:0; background:var(--bg); color:var(--fg); font-family: "Times New Roman", Times, Georgia, serif; line-height:1.45; }
+a { color:var(--fg); text-decoration: underline; text-underline-offset: 2px; }
+nav.top { border-bottom: 1px solid var(--rule); padding: 10px 16px; display:flex; gap:18px; align-items:baseline; flex-wrap:wrap; font-size:0.95rem; }
+nav.top .brand { font-weight:bold; letter-spacing: 0.02em; }
+nav.top .spacer { flex:1; }
+main { max-width: 820px; margin: 0 auto; padding: 24px 16px 64px 16px; }
+h1.title { text-align:center; font-size:1.7rem; margin: 18px 0 6px; }
+p.subtitle { text-align:center; font-style: italic; margin:0 0 8px; }
+p.authors { text-align:center; margin:0; } p.authors-meta { text-align:center; color:var(--muted); margin:0 0 18px; font-size:0.9rem; }
+p.abs { margin: 0 24px 8px; text-align: justify; } p.kw { margin: 0 24px 14px; font-size:0.9rem; }
+h2 { font-size:1.2rem; margin: 30px 0 8px; border-top: 1px solid var(--rule); padding-top: 12px; }
+h3 { font-size:1.05rem; font-style: italic; margin: 20px 0 6px; }
+p { text-align: justify; margin: 0 0 10px; }
+table { border-collapse: collapse; margin: 10px auto 16px; font-size: 0.86rem; width:100%; display:block; overflow-x:auto; }
+th, td { border: 1px solid var(--rule); padding: 4px 7px; vertical-align: top; text-align:left; }
+figure { margin: 14px 0 18px; text-align:center; } figure img { max-width:100%; height:auto; border:1px solid #ccc; }
+figcaption { font-size: 0.86rem; text-align: justify; margin: 6px 8px 0; color: var(--muted); }
+pre { white-space: pre-wrap; border: 1px solid #000; padding: 10px; font-size: 0.82rem; font-family: "Courier New", monospace; }
+code { font-family: "Courier New", monospace; font-size: 0.9em; }
+ol.refs { list-style:none; counter-reset: ref; padding-left: 2.4em; } ol.refs li { counter-increment: ref; position: relative; margin-bottom:4px; }
+ol.refs li::before { content: "[" counter(ref) "]"; position:absolute; left:-2.4em; }
+blockquote { margin: 8px 24px; }
+.katex-display { overflow-x:auto; overflow-y:hidden; padding: 2px 0; }
+.landing h1 { text-align:center; font-size:1.8rem; margin: 30px 0 4px; } .landing .sub { text-align:center; font-style:italic; margin:0 0 6px; }
+.landing .meta { text-align:center; color:var(--muted); margin: 0 0 28px; }
+.cols { display:grid; grid-template-columns: 1fr 1fr; gap: 28px; } @media (max-width: 760px) { .cols { grid-template-columns: 1fr; } }
+.col { border: 1px solid var(--rule); padding: 16px 18px; }
+.col h2 { border:0; margin:0 0 6px; padding:0; font-size:1.15rem; }
+.actions { display:flex; gap: 10px; flex-wrap: wrap; margin: 12px 0 14px; }
+.btn { border: 1px solid var(--rule); padding: 8px 14px; text-decoration:none; font-size:0.95rem; background:#fff; display:inline-block; }
+.btn.primary { background:#000; color:#fff; }
+.hero { display:grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 0 0 24px; } @media (max-width:760px) { .hero { grid-template-columns: 1fr; } }
+.hero img { width:100%; height:auto; border:1px solid #000; filter: grayscale(100%); transition: filter .3s; } .hero img:hover { filter:none; }
+.hero figcaption { font-size:0.85rem; color: var(--muted); text-align:center; margin-top:4px; }
+footer { border-top: 1px solid var(--rule); margin-top: 40px; padding: 14px 16px; font-size: 0.85rem; color: var(--muted); text-align:center; }
+details.toc { border:1px solid #000; padding: 8px 14px; margin: 0 0 18px; font-size:0.92rem; } details.toc summary { cursor:pointer; font-weight:bold; }
+details.toc ol { margin: 8px 0 4px; padding-left: 1.4em; } details.toc li { margin: 2px 0; }
+.box { border:1px solid var(--rule); padding: 16px 18px; margin: 26px 0; }
+.box h2 { border:0; margin:0 0 8px; padding:0; font-size:1.15rem; }
+.simple { font-size: 1.15rem; line-height: 1.6; } .simple h1 { text-align:center; font-size:1.9rem; margin: 20px 0 6px; }
+.simple h2 { border:0; padding:0; margin: 22px 0 6px; font-size: 1.3rem; } .simple p { text-align:left; }
+.simple .big { font-size: 1.35rem; text-align:center; border:1px solid #000; padding: 12px; margin: 16px 0; }
+.simple ul { padding-left: 1.3em; } .simple li { margin: 4px 0; }
+</style></head><body><nav class="top"><a class="brand" href="index.html">Equation Painting</a><a href="paper-en.html">Read in English</a><a href="paper-vi.html">Đọc bản tiếng Việt</a><a href="simple-en.html">Simple explanation</a><a href="index.html#try">Try it</a><span class="spacer"></span><a href="pdf/equation_painting_paper_v1_0_en.pdf">PDF (EN)</a><a href="pdf/equation_painting_paper_v1_0.pdf">PDF (VI)</a></nav><main>
+<div class="simple">
+<h1>Painting with a math formula<br><span style="font-weight:normal;font-size:1.1rem">explained on one page, for a primary-school reader too</span></h1>
+
+<h2>1. What is a picture on a computer?</h2>
+<p>Look very closely at a screen. The picture is made of many tiny squares called <b>pixels</b>. Each square has one colour. A small picture in our paper has more than <b>300,000 squares</b>. The computer remembers a picture by remembering the colour of every square, like one huge table of numbers.</p>
+
+<h2>2. What do we do differently?</h2>
+<p>Instead of remembering 300,000 colours, we write <b>one formula</b>. A formula is like a rule of a game: "A square in this place gets this colour." You only need to know where the square is (how many steps to the right, how many steps up), put those two numbers into the formula, and the formula answers at once: how much red, how much green, how much blue.</p>
+<div class="big">Position of the square → formula → colour of the square</div>
+<p>Do this for every square and you have the whole picture. The pile of strawberries in this paper was painted exactly like that: nobody coloured the squares one by one; every square was computed by the formula.</p>
+
+<h2>3. Why is that good?</h2>
+<ul>
+<li><b>Everyone who computes it gets the same picture.</b> Give the formula to a friend, to another machine, to another AI; compute it as many times as you like; it comes out identical, not one square different. We check this with a "fingerprint number" of the whole picture: two identical pictures have the same fingerprint.</li>
+<li><b>You can read it.</b> The formula says: this is strawberry number 1, this big, in this place; this is a leaf; the light comes from the top left. An ordinary image file is just a row of numbers nobody can read.</li>
+<li><b>You can change it.</b> Want a bigger strawberry? Change one number. Want the light from the right? Change another number. The picture changes exactly there, and nowhere else.</li>
+<li><b>Zoom in without breaking.</b> Because the formula can be computed at any place, you can print it as big as a table and it stays sharp.</li>
+</ul>
+
+<h2>4. Who did the work?</h2>
+<p>Two sides worked together. <b>The human</b> (Henry) chose the photograph, said what he wanted, set the rules, and in the end picked the most beautiful picture. <b>The AI</b> (Claude Code) measured the photograph with programs, wrote the formulas, drew trial pictures, compared, fixed them again and again, and checked with the fingerprint number. The AI tried 60 different pictures; the human chose 1.</p>
+
+<h2>5. The two problems in the paper</h2>
+<p><b>Problem 1:</b> here is a photograph of strawberries; write a formula that repaints it as closely as possible. Result: so close you recognise it at once, but the formula is long because it must remember very many measurements.</p>
+<p><b>Problem 2:</b> the same photograph, but take only the idea: how many berries, where they are, what colours, where the light comes from. Then paint a <i>new</i> picture with <b>one formula forty times shorter</b>. The new picture does not match the photograph square by square, and that is on purpose.</p>
+
+<h2>6. You can try it</h2>
+<p>The home page has two formula files. Give one to an AI that can run programs and say: "Run exactly this file." The AI will draw exactly the picture in the paper, not one square different. That is something a picture "drawn from a description" by an AI cannot do: each time you describe it, a different picture comes out.</p>
+<p style="text-align:center;margin-top:24px"><a class="btn primary" href="paper-en.html">Read the full paper</a> <a class="btn" href="index.html">Back to home</a></p>
+</div>
+</main><footer>Henry · Claude Code — 2026. Static site; mathematics rendered with KaTeX. Figures carry pixel hashes in their captions; specifications and reports accompany the paper.</footer></body></html>
